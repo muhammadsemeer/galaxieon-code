@@ -1,0 +1,45 @@
+{
+  "name": "galaxieon-code",
+  "version": "1.0.0",
+  "description": "Code Editor Super Powered by Galaxieon",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "webpack serve --mode development",
+    "build": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muhammadsemeer/galaxieon-code.git"
+  },
+  "keywords": [
+    "galaxieon",
+    "code",
+    "galaxieon-code"
+  ],
+  "author": "Muhammad Semeer",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/muhammadsemeer/galaxieon-code/issues"
+  },
+  "homepage": "https://github.com/muhammadsemeer/galaxieon-code#readme",
+  "dependencies": {
+    "@babel/core": "^7.14.3",
+    "@babel/preset-env": "^7.14.2",
+    "@babel/preset-react": "^7.13.13",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "babel-loader": "^8.2.2",
+    "copy-webpack-plugin": "^9.0.0",
+    "css-loader": "^5.2.6",
+    "dotenv-webpack": "^7.0.2",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.3.1",
+    "mini-css-extract-plugin": "^1.6.0",
+    "sass-loader": "^11.1.1",
+    "webpack": "^5.37.1",
+    "webpack-cli": "^4.7.0",
+    "webpack-dev-server": "^3.11.2"
+  }
+}
