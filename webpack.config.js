@@ -7,7 +7,7 @@ const webpack = require("webpack");
 
 const devMode = process.env.NODE_ENV !== "production";
 module.exports = {
-  entry: "src/index.js",
+  entry: "src/index.tsx",
   output: {
     filename: "chunk.[fullhash].js",
     path: path.resolve(__dirname, "build"),
@@ -20,7 +20,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.(ts|js)x?$/,
         exclude: /node_modules/,
         loader: require.resolve("babel-loader"),
       },
