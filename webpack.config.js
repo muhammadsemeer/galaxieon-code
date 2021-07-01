@@ -4,6 +4,7 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const Dotenv = require("dotenv-webpack");
 const webpack = require("webpack");
+const ErrorOverlayPlugin = require("error-overlay-webpack-plugin");
 
 const devMode = process.env.NODE_ENV !== "production";
 module.exports = {
@@ -12,6 +13,7 @@ module.exports = {
     filename: "chunk.[fullhash].js",
     path: path.resolve(__dirname, "build"),
     assetModuleFilename: "assets/images/[hash][ext][query]",
+    publicPath: "/",
   },
   resolve: {
     modules: [__dirname, "src", "node_modules"],
@@ -46,6 +48,7 @@ module.exports = {
     ],
   },
   plugins: [
+    new ErrorOverlayPlugin(),
     new HtmlWebpackPlugin({
       template: "./public/index.html",
       favicon: "./public/favicon.ico",
@@ -76,4 +79,5 @@ module.exports = {
     hot: true,
     historyApiFallback: true,
   },
+  devtool: "cheap-module-source-map",
 };
