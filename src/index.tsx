@@ -4,6 +4,7 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 
 import "antd/dist/antd.dark.css";
+import "./fonts/fonts.scss";
 import "./index.scss";
 
 ReactDOM.render(
