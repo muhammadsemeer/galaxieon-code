@@ -1,12 +1,12 @@
 import React, { FC } from "react";
 import Admin from "./Admin";
 
-const NavBar: FC = () => {
-  return (
-    <>
-      <Admin />
-    </>
-  );
+interface Props {
+  isAdmin: boolean;
+}
+
+const NavBar: FC<Props> = ({ isAdmin }) => {
+  return <>{isAdmin ? <Admin /> : null}</>;
 };
 
 export default NavBar;

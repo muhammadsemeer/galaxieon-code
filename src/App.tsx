@@ -1,11 +1,14 @@
 import React from "react";
 import NavBar from "./components/NavBar/Index";
 import Admin from "./pages/Admin";
-
+import { useRouteMatch } from "react-router-dom";
 const App = () => {
+  let admin = useRouteMatch("/admin*");
+  let login = useRouteMatch("*/login");
+  console.log({ admin, login });
   return (
     <>
-      <NavBar />
+      {!login && <NavBar isAdmin={admin ? true : false} />}
       <Admin />
     </>
   );
