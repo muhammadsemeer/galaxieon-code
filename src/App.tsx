@@ -5,7 +5,6 @@ import { useRouteMatch } from "react-router-dom";
 const App = () => {
   let admin = useRouteMatch("/admin*");
   let login = useRouteMatch("*/login");
-  console.log({ admin, login });
   return (
     <>
       {!login && <NavBar isAdmin={admin ? true : false} />}

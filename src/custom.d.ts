@@ -7,3 +7,5 @@ declare module "*.jpeg";
 declare module "*.png";
 declare module "*.gif";
 declare module "*.scss";
+
+declare module "react-login-github"
