@@ -27,11 +27,13 @@
     "@babel/preset-env": "^7.14.2",
     "@babel/preset-react": "^7.13.13",
     "@babel/preset-typescript": "^7.13.0",
+    "@reduxjs/toolkit": "^1.6.0",
     "antd": "^4.16.6",
     "less": "^4.1.1",
     "node-sass": "^6.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0"
   },
   "devDependencies": {
