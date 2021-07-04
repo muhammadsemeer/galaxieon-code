@@ -29,6 +29,7 @@
     "@babel/preset-env": "^7.14.2",
     "@babel/preset-react": "^7.13.13",
     "@babel/preset-typescript": "^7.13.0",
+    "@reduxjs/toolkit": "^1.6.0",
     "antd": "^4.16.6",
     "axios": "^0.21.1",
     "less": "^4.1.1",
@@ -37,6 +38,7 @@
     "react-dom": "^17.0.2",
     "react-google-login": "^5.2.2",
     "react-login-github": "^1.0.7",
+    "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0"
   },
   "devDependencies": {
