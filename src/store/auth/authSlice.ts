@@ -13,17 +13,22 @@ const authSlice = createSlice({
   reducers: {
     logIn: (state, { payload }: PayloadAction<Auth>) => {
       localStorage.setItem("auth", JSON.stringify({ ...state, ...payload }));
-      return state = { ...state, ...payload };
+      return (state = { ...state, ...payload });
     },
     logOut: (state, { payload }: PayloadAction<"user" | "admin">) => {
       switch (payload) {
         case "admin": {
           const { admin, ...rest } = state;
+          localStorage.setItem("auth", JSON.stringify({ ...rest }));
           return (state = rest);
         }
         case "user": {
-          const { user, ...rest } = state;
-          return (state = rest);
+          const { user, login, ...rest } = state;
+          localStorage.setItem(
+            "auth",
+            JSON.stringify({ login: false, ...rest })
+          );
+          return (state = { login: false, ...rest });
         }
       }
     },

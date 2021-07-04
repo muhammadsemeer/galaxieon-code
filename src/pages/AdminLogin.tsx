@@ -41,7 +41,7 @@ const Login: FC = () => {
     setError({ status: "error", message: error });
   };
 
-  auth.login && auth.login && history.push("/admin");
+  auth.login && auth.admin && history.push("/admin");
 
   return (
     <div className={styles.container}>
