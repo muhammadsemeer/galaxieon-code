@@ -30,6 +30,7 @@
     "@babel/preset-react": "^7.13.13",
     "@babel/preset-typescript": "^7.13.0",
     "antd": "^4.16.6",
+    "axios": "^0.21.1",
     "less": "^4.1.1",
     "node-sass": "^6.0.1",
     "react": "^17.0.2",
