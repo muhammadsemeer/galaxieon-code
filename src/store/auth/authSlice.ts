@@ -13,7 +13,7 @@ const authSlice = createSlice({
   reducers: {
     logIn: (state, { payload }: PayloadAction<Auth>) => {
       localStorage.setItem("auth", JSON.stringify({ ...state, ...payload }));
-      state = { ...state, ...payload };
+      return state = { ...state, ...payload };
     },
     logOut: (state, { payload }: PayloadAction<"user" | "admin">) => {
       switch (payload) {
