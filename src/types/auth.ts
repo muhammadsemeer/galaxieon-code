@@ -7,6 +7,8 @@ export interface User {
   following?: number;
   authType?: "google" | "github";
   status?: "active" | "blocked" | "deleted";
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface Auth {
