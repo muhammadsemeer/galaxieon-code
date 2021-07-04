@@ -18,7 +18,7 @@ const AdminDash: FC = () => {
       <>
         <Row justify="space-around">
           {stats.map((stat, index) => (
-            <Col span={6} key={Date.now()}>
+            <Col span={6} key={stat.title}>
               <StatCards
                 title={stat.title}
                 value={stat.value}
