@@ -1,6 +1,9 @@
-import React from "react";
+import React, { FC } from "react";
 import { Menu, Dropdown, Avatar, Typography, Space } from "antd";
-import { CaretDownOutlined } from "@ant-design/icons";
+import { CaretDownOutlined, UserOutlined } from "@ant-design/icons";
+import { blue } from "@ant-design/colors";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/index";
 
 const menu = (
   <Menu>
@@ -10,13 +13,17 @@ const menu = (
   </Menu>
 );
 
-const User = () => {
+const User: FC = () => {
+  const admin = useSelector((state: RootState) => state.auth.admin);
   return (
     <Dropdown overlay={menu} placement="bottomRight" arrow trigger={["click"]}>
       <Typography.Text>
         <Space size="middle">
-          Welcome <Typography.Text strong>Jhon Doe</Typography.Text>
-          <Avatar src="https://images.pexels.com/photos/1043473/pexels-photo-1043473.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" />
+          Welcome <Typography.Text strong>{admin?.name}</Typography.Text>
+          <Avatar
+            icon={<UserOutlined />}
+            style={{ background: blue.primary }}
+          />
           <CaretDownOutlined />
         </Space>
       </Typography.Text>
