@@ -4,7 +4,6 @@ import AdminDash from "./AdminDash";
 import Login from "./AdminLogin";
 import AdminRoute from "../components/Private/AdminRoute";
 import AdminUsers from "./AdminUsers";
-import Error from "../pages/Error";
 
 const Admin: FC = () => {
   return (
@@ -18,9 +17,6 @@ const Admin: FC = () => {
       <AdminRoute path="/admin/users">
         <AdminUsers />
       </AdminRoute>
-      <Route path="*">
-        <Error />
-      </Route>
     </Switch>
   );
 };
