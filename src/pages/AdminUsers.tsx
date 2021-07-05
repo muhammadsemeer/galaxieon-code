@@ -3,27 +3,51 @@ import { User } from "../types/auth";
 import axios from "../api/index";
 import { AxiosResponse, AxiosError } from "axios";
 import DataTable from "../components/DataTable/DataTable";
-import { Avatar, Button, Space, TableColumnType, Input } from "antd";
+import { Avatar, Button, Space, TableColumnType, Spin } from "antd";
 import tableSearch from "../utils/tableSearch";
 import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logOut } from "../store/auth/authSlice";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const AdminUsers: FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setLoading] = useState(true);
   const history = useHistory();
+  const dispatch = useDispatch();
+
+  const handleError = ({ response }: AxiosError) => {
+    if (!response)
+      return history.push("/error", {
+        status: "error",
+        title: "Network Disconnect",
+        subTitle: "Make Sure Your Device is Connected",
+      });
+    if (response?.status !== 401)
+      return history.push("/error", {
+        status: response?.status,
+        title: response?.statusText,
+        ...response?.data,
+      });
+    dispatch(logOut("admin"));
+    history.push("/admin/login");
+  };
 
   useEffect(() => {
-    axios.get("/admin/users").then((res: AxiosResponse) => {
-      setUsers(
-        res.data.map(({ id, createdAt, ...rest }: User) => ({
-          key: id,
-          id,
-          createdAt: new Date(createdAt as Date).toLocaleDateString("en-IN"),
-          ...rest,
-        }))
-      );
-      setLoading(false);
-    });
+    axios
+      .get("/admin/users")
+      .then((res: AxiosResponse) => {
+        setUsers(
+          res.data.map(({ id, createdAt, ...rest }: User) => ({
+            key: id,
+            id,
+            createdAt: new Date(createdAt as Date).toLocaleDateString("en-IN"),
+            ...rest,
+          }))
+        );
+        setLoading(false);
+      })
+      .catch(handleError);
   }, []);
 
   const changeUserStatus = (
@@ -154,22 +178,34 @@ const AdminUsers: FC = () => {
   return (
     <main
       style={{
-        padding: "75px 10px 75px 260px",
+        padding: "75px 10px 10px 260px",
       }}
     >
-      <Space
-        direction="vertical"
-        size="large"
-        style={{ marginTop: "10px", textAlign: "right" }}
-      >
-        <Button
-          type="primary"
-          onClick={() => history.push("/admin/create/user")}
+      {isLoading ? (
+        <Spin
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            display: "flex",
+            height: "80vh",
+          }}
+          indicator={<LoadingOutlined style={{ fontSize: 50 }} spin />}
+        />
+      ) : (
+        <Space
+          direction="vertical"
+          size="large"
+          style={{ marginTop: "10px", textAlign: "right" }}
         >
-          Create
-        </Button>
-        {!isLoading && <DataTable coloums={columns} datas={users} />}
-      </Space>
+          <Button
+            type="primary"
+            onClick={() => history.push("/admin/create/user")}
+          >
+            Create
+          </Button>
+          <DataTable coloums={columns} datas={users} />
+        </Space>
+      )}
     </main>
   );
 };

@@ -17,8 +17,8 @@ const Error: FC = () => {
     >
       <Result
         status={state?.status || "404"}
-        title={state?.title || "404"}
-        subTitle={state?.subTitle || "Page Not Found"}
+        title={state?.title || state?.status || "404"}
+        subTitle={state?.subTitle || state?.message || "Page Not Found"}
       />
     </main>
   );
