@@ -1,14 +1,16 @@
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { User } from "../types/auth";
 import axios from "../api/index";
 import { AxiosResponse, AxiosError } from "axios";
 import DataTable from "../components/DataTable/DataTable";
 import { Avatar, Button, Space, TableColumnType, Input } from "antd";
 import tableSearch from "../utils/tableSearch";
+import { useHistory } from "react-router-dom";
 
 const AdminUsers: FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setLoading] = useState(true);
+  const history = useHistory();
 
   useEffect(() => {
     axios.get("/admin/users").then((res: AxiosResponse) => {
@@ -155,7 +157,19 @@ const AdminUsers: FC = () => {
         padding: "75px 10px 75px 260px",
       }}
     >
-      {!isLoading && <DataTable coloums={columns} datas={users} />}
+      <Space
+        direction="vertical"
+        size="large"
+        style={{ marginTop: "10px", textAlign: "right" }}
+      >
+        <Button
+          type="primary"
+          onClick={() => history.push("/admin/create/user")}
+        >
+          Create
+        </Button>
+        {!isLoading && <DataTable coloums={columns} datas={users} />}
+      </Space>
     </main>
   );
 };
