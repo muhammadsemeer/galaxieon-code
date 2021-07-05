@@ -1,13 +1,15 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { User } from "../types/auth";
 import axios from "../api/index";
 import { AxiosResponse, AxiosError } from "axios";
 import DataTable from "../components/DataTable/DataTable";
-import { Avatar, Button, Space, TableColumnType } from "antd";
+import { Avatar, Button, Space, TableColumnType, Input } from "antd";
+import tableSearch from "../utils/tableSearch";
 
 const AdminUsers: FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setLoading] = useState(true);
+
   useEffect(() => {
     axios.get("/admin/users").then((res: AxiosResponse) => {
       setUsers(
@@ -42,36 +44,66 @@ const AdminUsers: FC = () => {
       dataIndex: "name",
       key: "name",
       width: "30%",
+      ...tableSearch("name"),
     },
     {
       title: "Email / Username",
       dataIndex: "email",
       key: "email",
       width: "30%",
+      ...tableSearch("email"),
     },
     {
       title: "Followers",
       dataIndex: "followers",
       key: "followers",
       width: "5%",
+      sorter: (a, b) => a.followers - b.followers,
     },
     {
       title: "Following",
       dataIndex: "following",
       key: "following",
       width: "5%",
+      sorter: (a, b) => a.following - b.following,
     },
     {
       title: "Auth",
       dataIndex: "authType",
       key: "authType",
       width: "5%",
+      filters: [
+        {
+          text: "google",
+          value: "google",
+        },
+        {
+          text: "github",
+          value: "github",
+        },
+      ],
+      onFilter: (value, record) => record.authType.indexOf(value) === 0,
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
       width: "5%",
+      filters: [
+        {
+          text: "active",
+          value: "active",
+        },
+        {
+          text: "blocked",
+          value: "blocked",
+        },
+        {
+          text: "deleted",
+          value: "deleted",
+        },
+      ],
+      onFilter: (value, record) => record.status.indexOf(value) === 0,
     },
     {
       title: "Created At",
