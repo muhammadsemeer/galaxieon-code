@@ -1,8 +1,7 @@
 import React from "react";
 import NavBar from "./components/NavBar/Index";
-import Admin from "./pages/Admin";
+import Routes from "./pages/Routes";
 import { useRouteMatch } from "react-router-dom";
-import User from "./pages/User";
 
 const App = () => {
   let admin = useRouteMatch("/admin*");
@@ -10,8 +9,7 @@ const App = () => {
   return (
     <>
       {!login && <NavBar isAdmin={admin ? true : false} />}
-      <Admin />
-      <User />
+      <Routes />
     </>
   );
 };

@@ -5,6 +5,7 @@ import Login from "./AdminLogin";
 import AdminRoute from "../components/Private/AdminRoute";
 import AdminUsers from "./AdminUsers";
 import Error from "./Error";
+import UserLogin from "./UserLogin";
 
 const Admin: FC = () => {
   return (
@@ -18,9 +19,12 @@ const Admin: FC = () => {
       <AdminRoute path="/admin/users">
         <AdminUsers />
       </AdminRoute>
-      {/* <Route path="*">
+      <Route path="/login">
+        <UserLogin />
+      </Route>
+      <Route path="*">
         <Error />
-      </Route> */}
+      </Route>
     </Switch>
   );
 };
