@@ -28,8 +28,8 @@ const AdminUsers: FC = () => {
     if (!response)
       return history.push("/error", {
         status: "error",
-        title: "Network Disconnect",
-        subTitle: "Make Sure Your Device is Connected",
+        title: "Something Went Wrong !",
+        subTitle: "Make Sure Your Device is Connected or Try Again Later",
       });
     if (response?.status !== 401)
       return history.push("/error", {
@@ -62,7 +62,23 @@ const AdminUsers: FC = () => {
     status: "active" | "blocked" | "deleted",
     id: string
   ) => {
-    console.log({ status, id });
+    let loading = message.loading("Loading");
+    axios
+      .patch(`/admin/user/${id}?status=${status}`)
+      .then(async (res: AxiosResponse) => {
+        let updatedUsers = [...users];
+        let index = users.findIndex((value) => value.id === id);
+        updatedUsers[index].status = status;
+        setUsers(updatedUsers);
+        await loading();
+        message.success(`User ${status} Succesfully`);
+      })
+      .catch(async (error: AxiosError) => {
+        const { response } = error;
+        if (!response || response.status !== 400) return handleError(error);
+        await loading();
+        message.warn(response.data);
+      });
   };
 
   let columns: TableColumnType<any>[] = [
@@ -164,7 +180,7 @@ const AdminUsers: FC = () => {
             )}
             {record.status !== "blocked" && (
               <Popconfirm
-                title="Are you sure want to activate?"
+                title="Are you sure want to block?"
                 onConfirm={() => changeUserStatus("blocked", record.id)}
                 okText="Yes"
                 cancelText="No"
@@ -174,7 +190,7 @@ const AdminUsers: FC = () => {
             )}
             {record.status !== "deleted" && (
               <Popconfirm
-                title="Are you sure want to activate?"
+                title="Are you sure want to delete?"
                 onConfirm={() => changeUserStatus("deleted", record.id)}
                 okText="Yes"
                 cancelText="No"

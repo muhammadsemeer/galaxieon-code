@@ -7,9 +7,9 @@ const User: FC = () => {
   return (
     <Switch>
       <Route path="/login"><UserLogin /></Route>
-      <Route path="*">
+      {/* <Route path="*">
         <Error />
-      </Route>
+      </Route> */}
     </Switch>
   );
 };
