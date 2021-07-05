@@ -3,7 +3,15 @@ import { User } from "../types/auth";
 import axios from "../api/index";
 import { AxiosResponse, AxiosError } from "axios";
 import DataTable from "../components/DataTable/DataTable";
-import { Avatar, Button, Space, TableColumnType, Spin } from "antd";
+import {
+  Avatar,
+  Button,
+  Space,
+  TableColumnType,
+  Spin,
+  Popconfirm,
+  message,
+} from "antd";
 import tableSearch from "../utils/tableSearch";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -51,7 +59,7 @@ const AdminUsers: FC = () => {
   }, []);
 
   const changeUserStatus = (
-    status: "active" | "block" | "delete",
+    status: "active" | "blocked" | "deleted",
     id: string
   ) => {
     console.log({ status, id });
@@ -145,29 +153,36 @@ const AdminUsers: FC = () => {
         return (
           <Space direction="vertical" size="middle">
             {record.status !== "active" && (
-              <Button
-                type="primary"
-                onClick={() => changeUserStatus("active", record.id)}
+              <Popconfirm
+                title="Are you sure want to activate?"
+                onConfirm={() => changeUserStatus("active", record.id)}
+                okText="Yes"
+                cancelText="No"
               >
-                Active
-              </Button>
+                <Button type="primary">Active</Button>
+              </Popconfirm>
             )}
             {record.status !== "blocked" && (
-              <Button
-                type="primary"
-                onClick={() => changeUserStatus("block", record.id)}
+              <Popconfirm
+                title="Are you sure want to activate?"
+                onConfirm={() => changeUserStatus("blocked", record.id)}
+                okText="Yes"
+                cancelText="No"
               >
-                Block
-              </Button>
+                <Button type="primary">Block</Button>
+              </Popconfirm>
             )}
             {record.status !== "deleted" && (
-              <Button
-                type="primary"
-                danger
-                onClick={() => changeUserStatus("delete", record.id)}
+              <Popconfirm
+                title="Are you sure want to activate?"
+                onConfirm={() => changeUserStatus("deleted", record.id)}
+                okText="Yes"
+                cancelText="No"
               >
-                Delete
-              </Button>
+                <Button type="primary" danger>
+                  Delete
+                </Button>
+              </Popconfirm>
             )}
           </Space>
         );
