@@ -6,10 +6,13 @@ import AdminRoute from "../components/Private/AdminRoute";
 import AdminUsers from "./AdminUsers";
 import Error from "./Error";
 import UserLogin from "./UserLogin";
+import CreateUser from "./CreateUser";
 
 const Admin: FC = () => {
   return (
     <Switch>
+
+      {/* Admin Routers */}
       <Route path="/admin/login">
         <Login />
       </Route>
@@ -19,9 +22,16 @@ const Admin: FC = () => {
       <AdminRoute path="/admin/users">
         <AdminUsers />
       </AdminRoute>
+      <AdminRoute path="/admin/create/user">
+        <CreateUser />
+      </AdminRoute>
+
+      {/* User Routes */}
       <Route path="/login">
         <UserLogin />
       </Route>
+
+      {/* 404 And Error */}
       <Route path="*">
         <Error />
       </Route>
