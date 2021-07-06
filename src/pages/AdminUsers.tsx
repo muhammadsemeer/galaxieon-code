@@ -15,31 +15,14 @@ import {
 import tableSearch from "../utils/tableSearch";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { logOut } from "../store/auth/authSlice";
 import { LoadingOutlined } from "@ant-design/icons";
+import handleError from "../utils/Error";
 
 const AdminUsers: FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [isLoading, setLoading] = useState(true);
   const history = useHistory();
   const dispatch = useDispatch();
-
-  const handleError = ({ response }: AxiosError) => {
-    if (!response)
-      return history.push("/error", {
-        status: "error",
-        title: "Something Went Wrong !",
-        subTitle: "Make Sure Your Device is Connected or Try Again Later",
-      });
-    if (response?.status !== 401)
-      return history.push("/error", {
-        status: response?.status,
-        title: response?.statusText,
-        ...response?.data,
-      });
-    dispatch(logOut("admin"));
-    history.push("/admin/login");
-  };
 
   useEffect(() => {
     axios
@@ -55,7 +38,7 @@ const AdminUsers: FC = () => {
         );
         setLoading(false);
       })
-      .catch(handleError);
+      .catch((error) => handleError(error, history, dispatch, true));
   }, []);
 
   const changeUserStatus = (
@@ -75,7 +58,8 @@ const AdminUsers: FC = () => {
       })
       .catch(async (error: AxiosError) => {
         const { response } = error;
-        if (!response || response.status !== 400) return handleError(error);
+        if (!response || response.status !== 400)
+          return handleError(error, history, dispatch, true);
         await loading();
         message.warn(response.data);
       });
