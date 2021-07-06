@@ -14,7 +14,7 @@ let icons = [<UserOutlined />, <FileOutlined />, <CodeOutlined />];
 const AdminDash: FC = () => {
   const [stats, setStats] = useState<Stats[]>(dummyData);
   return (
-    <main style={{ padding: "75px 0 0 260px" }}>
+    <main className="admin">
       <>
         <Row justify="space-around">
           {stats.map((stat, index) => (

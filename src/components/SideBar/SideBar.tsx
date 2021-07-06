@@ -21,11 +21,12 @@ const SideBar: FC = () => {
   return (
     <Menu
       style={{
-        width: 256,
+        width: 225,
         height: "calc(100vh - 50px)",
         padding: "25px 0",
         position: "fixed",
         marginTop: "65px",
+        zIndex: 99999999999,
       }}
       defaultSelectedKeys={[keys[location.pathname]]}
       mode="inline"

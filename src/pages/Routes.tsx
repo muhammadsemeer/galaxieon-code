@@ -7,11 +7,11 @@ import AdminUsers from "./AdminUsers";
 import Error from "./Error";
 import UserLogin from "./UserLogin";
 import CreateUser from "./CreateUser";
+import AdminTemplates from "./AdminTemplates";
 
 const Admin: FC = () => {
   return (
     <Switch>
-
       {/* Admin Routers */}
       <Route path="/admin/login">
         <Login />
@@ -24,6 +24,9 @@ const Admin: FC = () => {
       </AdminRoute>
       <AdminRoute path="/admin/create/user">
         <CreateUser />
+      </AdminRoute>
+      <AdminRoute path="/admin/templates">
+        <AdminTemplates />
       </AdminRoute>
 
       {/* User Routes */}

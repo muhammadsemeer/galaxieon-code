@@ -192,9 +192,7 @@ const AdminUsers: FC = () => {
 
   return (
     <main
-      style={{
-        padding: "75px 10px 10px 260px",
-      }}
+     className="admin table"
     >
       {isLoading ? (
         <Spin
