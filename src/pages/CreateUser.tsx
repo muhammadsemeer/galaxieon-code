@@ -43,9 +43,11 @@ const CreateUser: FC = () => {
   };
 
   const onSubmit = (values: any) => {
+    setLoading(true);
     axios
       .post("/admin/user", values)
       .then((res: AxiosResponse) => {
+        setLoading(false);
         if (!res.data.status)
           return notification.error({
             message: res.data.message,
