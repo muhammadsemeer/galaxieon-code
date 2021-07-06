@@ -1,10 +1,20 @@
 import React, { FC } from "react";
-import { useLocation, useRouteMatch } from "react-router-dom";
-import { Result } from "antd";
+import { useLocation, useRouteMatch, useHistory } from "react-router-dom";
+import { Result, Button, Space } from "antd";
 
 const Error: FC = () => {
   const { state }: any = useLocation();
   let admin = useRouteMatch("/admin*");
+  const history = useHistory();
+  const extra = state?.status ? (
+    <Button type="primary" onClick={() => history.goBack()}>
+      Try Again
+    </Button>
+  ) : (
+    <Button type="primary" onClick={() => history.push(admin ? "/admin" : "/")}>
+      Go Home
+    </Button>
+  );
   return (
     <main
       style={{
@@ -19,6 +29,7 @@ const Error: FC = () => {
         status={state?.status || "404"}
         title={state?.title || state?.status || "404"}
         subTitle={state?.subTitle || state?.message || "Page Not Found"}
+        extra={extra}
       />
     </main>
   );
