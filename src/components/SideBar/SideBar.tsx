@@ -26,7 +26,7 @@ const SideBar: FC = () => {
         padding: "25px 0",
         position: "fixed",
         marginTop: "65px",
-        zIndex: 99999999999,
+        zIndex: 99,
       }}
       defaultSelectedKeys={[keys[location.pathname]]}
       mode="inline"
