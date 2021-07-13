@@ -8,19 +8,16 @@ import {
   Button,
   Space,
   TableColumnType,
-  Spin,
   Popconfirm,
   message,
 } from "antd";
 import tableSearch from "../utils/tableSearch";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { LoadingOutlined } from "@ant-design/icons";
 import handleError from "../utils/Error";
 
 const AdminUsers: FC = () => {
   const [users, setUsers] = useState<User[]>([]);
-  const [isLoading, setLoading] = useState(true);
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -36,7 +33,6 @@ const AdminUsers: FC = () => {
             ...rest,
           }))
         );
-        setLoading(false);
       })
       .catch((error) => handleError(error, history, dispatch, true));
   }, []);
@@ -191,34 +187,20 @@ const AdminUsers: FC = () => {
   ];
 
   return (
-    <main
-     className="admin table"
-    >
-      {isLoading ? (
-        <Spin
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            display: "flex",
-            height: "80vh",
-          }}
-          indicator={<LoadingOutlined style={{ fontSize: 50 }} spin />}
-        />
-      ) : (
-        <Space
-          direction="vertical"
-          size="large"
-          style={{ marginTop: "10px", textAlign: "right" }}
+    <main className="admin table">
+      <Space
+        direction="vertical"
+        size="large"
+        style={{ marginTop: "10px", textAlign: "right" }}
+      >
+        <Button
+          type="primary"
+          onClick={() => history.push("/admin/create/user")}
         >
-          <Button
-            type="primary"
-            onClick={() => history.push("/admin/create/user")}
-          >
-            Create
-          </Button>
-          <DataTable coloums={columns} datas={users} />
-        </Space>
-      )}
+          Create
+        </Button>
+        <DataTable columns={columns} datas={users} />
+      </Space>
     </main>
   );
 };
