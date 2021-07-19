@@ -12,6 +12,9 @@ import tableSearch from "../utils/tableSearch";
 const AdminTemplates: FC = () => {
   const [templates, setTemplates] = useState<Template[]>([]);
 
+  const history = useHistory();
+  const dispatch = useDispatch();
+
   useEffect(() => {
     axios
       .get("/template")
@@ -25,9 +28,7 @@ const AdminTemplates: FC = () => {
           }))
         );
       })
-      .catch((err: AxiosError) =>
-        handleError(err, useHistory(), useDispatch(), true)
-      );
+      .catch((err: AxiosError) => handleError(err, history, dispatch, true));
   }, []);
 
   let columns: TableColumnType<any>[] = [
