@@ -3,7 +3,7 @@ import { Menu } from "antd";
 import { NavLink, useLocation } from "react-router-dom";
 import {
   DashboardOutlined,
-  UserOutlined,
+  CloudServerOutlined,
   FileOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
@@ -12,7 +12,7 @@ let keys: { [index: string]: string } = {
   "/admin": "1",
   "/admin/users": "2",
   "/admin/templates": "3",
-  "/admin/profile": "4",
+  "/admin/instances": "4",
 };
 
 const SideBar: FC = () => {
@@ -40,8 +40,8 @@ const SideBar: FC = () => {
       <Menu.Item key="3" icon={<FileOutlined />}>
         <NavLink to="/admin/templates">Templates</NavLink>
       </Menu.Item>
-      <Menu.Item key="4" icon={<UserOutlined />}>
-        <NavLink to="/admin/profile">My Profile</NavLink>
+      <Menu.Item key="4" icon={<CloudServerOutlined />}>
+        <NavLink to="/admin/instances">Instances</NavLink>
       </Menu.Item>
     </Menu>
   );
