@@ -8,6 +8,7 @@ import Error from "./Error";
 import UserLogin from "./UserLogin";
 import CreateUser from "./CreateUser";
 import AdminTemplates from "./AdminTemplates";
+import AdminInstances from "./AdminInstances";
 
 const Admin: FC = () => {
   return (
@@ -27,6 +28,9 @@ const Admin: FC = () => {
       </AdminRoute>
       <AdminRoute path="/admin/templates">
         <AdminTemplates />
+      </AdminRoute>
+      <AdminRoute path="/admin/instances">
+        <AdminInstances />
       </AdminRoute>
 
       {/* User Routes */}
