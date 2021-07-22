@@ -7,7 +7,7 @@ const Admin = () => {
     <>
       <header>
         <Logo />
-        <Profile />
+        <Profile isAdmin />
       </header>
       <SideBar />
     </>

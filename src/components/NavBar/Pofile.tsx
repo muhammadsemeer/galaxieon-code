@@ -9,14 +9,16 @@ import axios from "../../api/index";
 import { useDispatch } from "react-redux";
 import { logOut } from "../../store/auth/authSlice";
 
-const User: FC = () => {
+export type UserProp = { isAdmin: boolean };
+
+const User: FC<UserProp> = ({ isAdmin }) => {
   const history = useHistory();
-  const admin = useSelector((state: RootState) => state.auth.admin);
+  const auth = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
   const handleLogout = async () => {
     await axios.get("/auth/logout/admin");
-    dispatch(logOut("admin"));
-    history.push("/admin/login");
+    dispatch(logOut(isAdmin ? "admin" : "user"));
+    history.push(isAdmin ? "/admin/login" : "/login");
   };
   return (
     <Dropdown
@@ -33,7 +35,10 @@ const User: FC = () => {
     >
       <Typography.Text>
         <Space size="middle">
-          Welcome <Typography.Text strong>{admin?.name}</Typography.Text>
+          Welcome{" "}
+          <Typography.Text strong>
+            {auth[isAdmin ? "admin" : "user"]?.name}
+          </Typography.Text>
           <Avatar
             icon={<UserOutlined />}
             style={{ background: blue.primary }}
