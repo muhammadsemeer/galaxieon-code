@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import SideBar from "../SideBar/SideBar";
 import Logo from "./Logo";
-import Profile from "./Pofile";
+import Profile from "./Profile";
 const Admin = () => {
   return (
     <>
