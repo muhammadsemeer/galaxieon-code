@@ -1,12 +1,6 @@
-import React, { FC } from "react";
-import { Button, Menu } from "antd";
+import React, { FC, ReactNode } from "react";
+import { Menu } from "antd";
 import { NavLink, useLocation } from "react-router-dom";
-import {
-  DashboardOutlined,
-  CloudServerOutlined,
-  FileOutlined,
-  TeamOutlined,
-} from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 
@@ -17,37 +11,40 @@ let keys: { [index: string]: string } = {
   "/admin/instances": "4",
 };
 
-const SideBar: FC = () => {
+export interface SideBarProps {
+  menus: Array<{ key: string; name: string; icon: ReactNode; to: string }>;
+  isAdmin: boolean;
+}
+
+const SideBar: FC<SideBarProps> = ({ menus }) => {
   const location = useLocation();
   const collapsed = useSelector((state: RootState) => state.collapsed);
-
+  const defaultSelectedKeys = menus
+    .filter(
+      (menu) =>
+        menu.to.split("/").join("") === location.pathname.split("/").join("")
+    )
+    .map((menu) => menu.key);
   return (
-      <Menu
-        style={{
-          maxWidth: 225,
-          height: "calc(100vh - 50px)",
-          padding: "25px 0",
-          position: "fixed",
-          marginTop: "65px",
-          zIndex: 99,
-        }}
-        defaultSelectedKeys={[keys[location.pathname]]}
-        mode="inline"
-        inlineCollapsed={collapsed}
-      >
-        <Menu.Item key="1" icon={<DashboardOutlined />}>
-          <NavLink to="/admin">DashBoard</NavLink>
+    <Menu
+      style={{
+        maxWidth: 225,
+        height: "calc(100vh - 50px)",
+        padding: "25px 0",
+        position: "fixed",
+        marginTop: "65px",
+        zIndex: 99,
+      }}
+      defaultSelectedKeys={defaultSelectedKeys}
+      mode="inline"
+      inlineCollapsed={collapsed}
+    >
+      {menus.map((menu) => (
+        <Menu.Item key={menu.key} icon={menu.icon}>
+          <NavLink to={menu.to}>{menu.name}</NavLink>
         </Menu.Item>
-        <Menu.Item key="2" icon={<TeamOutlined />}>
-          <NavLink to="/admin/users">Users</NavLink>
-        </Menu.Item>
-        <Menu.Item key="3" icon={<FileOutlined />}>
-          <NavLink to="/admin/templates">Templates</NavLink>
-        </Menu.Item>
-        <Menu.Item key="4" icon={<CloudServerOutlined />}>
-          <NavLink to="/admin/instances">Instances</NavLink>
-        </Menu.Item>
-      </Menu>
+      ))}
+    </Menu>
   );
 };
 
