@@ -34,13 +34,13 @@ const User: FC<UserProp> = ({ isAdmin }) => {
       trigger={["click"]}
     >
       <Typography.Text>
-        <Space size="middle">
-          Welcome{" "}
+        <Space>
           <Typography.Text strong>
             {auth[isAdmin ? "admin" : "user"]?.name}
           </Typography.Text>
           <Avatar
             icon={<UserOutlined />}
+            src={!isAdmin && auth.user?.profileImage}
             style={{ background: blue.primary }}
           />
           <CaretDownOutlined />
