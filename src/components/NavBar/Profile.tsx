@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import { Menu, Dropdown, Avatar, Typography, Space } from "antd";
-import { CaretDownOutlined, UserOutlined } from "@ant-design/icons";
+import { Menu, Dropdown, Avatar, Typography, Space, Button } from "antd";
+import { BellFilled, CaretDownOutlined, PlusCircleFilled, UserOutlined } from "@ant-design/icons";
 import { blue } from "@ant-design/colors";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/index";
@@ -21,32 +21,39 @@ const User: FC<UserProp> = ({ isAdmin }) => {
     history.push(isAdmin ? "/admin/login" : "/login");
   };
   return (
-    <Dropdown
-      overlay={
-        <Menu>
-          <Menu.Item key="logout">
-            <a onClick={handleLogout}>Log Out</a>
-          </Menu.Item>
-        </Menu>
-      }
-      placement="bottomRight"
-      arrow
-      trigger={["click"]}
-    >
-      <Typography.Text>
-        <Space>
-          <Typography.Text strong>
-            {auth[isAdmin ? "admin" : "user"]?.name}
-          </Typography.Text>
-          <Avatar
-            icon={<UserOutlined />}
-            src={!isAdmin && auth.user?.profileImage}
-            style={{ background: blue.primary }}
-          />
-          <CaretDownOutlined />
-        </Space>
-      </Typography.Text>
-    </Dropdown>
+    <Space size="middle">
+    {!isAdmin && (
+    <>
+    <Button type="text" size="middle" icon={<PlusCircleFilled />} />
+    </>
+    )}
+      <Dropdown
+        overlay={
+          <Menu>
+            <Menu.Item key="logout">
+              <a onClick={handleLogout}>Log Out</a>
+            </Menu.Item>
+          </Menu>
+        }
+        placement="bottomRight"
+        arrow
+        trigger={["click"]}
+      >
+        <Typography.Text>
+          <Space>
+            {isAdmin && (
+              <Typography.Text strong>{auth.admin?.name}</Typography.Text>
+            )}
+            <Avatar
+              icon={<UserOutlined />}
+              src={!isAdmin && auth.user?.profileImage}
+              style={{ background: blue.primary }}
+            />
+            <CaretDownOutlined />
+          </Space>
+        </Typography.Text>
+      </Dropdown>
+    </Space>
   );
 };
 
