@@ -13,13 +13,16 @@ import {
 } from "antd";
 import tableSearch from "../utils/tableSearch";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import handleError from "../utils/Error";
+import { RootState } from "../store";
 
 const AdminUsers: FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const history = useHistory();
   const dispatch = useDispatch();
+
+  const collapsed = useSelector((state: RootState) => state.collapsed);
 
   useEffect(() => {
     axios
@@ -187,7 +190,7 @@ const AdminUsers: FC = () => {
   ];
 
   return (
-    <main className="admin table">
+    <main className={`admin table p-left ${collapsed && "collapsed"}`}>
       <Space
         direction="vertical"
         size="large"

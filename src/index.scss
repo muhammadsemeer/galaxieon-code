@@ -19,15 +19,21 @@ body {
 main {
   &.admin {
     padding-top: 75px;
-    padding-left: 240px;
 
     &.table {
-      padding-left: 250px;
       padding-right: 25px;
       padding-bottom: 25px;
       overflow: hidden;
       overflow-x: auto;
     }
+  }
+}
+
+.p-left {
+  padding-left: 250px;
+
+  &.collapsed {
+    padding-left: 50px;
   }
 }
 

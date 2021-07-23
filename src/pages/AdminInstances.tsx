@@ -4,15 +4,17 @@ import axios from "../api/index";
 import { AxiosError, AxiosResponse } from "axios";
 import handleError from "../utils/Error";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import DataTable from "../components/DataTable/DataTable";
 import { TableColumnType, Tag } from "antd";
 import tableSearch from "../utils/tableSearch";
+import { RootState } from "../store";
 
 const AdminInstances: FC = () => {
   const [instances, setInstances] = useState<Instance[]>([]);
   const history = useHistory();
   const dispatch = useDispatch();
+  const collapsed = useSelector((state: RootState) => state.collapsed);
 
   useEffect(() => {
     axios
@@ -95,7 +97,7 @@ const AdminInstances: FC = () => {
   ];
 
   return (
-    <main className="admin table">
+    <main className={`admin table p-left ${collapsed && "collapsed"}`}>
       <DataTable columns={columns} datas={instances} />
     </main>
   );
