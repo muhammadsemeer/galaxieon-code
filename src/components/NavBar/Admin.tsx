@@ -6,7 +6,7 @@ const Admin = () => {
   return (
     <>
       <header>
-        <Logo />
+        <Logo isNav />
         <Profile isAdmin />
       </header>
       <SideBar />

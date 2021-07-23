@@ -25,15 +25,19 @@ main {
       padding-bottom: 25px;
       overflow: hidden;
       overflow-x: auto;
+      &.collapsed {
+        padding-left: 100px;
+      }
     }
   }
 }
 
 .p-left {
   padding-left: 250px;
-
+  
   &.collapsed {
     padding-left: 50px;
+    transition: padding-left 0.5s ease-in;
   }
 }
 
