@@ -35,4 +35,7 @@ export interface Instance {
   status?: boolean;
   UserId?: string;
   User?: User;
+  createdAt?: string;
+  updatedAt?: string;
+  lastEditied?: string;
 }
