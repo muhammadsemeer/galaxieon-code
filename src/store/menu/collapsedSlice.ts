@@ -7,8 +7,8 @@ const collapsedSlice = createSlice({
     collapse: (state) => {
       return !state;
     },
-    collapseWithPayload: (state, payload: PayloadAction<boolean>) => {
-      return payload.payload;
+    collapseWithPayload: (state, { payload }: PayloadAction<boolean>) => {
+      return payload;
     },
   },
 });

@@ -27,6 +27,7 @@ export interface Instance {
   files: Files;
   autosave?: boolean;
   autopreview?: boolean;
+  views?: number;
   likes?: number;
   shares?: number;
   forks?: number;
