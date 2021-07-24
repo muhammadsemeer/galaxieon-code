@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import {
   Card as AntCard,
   CardProps as AntCardProps,
@@ -6,6 +6,7 @@ import {
   Tag,
   Dropdown,
   Menu,
+  Button,
 } from "antd";
 import {
   DeleteOutlined,
@@ -34,22 +35,22 @@ const overlay = (id: string): JSX.Element => (
   <Menu>
     <Menu.Item key="1">
       <a href="#">
-        <LockOutlined /> Make Private
+        <EditOutlined /> Edit Instance
       </a>
     </Menu.Item>
-    <Menu.Item key="2">
+    <Menu.Item key="2" disabled>
       <a href="#">
-        <ForkOutlined /> Fork Instance
+        <LockOutlined /> Make Private
       </a>
     </Menu.Item>
     <Menu.Item key="3">
       <a href="#">
-        <EditOutlined /> Edit Instance
+        <ForkOutlined /> Fork Instance
       </a>
     </Menu.Item>
     <Menu.Item key="4">
       <a href="#">
-      <DeleteOutlined />
+        <DeleteOutlined />
         Delete Instance
       </a>
     </Menu.Item>
@@ -63,13 +64,36 @@ const extra = (id: string): JSX.Element => (
 );
 
 const Card: FC<CardProps> = ({ content, cardId, ...rest }) => {
-
   const history = useHistory();
 
+  const [descLength, setDescLength] = useState(20);
+
+  const length = content.description?.length;
+
+  console.log({ length, desc: content.description?.substr(0, descLength) });
+
+  const description = length && length !== 0 && (
+    <>
+      {content.description?.substr(0, descLength)}
+      {descLength < length && <>...</>}
+      <br />
+      {descLength < length ? (
+        <a onClick={() => setDescLength(length)}>Show More</a>
+      ) : (
+        <a onClick={() => setDescLength(20)}>Show Less</a>
+      )}
+    </>
+  );
+
   return (
-    <AntCard hoverable {...rest} extra={extra(cardId)} onDoubleClick={() => history.push(`/instance/${cardId}`)}>
-      <Space size="middle" direction="vertical">
-        <AntCard.Meta description={content.description} />
+    <AntCard
+      hoverable
+      {...rest}
+      extra={extra(cardId)}
+      onDoubleClick={() => history.push(`/instance/${cardId}`)}
+    >
+      <Space size="middle" direction="vertical" style={{ width: "100%" }}>
+        {length !== 0 && <AntCard.Meta description={description} />}
         <div className="flex">
           {content?.keywords?.split(",").map((value) => (
             <Tag color="blue">{value}</Tag>
