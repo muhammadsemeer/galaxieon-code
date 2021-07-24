@@ -18,17 +18,20 @@ const authSlice = createSlice({
     logOut: (state, { payload }: PayloadAction<"user" | "admin">) => {
       switch (payload) {
         case "admin": {
-          const { admin, ...rest } = state;
-          localStorage.setItem("auth", JSON.stringify({ ...rest }));
-          return (state = rest);
+          const { admin, login, ...rest } = state;
+          localStorage.setItem(
+            "auth",
+            JSON.stringify({ login: rest.user ? true : false, ...rest })
+          );
+          return (state = { login: rest.user ? true : false, ...rest });
         }
         case "user": {
           const { user, login, ...rest } = state;
           localStorage.setItem(
             "auth",
-            JSON.stringify({ login: false, ...rest })
+            JSON.stringify({ login: rest.admin ? true : false, ...rest })
           );
-          return (state = { login: false, ...rest });
+          return (state = { login: rest.admin ? true : false, ...rest });
         }
       }
     },
