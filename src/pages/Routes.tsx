@@ -9,7 +9,8 @@ import UserLogin from "./UserLogin";
 import CreateUser from "./CreateUser";
 import AdminTemplates from "./AdminTemplates";
 import AdminInstances from "./AdminInstances";
-import UserRoute from "../components/Private/UserRoute"
+import UserRoute from "../components/Private/UserRoute";
+import UserDash from "./UserDash";
 
 const Admin: FC = () => {
   return (
@@ -39,7 +40,7 @@ const Admin: FC = () => {
         <UserLogin />
       </Route>
       <UserRoute path="/dashboard">
-
+        <UserDash />
       </UserRoute>
 
       {/* 404 And Error */}

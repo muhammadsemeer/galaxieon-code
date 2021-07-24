@@ -32,13 +32,21 @@ main {
   }
 }
 
+.p-top {
+  padding-top: 75px;
+}
+
 .p-left {
   padding-left: 250px;
   
   &.collapsed {
-    padding-left: 50px;
+    padding-left: 100px;
     transition: padding-left 0.5s ease-in;
   }
+}
+
+.p-right {
+  padding-right: 25px;
 }
 
 // Disable auto-fill box-shadow webkit browsers
