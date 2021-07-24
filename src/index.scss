@@ -4,6 +4,10 @@ $font-regular: normal;
 $font-meidum: 500;
 $font-semibold: 600;
 $font-bold: bold;
+
+// Partials
+
+@import "./styles/flex";
 * {
   margin: 0;
   padding: 0;
@@ -38,7 +42,7 @@ main {
 
 .p-left {
   padding-left: 250px;
-  
+
   &.collapsed {
     padding-left: 100px;
     transition: padding-left 0.5s ease-in;
