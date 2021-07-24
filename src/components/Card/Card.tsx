@@ -50,8 +50,7 @@ const overlay = (id: string): JSX.Element => (
     </Menu.Item>
     <Menu.Item key="4">
       <a href="#">
-        <DeleteOutlined />
-        Delete Instance
+        <DeleteOutlined /> Delete Instance
       </a>
     </Menu.Item>
   </Menu>
@@ -69,8 +68,6 @@ const Card: FC<CardProps> = ({ content, cardId, ...rest }) => {
   const [descLength, setDescLength] = useState(20);
 
   const length = content.description?.length;
-
-  console.log({ length, desc: content.description?.substr(0, descLength) });
 
   const description = length && length !== 0 && (
     <>
@@ -96,7 +93,9 @@ const Card: FC<CardProps> = ({ content, cardId, ...rest }) => {
         {length !== 0 && <AntCard.Meta description={description} />}
         <div className="flex">
           {content?.keywords?.split(",").map((value) => (
-            <Tag color="blue">{value}</Tag>
+            <Tag key={`${cardId}-${value}`} color="blue">
+              {value}
+            </Tag>
           ))}
         </div>
         <div className="flex justify-content-between">
