@@ -43,8 +43,8 @@ export interface Instance {
 export interface InstanceMetaData {
   id: string;
   name: string;
-  description: string;
-  keywords: string;
+  description?: string;
+  keywords?: string;
   autosave?: boolean;
   autopreview?: boolean;
 }
