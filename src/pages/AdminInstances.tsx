@@ -12,6 +12,7 @@ import { RootState } from "../store";
 
 const AdminInstances: FC = () => {
   const [instances, setInstances] = useState<Instance[]>([]);
+  const [loading, setLoading] = useState(true);
   const history = useHistory();
   const dispatch = useDispatch();
   const collapsed = useSelector((state: RootState) => state.collapsed);
@@ -20,6 +21,7 @@ const AdminInstances: FC = () => {
     axios
       .get("/instance/all")
       .then((response: AxiosResponse) => {
+        setLoading(false);
         setInstances(
           response.data.map(({ User, ...rest }: Instance) => ({
             ...rest,
@@ -98,7 +100,7 @@ const AdminInstances: FC = () => {
 
   return (
     <main className={`admin table p-left ${collapsed && "collapsed"}`}>
-      <DataTable columns={columns} datas={instances} />
+      <DataTable columns={columns} datas={instances} loading={loading} />
     </main>
   );
 };

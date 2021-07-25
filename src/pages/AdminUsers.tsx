@@ -20,6 +20,7 @@ import { RootState } from "../store";
 const AdminUsers: FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const history = useHistory();
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
 
   const collapsed = useSelector((state: RootState) => state.collapsed);
@@ -28,6 +29,7 @@ const AdminUsers: FC = () => {
     axios
       .get("/admin/users")
       .then((res: AxiosResponse) => {
+        setLoading(false);
         setUsers(
           res.data.map(({ id, createdAt, ...rest }: User) => ({
             key: id,
@@ -202,7 +204,7 @@ const AdminUsers: FC = () => {
         >
           Create
         </Button>
-        <DataTable columns={columns} datas={users} />
+        <DataTable columns={columns} datas={users} loading={loading} />
       </Space>
     </main>
   );

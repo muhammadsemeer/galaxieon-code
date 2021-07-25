@@ -12,6 +12,7 @@ import { RootState } from "../store";
 
 const AdminTemplates: FC = () => {
   const [templates, setTemplates] = useState<Template[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const history = useHistory();
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ const AdminTemplates: FC = () => {
     axios
       .get("/template")
       .then((res: AxiosResponse) => {
+        setLoading(false)
         setTemplates(
           res.data.map(({ id, status, ...rest }: Template) => ({
             key: id,
@@ -103,7 +105,7 @@ const AdminTemplates: FC = () => {
 
   return (
     <main className={`admin table p-left ${collapsed && "collapsed"}`}>
-      <DataTable columns={columns} datas={templates} />
+      <DataTable columns={columns} datas={templates} loading={loading} />
     </main>
   );
 };
