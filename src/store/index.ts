@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import auth from "./auth/authSlice";
 import collapsed from "./menu/collapsedSlice";
+import responsive from "./menu/responsiveSlice";
 import instance from "./instance/instanceSlice";
 
 const store = configureStore({
@@ -8,6 +9,7 @@ const store = configureStore({
     auth,
     collapsed,
     instance,
+    responsive,
   },
 });
 
