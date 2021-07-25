@@ -5,10 +5,14 @@ import { Instance } from "../types/templateAndInstance";
 import handleError from "./Error";
 import { addInstances } from "../store/instance/instanceSlice";
 
-const getInstances = (history: any, dispatch: AppDispatch) => {
+type cb = (loaded: boolean) => void;
+
+const getInstances = (history: any, dispatch: AppDispatch, cb: cb) => {
+  cb(true);
   axios
     .get("/instance")
     .then((res: AxiosResponse<Instance[]>) => {
+      cb(false);
       dispatch(addInstances(res.data));
     })
     .catch((err: AxiosError) => {
