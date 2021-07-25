@@ -6,7 +6,6 @@ import {
   Tag,
   Dropdown,
   Menu,
-  Button,
 } from "antd";
 import {
   DeleteOutlined,
@@ -19,6 +18,7 @@ import {
   ShareAltOutlined,
 } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
+import FormDrawer from "../FormDrawer/FormDrawer";
 
 export interface CardProps extends AntCardProps {
   cardId: string;
@@ -30,42 +30,17 @@ export interface CardProps extends AntCardProps {
     shares?: number;
     forks?: number;
   };
+  drawer?: boolean;
 }
-const overlay = (id: string): JSX.Element => (
-  <Menu>
-    <Menu.Item key="1">
-      <a href="#">
-        <EditOutlined /> Edit Instance
-      </a>
-    </Menu.Item>
-    <Menu.Item key="2" disabled>
-      <a href="#">
-        <LockOutlined /> Make Private
-      </a>
-    </Menu.Item>
-    <Menu.Item key="3">
-      <a href="#">
-        <ForkOutlined /> Fork Instance
-      </a>
-    </Menu.Item>
-    <Menu.Item key="4">
-      <a href="#">
-        <DeleteOutlined /> Delete Instance
-      </a>
-    </Menu.Item>
-  </Menu>
-);
-
-const extra = (id: string): JSX.Element => (
-  <Dropdown overlay={overlay(id)} trigger={["click"]}>
-    <MoreOutlined />
-  </Dropdown>
-);
 
 const Card: FC<CardProps> = ({ content, cardId, ...rest }) => {
   const history = useHistory();
 
   const [descLength, setDescLength] = useState(20);
+
+  const [open, setOpen] = useState(false);
+
+  const closeDrawer = () => setOpen(false);
 
   const length = content.description?.length;
 
@@ -82,38 +57,79 @@ const Card: FC<CardProps> = ({ content, cardId, ...rest }) => {
     </>
   );
 
+  const overlay = (id: string): JSX.Element => (
+    <Menu>
+      <Menu.Item key="1">
+        <a onClick={() => setOpen(true)}>
+          <EditOutlined /> Edit Instance
+        </a>
+      </Menu.Item>
+      <Menu.Item key="2" disabled>
+        <a href="#">
+          <LockOutlined /> Make Private
+        </a>
+      </Menu.Item>
+      <Menu.Item key="3">
+        <a href="#">
+          <ForkOutlined /> Fork Instance
+        </a>
+      </Menu.Item>
+      <Menu.Item key="4">
+        <a href="#">
+          <DeleteOutlined /> Delete Instance
+        </a>
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
-    <AntCard
-      hoverable
-      {...rest}
-      extra={extra(cardId)}
-      onDoubleClick={() => history.push(`/instance/${cardId}`)}
-    >
-      <Space size="middle" direction="vertical" style={{ width: "100%" }}>
-        {length !== 0 && <AntCard.Meta description={description} />}
-        <div className="flex">
-          {content?.keywords?.split(",").map((value) => (
-            <Tag key={`${cardId}-${value}`} color="blue">
-              {value}
-            </Tag>
-          ))}
-        </div>
-        <div className="flex justify-content-between">
-          <p>
-            <EyeOutlined /> {content.views}
-          </p>
-          <p>
-            <LikeOutlined /> {content.likes}
-          </p>
-          <p>
-            <ShareAltOutlined /> {content.shares}
-          </p>
-          <p>
-            <ForkOutlined /> {content.forks}
-          </p>
-        </div>
-      </Space>
-    </AntCard>
+    <>
+      <AntCard
+        hoverable
+        {...rest}
+        extra={
+          <Dropdown overlay={overlay(cardId)} trigger={["click"]}>
+            <MoreOutlined />
+          </Dropdown>
+        }
+        onDoubleClick={() => history.push(`/instance/${cardId}`)}
+      >
+        <Space size="middle" direction="vertical" style={{ width: "100%" }}>
+          {length !== 0 && <AntCard.Meta description={description} />}
+          <div className="flex">
+            {content?.keywords?.split(",").map((value) => (
+              <Tag key={`${cardId}-${value}`} color="blue">
+                {value}
+              </Tag>
+            ))}
+          </div>
+          <div className="flex justify-content-between">
+            <p>
+              <EyeOutlined /> {content.views}
+            </p>
+            <p>
+              <LikeOutlined /> {content.likes}
+            </p>
+            <p>
+              <ShareAltOutlined /> {content.shares}
+            </p>
+            <p>
+              <ForkOutlined /> {content.forks}
+            </p>
+          </div>
+        </Space>
+      </AntCard>
+      <FormDrawer
+        data={{
+          id: cardId,
+          name: rest.title as string,
+          description: content.description,
+          keywords: content.keywords,
+        }}
+        visible={open}
+        onClose={closeDrawer}
+      />
+    </>
   );
 };
 
