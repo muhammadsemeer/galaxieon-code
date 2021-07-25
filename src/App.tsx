@@ -11,7 +11,7 @@ const App = () => {
   const dispatch = useDispatch();
 
   const collapseEffect = () => {
-    if (window.innerWidth <= 980) {
+    if (window.innerWidth <= 980 && window.innerWidth >= 575) {
       dispatch(collapseWithPayload(true));
     } else {
       dispatch(collapseWithPayload(false));
@@ -19,8 +19,8 @@ const App = () => {
   };
 
   useEffect(() => {
+    window.addEventListener("load", collapseEffect);
     window.addEventListener("resize", collapseEffect);
-    // window.addEventListener("load", collapseEffect);
     return () => {
       window.removeEventListener("resize", collapseEffect);
     };

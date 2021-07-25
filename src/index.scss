@@ -10,7 +10,6 @@ $font-bold: bold;
 @import "./styles/flex";
 @import "./styles/responsive";
 
-
 * {
   margin: 0;
   padding: 0;
@@ -35,6 +34,9 @@ main {
       &.collapsed {
         padding-left: 100px;
       }
+      @media (max-width: 575px) {
+        padding-left: 25px;
+      }
     }
   }
 }
@@ -49,6 +51,9 @@ main {
   &.collapsed {
     padding-left: 100px;
     transition: padding-left 0.5s ease-in;
+  }
+  @media (max-width: 575px) {
+    padding-left: 25px;
   }
 }
 

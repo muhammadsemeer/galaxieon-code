@@ -6,7 +6,12 @@ import style from "./header.module.scss";
 const Logo: FC<{ isNav: boolean }> = ({ isNav }) => {
   return (
     <div className={style.logo}>
-      {isNav && <CollapseButton />}
+      {isNav && (
+        <>
+          <CollapseButton className={style.button} type="collapsed" />
+          <CollapseButton className={style["button-side"]} type="responsive" />
+        </>
+      )}
       <img src={logo} alt="LOGO" />
     </div>
   );

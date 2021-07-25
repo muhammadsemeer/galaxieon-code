@@ -3,13 +3,7 @@ import { Menu } from "antd";
 import { NavLink, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
-
-let keys: { [index: string]: string } = {
-  "/admin": "1",
-  "/admin/users": "2",
-  "/admin/templates": "3",
-  "/admin/instances": "4",
-};
+import styles from "./sidebar.module.scss";
 
 export interface SideBarProps {
   menus: Array<{ key: string; name: string; icon: ReactNode; to: string }>;
@@ -19,6 +13,7 @@ export interface SideBarProps {
 const SideBar: FC<SideBarProps> = ({ menus }) => {
   const location = useLocation();
   const collapsed = useSelector((state: RootState) => state.collapsed);
+  const responsive = useSelector((state: RootState) => state.responsive);
   const defaultSelectedKeys = menus
     .filter(
       (menu) =>
@@ -27,6 +22,7 @@ const SideBar: FC<SideBarProps> = ({ menus }) => {
     .map((menu) => menu.key);
   return (
     <Menu
+      className={`${styles.sidebar} ${responsive && styles.active}`}
       style={{
         maxWidth: 225,
         height: "calc(100vh - 50px)",
