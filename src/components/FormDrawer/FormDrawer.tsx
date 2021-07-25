@@ -1,8 +1,16 @@
 import { Drawer, Input, Form, Tag, Space, Button } from "antd";
-import React, { FC, KeyboardEventHandler, MouseEventHandler, useEffect, useState } from "react";
+import React, {
+  FC,
+  KeyboardEventHandler,
+  MouseEventHandler,
+  useEffect,
+  useState,
+} from "react";
 import { InstanceMetaData } from "../../types/templateAndInstance";
 
-type EventType = React.KeyboardEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement | HTMLButtonElement>;
+type EventType =
+  | React.KeyboardEvent<HTMLDivElement>
+  | React.MouseEvent<HTMLDivElement | HTMLButtonElement>;
 
 export interface FormDrawerProps {
   data: InstanceMetaData;
@@ -12,7 +20,8 @@ export interface FormDrawerProps {
 
 const FormDrawer: FC<FormDrawerProps> = ({ data, onClose, visible }) => {
   const [width, setWidth] = useState(window.innerWidth);
-  const [keywords, setKeywords] = useState(data.keywords?.split(","));
+  const [keywords, setKeywords] = useState(data.keywords?.split(",") ?? []);
+  const [tag, setTag] = useState("");
   const [form] = Form.useForm();
 
   const changeDrawerWidth = () => {
@@ -31,19 +40,24 @@ const FormDrawer: FC<FormDrawerProps> = ({ data, onClose, visible }) => {
     setKeywords(keywords?.filter((value, index) => index !== key));
   };
 
-  const addTags: KeyboardEventHandler<HTMLInputElement> = ({
-    currentTarget,
-  }) => {
-    const { value } = currentTarget;
-    if (value && value !== " " && keywords?.indexOf(value) === -1) {
-      setKeywords([...keywords, value]);
+  const addTags: KeyboardEventHandler<HTMLInputElement> = (event) => {
+    if (tag && tag !== " " && keywords?.indexOf(tag) === -1) {
+      setKeywords([...keywords, tag]);
+      setTag("");
     }
   };
 
   const footer = (
     <Space size="middle">
-      <Button type="primary" onClick={() => form.submit()}>Submit</Button>
-      <Button type="default" onClick={onClose as MouseEventHandler<HTMLElement>}>Close</Button>
+      <Button type="primary" onClick={() => form.submit()}>
+        Submit
+      </Button>
+      <Button
+        type="default"
+        onClick={onClose as MouseEventHandler<HTMLElement>}
+      >
+        Close
+      </Button>
     </Space>
   );
 
@@ -52,7 +66,13 @@ const FormDrawer: FC<FormDrawerProps> = ({ data, onClose, visible }) => {
   };
 
   return (
-    <Drawer title="Edit Instance" visible={visible} width={width} footer={footer} onClose={onClose}>
+    <Drawer
+      title="Edit Instance"
+      visible={visible}
+      width={width}
+      footer={footer}
+      onClose={onClose}
+    >
       <Form layout="vertical" hideRequiredMark form={form} onFinish={onSubmit}>
         <Form.Item
           name="name"
@@ -87,7 +107,13 @@ const FormDrawer: FC<FormDrawerProps> = ({ data, onClose, visible }) => {
                 </Tag>
               ))}
             </Space>
-            <Input placeholder="Add Keywords" required onPressEnter={addTags} />
+            <Input
+              placeholder="Add Keywords"
+              required
+              onPressEnter={addTags}
+              onChange={(e) => setTag(e.target.value)}
+              value={tag}
+            />
           </Space>
         </Form.Item>
       </Form>
