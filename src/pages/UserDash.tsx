@@ -1,21 +1,13 @@
-import {
-  Affix,
-  Col,
-  Divider,
-  PageHeader,
-  Row,
-  Space,
-  Spin,
-  Typography,
-} from "antd";
-import React, { useRef, MutableRefObject, useEffect } from "react";
+import { Affix, Col, Divider, PageHeader, Row, Spin, Typography } from "antd";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
 import styles from "../styles/card.module.scss";
 import Card from "../components/Card/Card";
 import getInstances from "../utils/getInstances";
 import { useHistory } from "react-router-dom";
-import { Instance } from "../types/templateAndInstance";
+import { Instance, InstanceMetaData } from "../types/templateAndInstance";
+import CardLoading from "../components/Card/CardLoading";
 
 const UserDash = () => {
   const collapsed = useSelector((state: RootState) => state.collapsed);
@@ -23,8 +15,9 @@ const UserDash = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    instances.length === 0 && getInstances(history, dispatch);
+    instances.length === 0 && getInstances(history, dispatch, setLoading);
   }, []);
 
   return (
@@ -38,8 +31,9 @@ const UserDash = () => {
           Recently Modified Instances
         </Typography.Title>
         <div className={styles.cards}>
-            <Row gutter={[10, 10]}>
-              {[...instances]
+          <Row gutter={[10, 10]}>
+            {!loading ? (
+              [...instances]
                 .sort(
                   (a: Instance, b: Instance) =>
                     (new Date(b.lastEditied as string) as any) -
@@ -60,10 +54,14 @@ const UserDash = () => {
                         forks: instance.forks,
                         keywords: instance.keywords,
                       }}
+                      drawer
                     />
                   </Col>
-                ))}
-            </Row>
+                ))
+            ) : (
+              <CardLoading count={4} />
+            )}
+          </Row>
         </div>
       </div>
     </main>
