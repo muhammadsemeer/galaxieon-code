@@ -39,7 +39,7 @@ const Card: FC<CardProps> = ({ content, cardId, ...rest }) => {
   const [descLength, setDescLength] = useState(20);
 
   const [open, setOpen] = useState(false);
-
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
   const closeDrawer = () => setOpen(false);
 
   const length = content.description?.length;
@@ -50,9 +50,15 @@ const Card: FC<CardProps> = ({ content, cardId, ...rest }) => {
       {descLength < length && <>...</>}
       <br />
       {descLength < length ? (
-        <a onClick={() => setDescLength(length)}>Show More</a>
+        <a onClick={() => {
+          isInitialLoad && setIsInitialLoad(false);
+          setDescLength(length)
+        }}>Show More</a>
       ) : (
-        <a onClick={() => setDescLength(20)}>Show Less</a>
+        !isInitialLoad &&
+        (
+          <a onClick={() => setDescLength(20)}>Show Less</a>
+        )
       )}
     </>
   );
@@ -95,7 +101,7 @@ const Card: FC<CardProps> = ({ content, cardId, ...rest }) => {
         onDoubleClick={() => history.push(`/instance/${cardId}`)}
       >
         <Space size="middle" direction="vertical" style={{ width: "100%" }}>
-           <AntCard.Meta description={description || "No Description..."}/>
+          <AntCard.Meta description={description || "No Description..."} />
           <div className="flex">
             {content?.keywords?.split(",").map((value) => (
               <Tag key={`${cardId}-${value}`} color="blue">
