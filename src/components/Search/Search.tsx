@@ -4,7 +4,7 @@ import React from "react";
 const Search = () => {
   return (
     <>
-      <Input style={{ width: "40%" }} placeholder="Search Instances" />
+      <Input.Search style={{ width: "40%" }} allowClear placeholder="Search Instances" />
     </>
   );
 };
