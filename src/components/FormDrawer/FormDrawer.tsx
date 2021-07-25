@@ -1,4 +1,4 @@
-import { Drawer, Input, Form, Tag, Space, Button } from "antd";
+import { Drawer, Input, Form, Tag, Space, Button, message } from "antd";
 import React, {
   FC,
   KeyboardEventHandler,
@@ -6,7 +6,13 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { InstanceMetaData } from "../../types/templateAndInstance";
+import { Instance, InstanceMetaData } from "../../types/templateAndInstance";
+import axios from "../../api/index";
+import { AxiosError, AxiosResponse } from "axios";
+import handleError from "../../utils/Error";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { updateOneInstance } from "../../store/instance/instanceSlice";
 
 type EventType =
   | React.KeyboardEvent<HTMLDivElement>
@@ -23,6 +29,8 @@ const FormDrawer: FC<FormDrawerProps> = ({ data, onClose, visible }) => {
   const [keywords, setKeywords] = useState(data.keywords?.split(",") ?? []);
   const [tag, setTag] = useState("");
   const [form] = Form.useForm();
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const changeDrawerWidth = () => {
     setWidth((current) => (window.innerWidth <= 768 ? window.innerWidth : 600));
@@ -62,7 +70,17 @@ const FormDrawer: FC<FormDrawerProps> = ({ data, onClose, visible }) => {
   );
 
   const onSubmit = (values: any) => {
-    console.log(values);
+    axios
+      .put(`/instance/${data.id}`, {
+        ...values,
+        keywords: keywords.length !== 0 ? keywords.toString() : null,
+      })
+      .then((res: AxiosResponse<Instance>) => {
+        dispatch(updateOneInstance(res.data));
+        message.success("Update instance success!");
+        onClose({} as EventType);
+      })
+      .catch((err: AxiosError) => handleError(err, history, dispatch, false));
   };
 
   return (

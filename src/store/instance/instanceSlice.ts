@@ -16,10 +16,22 @@ const instanceSlice = createSlice({
     removeOneInstance: (state, { payload }: PayloadAction<String>) => {
       return state.filter((instance) => instance.id !== payload);
     },
+    updateOneInstance: (state, { payload }: PayloadAction<Instance>) => {
+      let index = state.findIndex(({ id }) => id === payload.id);
+      if (index !== -1) {
+        let newState = [...state];
+        newState[index] = payload;
+        return newState;
+      }
+    },
   },
 });
 
-export const { addInstances, addOneInstance, removeOneInstance } =
-  instanceSlice.actions;
+export const {
+  addInstances,
+  addOneInstance,
+  removeOneInstance,
+  updateOneInstance,
+} = instanceSlice.actions;
 
 export default instanceSlice.reducer;

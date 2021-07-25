@@ -57,7 +57,7 @@ const Card: FC<CardProps> = ({ content, cardId, ...rest }) => {
     </>
   );
 
-  const overlay = (id: string): JSX.Element => (
+  const overlay: JSX.Element = (
     <Menu>
       <Menu.Item key="1">
         <a onClick={() => setOpen(true)}>
@@ -88,14 +88,14 @@ const Card: FC<CardProps> = ({ content, cardId, ...rest }) => {
         hoverable
         {...rest}
         extra={
-          <Dropdown overlay={overlay(cardId)} trigger={["click"]}>
+          <Dropdown overlay={overlay} trigger={["click"]}>
             <MoreOutlined />
           </Dropdown>
         }
         onDoubleClick={() => history.push(`/instance/${cardId}`)}
       >
         <Space size="middle" direction="vertical" style={{ width: "100%" }}>
-          {length !== 0 && <AntCard.Meta description={description} />}
+           <AntCard.Meta description={description || "No Description..."}/>
           <div className="flex">
             {content?.keywords?.split(",").map((value) => (
               <Tag key={`${cardId}-${value}`} color="blue">
