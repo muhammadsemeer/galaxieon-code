@@ -8,6 +8,9 @@ $font-bold: bold;
 // Partials
 
 @import "./styles/flex";
+@import "./styles/responsive";
+
+
 * {
   margin: 0;
   padding: 0;
