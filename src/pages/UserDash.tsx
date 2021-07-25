@@ -31,7 +31,7 @@ const UserDash = () => {
           Recently Modified Instances
         </Typography.Title>
         <div className={styles.cards}>
-          <Row gutter={[10, 10]}>
+          <Row gutter={[25, 25]}>
             {!loading ? (
               [...instances]
                 .sort(
