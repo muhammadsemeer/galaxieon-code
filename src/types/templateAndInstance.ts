@@ -39,3 +39,12 @@ export interface Instance {
   updatedAt?: string;
   lastEditied?: string;
 }
+
+export interface InstanceMetaData {
+  id: string;
+  name: string;
+  description: string;
+  keywords: string;
+  autosave?: boolean;
+  autopreview?: boolean;
+}
