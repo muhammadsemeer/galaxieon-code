@@ -24,8 +24,23 @@ header {
       &-side {
         display: none;
         @media (max-width: 575px) {
-          display: block;
+          display: inline-block;
         }
+      }
+    }
+  }
+
+  .options {
+    @media (max-width: 575px) {
+      display: none;
+    }
+
+    &-sm {
+      display: none;
+      margin: 0 15px;
+
+      @media (max-width: 575px) {
+        display: inline-block;
       }
     }
   }
