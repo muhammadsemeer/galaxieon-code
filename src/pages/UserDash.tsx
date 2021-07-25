@@ -41,7 +41,7 @@ const UserDash = () => {
                 )
                 .slice(0, 4)
                 .map((instance: Instance) => (
-                  <Col key={instance.id} sm={24} md={12} lg={8} xl={6} xxl={3}>
+                  <Col key={instance.id} xs={24} sm={24} md={12} lg={8} xl={6} xxl={3}>
                     <Card
                       cardId={instance.id}
                       className={styles.card}
