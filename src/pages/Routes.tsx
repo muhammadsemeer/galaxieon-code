@@ -11,6 +11,7 @@ import AdminTemplates from "./AdminTemplates";
 import AdminInstances from "./AdminInstances";
 import UserRoute from "../components/Private/UserRoute";
 import UserDash from "./UserDash";
+import AllInstances from "./AllInstance";
 
 const Admin: FC = () => {
   return (
@@ -41,6 +42,9 @@ const Admin: FC = () => {
       </Route>
       <UserRoute path="/dashboard">
         <UserDash />
+      </UserRoute>
+      <UserRoute path="/instances">
+        <AllInstances />
       </UserRoute>
 
       {/* 404 And Error */}
