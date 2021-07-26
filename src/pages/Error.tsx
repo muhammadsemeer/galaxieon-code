@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { useLocation, useRouteMatch, useHistory } from "react-router-dom";
-import { Result, Button, Space } from "antd";
+import { Result, Button } from "antd";
 
 const Error: FC = () => {
   const { state }: any = useLocation();
@@ -17,13 +17,7 @@ const Error: FC = () => {
   );
   return (
     <main
-      style={{
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: admin ? "75px 10px 75px 260px" : 0,
-      }}
+    className="error-page"
     >
       <Result
         status={state?.status || "404"}

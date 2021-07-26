@@ -76,3 +76,11 @@ select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px #1b1b1b inset;
   transition: background-color 5000s ease-in-out 0s;
 }
+
+.error-page {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 100px;
+}
