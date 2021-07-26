@@ -1,4 +1,4 @@
-import { HomeFilled } from "@ant-design/icons";
+import { CloudServerOutlined, DeleteOutlined, HomeFilled } from "@ant-design/icons";
 import Search from "../Search/Search";
 import React from "react";
 import SideBar, { SideBarProps } from "../SideBar/SideBar";
@@ -14,6 +14,18 @@ const User = () => {
         key: "home",
         icon: <HomeFilled />,
         to: "/dashboard",
+      },
+      {
+        name: "All Instances",
+        key: "allInstances",
+        icon: <CloudServerOutlined />,
+        to: "/instances",
+      },
+      {
+        name: "Recently Deleted",
+        key: "deleted",
+        icon: <DeleteOutlined />,
+        to: "/deleted",
       },
     ],
   };
