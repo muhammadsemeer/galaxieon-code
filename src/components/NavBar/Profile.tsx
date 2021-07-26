@@ -1,7 +1,6 @@
 import React, { FC } from "react";
-import { Menu, Dropdown, Avatar, Typography, Space, Button } from "antd";
+import { Menu, Dropdown, Avatar, Typography, Space } from "antd";
 import {
-  BellFilled,
   CaretDownOutlined,
   LogoutOutlined,
   PlusCircleFilled,
@@ -16,8 +15,47 @@ import { useDispatch } from "react-redux";
 import { logOut } from "../../store/auth/authSlice";
 import styles from "./header.module.scss";
 import OptionsDrop from "./OptionsDrop";
+import Notification, { NotificationData } from "../Notification/Notification";
 
 export type UserProp = { isAdmin: boolean };
+
+const dummyData: NotificationData[] = [
+  {
+    title: "Liked Your Instance",
+    description: "James Liked Your Instance My App",
+    type: "like",
+  },
+  {
+    title: "Forked Your Instance",
+    description: "James Forked Your Instance My App",
+    type: "fork",
+  },
+  {
+    title: "Shared Your Instance",
+    description: "James Shared Your Instance My App",
+    type: "share",
+  },
+  {
+    title: "Waring",
+    description: "You Have 1 Instance Left",
+    type: "warning",
+  },
+  {
+    title: "Error",
+    description: "Something went wrong",
+    type: "error",
+  },
+  {
+    title: "Success",
+    description: "Your Account Upgrade Request Verified",
+    type: "success",
+  },
+  {
+    title: "Info",
+    description: "New Updates to Code Editor",
+    type: "info",
+  },
+];
 
 const User: FC<UserProp> = ({ isAdmin }) => {
   const history = useHistory();
@@ -55,12 +93,7 @@ const User: FC<UserProp> = ({ isAdmin }) => {
 
   return (
     <div>
-      <Button
-        type="text"
-        size="middle"
-        icon={<BellFilled />}
-        style={{ margin: "0 10px" }}
-      />
+      <Notification data={dummyData} />
       <Space size="middle" className={styles.options}>
         <Dropdown
           overlay={overlay}
