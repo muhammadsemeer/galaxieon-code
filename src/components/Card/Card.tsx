@@ -95,7 +95,11 @@ const Card: FC<CardProps> = ({ content, cardId, drawer, ...rest }) => {
         hoverable
         {...rest}
         extra={
-          <Dropdown overlay={overlay} trigger={["click"]}>
+          <Dropdown
+            overlayStyle={{ zIndex: 9 }}
+            overlay={overlay}
+            trigger={["click"]}
+          >
             <MoreOutlined />
           </Dropdown>
         }

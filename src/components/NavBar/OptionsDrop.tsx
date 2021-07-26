@@ -5,7 +5,7 @@ import styles from "./header.module.scss";
 
 const OptionsDrop: FC<DropDownProps> = (props) => {
   return (
-    <Dropdown {...props} trigger={["click"]} className={styles["options-sm"]}>
+    <Dropdown overlayStyle={{ position: "fixed" }} {...props} trigger={["click"]} className={styles["options-sm"]}>
       <MenuOutlined />
     </Dropdown>
   );
