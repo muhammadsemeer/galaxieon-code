@@ -24,11 +24,11 @@ body {
 
 main {
   &.admin {
-    padding-top: 75px;
+    padding-top: 50px;
 
     &.table {
-      padding-right: 25px;
-      padding-bottom: 25px;
+      padding-right: 30px;
+      padding-bottom: 30px;
       overflow: hidden;
       overflow-x: auto;
       &.collapsed {
@@ -39,6 +39,11 @@ main {
       }
     }
   }
+
+}
+
+.container {
+  padding: 0 20px 50px 20px;
 }
 
 .p-top {
