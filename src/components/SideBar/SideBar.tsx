@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import styles from "./sidebar.module.scss";
 import { collapseWithPayload } from "../../store/menu/collapsedSlice";
+import { toggle } from "../../store/menu/responsiveSlice";
 
 export interface SideBarProps {
   menus: Array<{ key: string; name: string; icon: ReactNode; to: string }>;
@@ -40,6 +41,10 @@ const SideBar: FC<SideBarProps> = ({ menus }) => {
     };
   }, []);
 
+  const handleClick = () => {
+    responsive && dispatch(toggle());
+  };
+
   return (
     <Menu
       className={`${styles.sidebar} ${responsive && styles.active}`}
@@ -57,7 +62,9 @@ const SideBar: FC<SideBarProps> = ({ menus }) => {
     >
       {menus.map((menu) => (
         <Menu.Item key={menu.key} icon={menu.icon}>
-          <NavLink to={menu.to}>{menu.name}</NavLink>
+          <NavLink onClick={handleClick} to={menu.to}>
+            {menu.name}
+          </NavLink>
         </Menu.Item>
       ))}
     </Menu>
