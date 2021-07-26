@@ -1,13 +1,13 @@
-import { Affix, Col, Divider, PageHeader, Row, Spin, Typography } from "antd";
+import { Col, Row, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
-import styles from "../styles/card.module.scss";
 import Card from "../components/Card/Card";
 import getInstances from "../utils/getInstances";
 import { useHistory } from "react-router-dom";
-import { Instance, InstanceMetaData } from "../types/templateAndInstance";
+import { Instance } from "../types/templateAndInstance";
 import CardLoading from "../components/Card/CardLoading";
+import PageHeader from "../components/PageHeader/PageHeader";
 
 const UserDash = () => {
   const collapsed = useSelector((state: RootState) => state.collapsed);
@@ -15,22 +15,16 @@ const UserDash = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     instances.length === 0 && getInstances(history, dispatch, setLoading);
   }, []);
 
   return (
     <main className={`p-top p-left ${collapsed && "collapsed"} p-right`}>
-      <Affix offsetTop={50}>
-        <PageHeader title="Dashboard" style={{ background: "#151515" }} />
-        <Divider style={{ margin: "0" }} />
-      </Affix>
-      <div className={styles.container}>
-        <Typography.Title level={5}>
-          Recently Modified Instances
-        </Typography.Title>
-        <div className={styles.cards}>
+      <PageHeader title="Dashboard" subTitle=" Recently Modified Instances" />
+      <div className="container">
+        <div>
           <Row gutter={[25, 25]}>
             {!loading ? (
               [...instances]
@@ -44,7 +38,7 @@ const UserDash = () => {
                   <Col key={instance.id} xs={24} sm={24} md={12} lg={8} xl={6} xxl={3}>
                     <Card
                       cardId={instance.id}
-                      className={styles.card}
+                      style={{ width: "100%" }}
                       title={instance.name}
                       content={{
                         description: instance.description,
