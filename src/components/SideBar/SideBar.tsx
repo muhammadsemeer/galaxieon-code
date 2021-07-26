@@ -1,9 +1,10 @@
-import React, { FC, ReactNode } from "react";
+import React, { FC, ReactNode, useEffect } from "react";
 import { Menu } from "antd";
 import { NavLink, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import styles from "./sidebar.module.scss";
+import { collapseWithPayload } from "../../store/menu/collapsedSlice";
 
 export interface SideBarProps {
   menus: Array<{ key: string; name: string; icon: ReactNode; to: string }>;
@@ -20,6 +21,25 @@ const SideBar: FC<SideBarProps> = ({ menus }) => {
         menu.to.split("/").join("") === location.pathname.split("/").join("")
     )
     .map((menu) => menu.key);
+
+  const dispatch = useDispatch();
+
+  const collapseEffect = () => {
+    if (window.innerWidth <= 980 && window.innerWidth >= 575) {
+      dispatch(collapseWithPayload(true));
+    } else {
+      dispatch(collapseWithPayload(false));
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("load", collapseEffect);
+    window.addEventListener("resize", collapseEffect);
+    return () => {
+      window.removeEventListener("resize", collapseEffect);
+    };
+  }, []);
+
   return (
     <Menu
       className={`${styles.sidebar} ${responsive && styles.active}`}

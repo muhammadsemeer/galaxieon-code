@@ -8,23 +8,7 @@ import { collapseWithPayload } from "./store/menu/collapsedSlice";
 const App = () => {
   let admin = useRouteMatch("/admin*");
   let login = useRouteMatch("*/login");
-  const dispatch = useDispatch();
 
-  const collapseEffect = () => {
-    if (window.innerWidth <= 980 && window.innerWidth >= 575) {
-      dispatch(collapseWithPayload(true));
-    } else {
-      dispatch(collapseWithPayload(false));
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("load", collapseEffect);
-    window.addEventListener("resize", collapseEffect);
-    return () => {
-      window.removeEventListener("resize", collapseEffect);
-    };
-  }, []);
   return (
     <>
       {!login && <NavBar isAdmin={admin ? true : false} />}

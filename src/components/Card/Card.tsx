@@ -33,7 +33,7 @@ export interface CardProps extends AntCardProps {
   drawer?: boolean;
 }
 
-const Card: FC<CardProps> = ({ content, cardId, ...rest }) => {
+const Card: FC<CardProps> = ({ content, cardId, drawer, ...rest }) => {
   const history = useHistory();
 
   const [descLength, setDescLength] = useState(20);
@@ -50,15 +50,16 @@ const Card: FC<CardProps> = ({ content, cardId, ...rest }) => {
       {descLength < length && <>...</>}
       <br />
       {descLength < length ? (
-        <a onClick={() => {
-          isInitialLoad && setIsInitialLoad(false);
-          setDescLength(length)
-        }}>Show More</a>
+        <a
+          onClick={() => {
+            isInitialLoad && setIsInitialLoad(false);
+            setDescLength(length);
+          }}
+        >
+          Show More
+        </a>
       ) : (
-        !isInitialLoad &&
-        (
-          <a onClick={() => setDescLength(20)}>Show Less</a>
-        )
+        !isInitialLoad && <a onClick={() => setDescLength(20)}>Show Less</a>
       )}
     </>
   );
@@ -125,16 +126,18 @@ const Card: FC<CardProps> = ({ content, cardId, ...rest }) => {
           </div>
         </Space>
       </AntCard>
-      <FormDrawer
-        data={{
-          id: cardId,
-          name: rest.title as string,
-          description: content.description,
-          keywords: content.keywords,
-        }}
-        visible={open}
-        onClose={closeDrawer}
-      />
+      {drawer && (
+        <FormDrawer
+          data={{
+            id: cardId,
+            name: rest.title as string,
+            description: content.description,
+            keywords: content.keywords,
+          }}
+          visible={open}
+          onClose={closeDrawer}
+        />
+      )}
     </>
   );
 };
