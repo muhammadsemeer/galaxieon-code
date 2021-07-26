@@ -53,7 +53,7 @@ const SideBar: FC<SideBarProps> = ({ menus }) => {
         height: "calc(100vh - 50px)",
         padding: "25px 0",
         position: "fixed",
-        marginTop: "65px",
+        marginTop: "50px",
         zIndex: 99,
       }}
       defaultSelectedKeys={defaultSelectedKeys}
