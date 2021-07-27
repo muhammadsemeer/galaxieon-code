@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
 import Card from "../components/Card/Card";
-import getInstances from "../utils/getInstances";
+import getInstances from "../utils/instances";
 import { useHistory } from "react-router-dom";
 import { Instance } from "../types/templateAndInstance";
 import CardLoading from "../components/Card/CardLoading";

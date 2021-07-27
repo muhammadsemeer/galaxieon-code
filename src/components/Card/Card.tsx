@@ -82,7 +82,7 @@ const Card: FC<CardProps> = ({ content, cardId, drawer, ...rest }) => {
         </a>
       </Menu.Item>
       <Menu.Item key="4">
-        <a href="#">
+        <a >
           <DeleteOutlined /> Delete Instance
         </a>
       </Menu.Item>
