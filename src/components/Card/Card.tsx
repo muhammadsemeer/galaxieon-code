@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, ReactNode, useState } from "react";
 import {
   Card as AntCard,
   CardProps as AntCardProps,
@@ -8,6 +8,7 @@ import {
   Menu,
   message,
   Popconfirm,
+  Button,
 } from "antd";
 import {
   DeleteOutlined,
@@ -38,9 +39,10 @@ export interface CardProps extends AntCardProps {
     forks?: number;
   };
   drawer?: boolean;
+  deleted?: boolean;
 }
 
-const Card: FC<CardProps> = ({ content, cardId, drawer, ...rest }) => {
+const Card: FC<CardProps> = ({ content, cardId, drawer, deleted, ...rest }) => {
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -118,45 +120,84 @@ const Card: FC<CardProps> = ({ content, cardId, drawer, ...rest }) => {
     </Menu>
   );
 
+  const extra: ReactNode | undefined = !deleted && (
+    <Dropdown
+      overlayStyle={{ zIndex: 9 }}
+      overlay={overlay}
+      trigger={["click"]}
+    >
+      <MoreOutlined />
+    </Dropdown>
+  );
+
+  const retrieveInstance = () => {};
+
   return (
     <>
       <AntCard
         hoverable
         {...rest}
-        extra={
-          <Dropdown
-            overlayStyle={{ zIndex: 9 }}
-            overlay={overlay}
-            trigger={["click"]}
-          >
-            <MoreOutlined />
-          </Dropdown>
-        }
+        extra={extra}
         onDoubleClick={() => history.push(`/instance/${cardId}`)}
       >
         <Space size="middle" direction="vertical" style={{ width: "100%" }}>
-          <AntCard.Meta description={description || "No Description..."} />
+          <AntCard.Meta
+            description={
+              deleted ? (
+                <>
+                  <p>
+                    Deleted On:
+                    <p>
+                      {new Date(
+                        content.description as string
+                      ).toLocaleDateString("en-IN")}
+                    </p>
+                  </p>
+                  <p>
+                    Retrieve before:
+                    <p>
+                      {new Date(
+                        new Date(content.description as string).setDate(
+                          new Date(content.description as string).getDate() + 3
+                        )
+                      ).toLocaleDateString("en-IN")}
+                    </p>
+                  </p>
+                </>
+              ) : (
+                description || "No Description..."
+              )
+            }
+          />
           <div className="flex">
-            {content?.keywords?.split(",").map((value) => (
-              <Tag key={`${cardId}-${value}`} color="blue">
-                {value}
-              </Tag>
-            ))}
+            {!deleted ? (
+              content?.keywords?.split(",").map((value) => (
+                <Tag key={`${cardId}-${value}`} color="blue">
+                  {value}
+                </Tag>
+              ))
+            ) : (
+              <Button type="primary" onClick={retrieveInstance}>
+                Retrieve
+              </Button>
+            )}
           </div>
-          <div className="flex justify-content-between">
-            <p>
-              <EyeOutlined /> {content.views}
-            </p>
-            <p>
-              <LikeOutlined /> {content.likes}
-            </p>
-            <p>
-              <ShareAltOutlined /> {content.shares}
-            </p>
-            <p>
-              <ForkOutlined /> {content.forks}
-            </p>
-          </div>
+          {!deleted && (
+            <div className="flex justify-content-between">
+              <p>
+                <EyeOutlined /> {content.views}
+              </p>
+              <p>
+                <LikeOutlined /> {content.likes}
+              </p>
+              <p>
+                <ShareAltOutlined /> {content.shares}
+              </p>
+              <p>
+                <ForkOutlined /> {content.forks}
+              </p>
+            </div>
+          )}
         </Space>
       </AntCard>
       {drawer && (

@@ -12,6 +12,7 @@ import AdminInstances from "./AdminInstances";
 import UserRoute from "../components/Private/UserRoute";
 import UserDash from "./UserDash";
 import AllInstances from "./AllInstance";
+import DeletedInstances from "./DeletedInstances";
 
 const Admin: FC = () => {
   return (
@@ -45,6 +46,9 @@ const Admin: FC = () => {
       </UserRoute>
       <UserRoute path="/instances">
         <AllInstances />
+      </UserRoute>
+      <UserRoute path="/deleted">
+        <DeletedInstances />
       </UserRoute>
 
       {/* 404 And Error */}

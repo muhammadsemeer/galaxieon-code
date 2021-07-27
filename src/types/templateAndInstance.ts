@@ -31,7 +31,7 @@ export interface Instance {
   likes?: number;
   shares?: number;
   forks?: number;
-  deletedAt?: Date;
+  deletedAt?: string;
   status?: boolean;
   UserId?: string;
   User?: User;
