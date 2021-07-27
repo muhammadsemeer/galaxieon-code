@@ -6,6 +6,8 @@ import {
   Tag,
   Dropdown,
   Menu,
+  message,
+  Popconfirm,
 } from "antd";
 import {
   DeleteOutlined,
@@ -19,6 +21,11 @@ import {
 } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
 import FormDrawer from "../FormDrawer/FormDrawer";
+import axios from "../../api/index";
+import { AxiosError, AxiosResponse } from "axios";
+import handleError from "../../utils/Error";
+import { useDispatch } from "react-redux";
+import { removeOneInstance } from "../../store/instance/instanceSlice";
 
 export interface CardProps extends AntCardProps {
   cardId: string;
@@ -35,6 +42,7 @@ export interface CardProps extends AntCardProps {
 
 const Card: FC<CardProps> = ({ content, cardId, drawer, ...rest }) => {
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const [descLength, setDescLength] = useState(20);
 
@@ -64,6 +72,20 @@ const Card: FC<CardProps> = ({ content, cardId, drawer, ...rest }) => {
     </>
   );
 
+  const deleteInstance = () => {
+    const loading = message.loading("Deleting...");
+    axios
+      .delete(`/instance/${cardId}`)
+      .then((res: AxiosResponse<{ status: string; message: string }>) => {
+        message.success(res.data.message);
+        loading();
+        dispatch(removeOneInstance(cardId));
+      })
+      .catch((error: AxiosError) => {
+        handleError(error, history, dispatch, false);
+      });
+  };
+
   const overlay: JSX.Element = (
     <Menu>
       <Menu.Item key="1">
@@ -82,9 +104,16 @@ const Card: FC<CardProps> = ({ content, cardId, drawer, ...rest }) => {
         </a>
       </Menu.Item>
       <Menu.Item key="4">
-        <a >
-          <DeleteOutlined /> Delete Instance
-        </a>
+        <Popconfirm
+          title="Are you sure want to delete?"
+          onConfirm={deleteInstance}
+          okText="Yes"
+          cancelText="No"
+        >
+          <a>
+            <DeleteOutlined /> Delete Instance
+          </a>
+        </Popconfirm>
       </Menu.Item>
     </Menu>
   );
