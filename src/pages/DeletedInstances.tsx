@@ -23,13 +23,16 @@ const DeletedInstances: FC = () => {
       .get("/instance/deleted")
       .then((response: AxiosResponse<Instance[]>) => {
         setInstances(response.data);
-        console.log(response.data);
         setLoading(false);
       })
       .catch((err: AxiosError) => {
         handleError(err, history, dispatch, false);
       });
   }, []);
+
+  const handleRetrieve = (id: string) => {
+    setInstances(instances.filter((instance) => instance.id !== id));
+  };
 
   return (
     <main className={`p-top p-left ${collapsed && "collapsed"} p-right`}>
@@ -63,6 +66,7 @@ const DeletedInstances: FC = () => {
                       }}
                       drawer
                       deleted
+                      onRetrieve={handleRetrieve}
                     />
                   </Col>
                 ))}

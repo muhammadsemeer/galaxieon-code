@@ -26,7 +26,11 @@ import axios from "../../api/index";
 import { AxiosError, AxiosResponse } from "axios";
 import handleError from "../../utils/Error";
 import { useDispatch } from "react-redux";
-import { removeOneInstance } from "../../store/instance/instanceSlice";
+import {
+  addOneInstance,
+  removeOneInstance,
+} from "../../store/instance/instanceSlice";
+import { Instance } from "../../types/templateAndInstance";
 
 export interface CardProps extends AntCardProps {
   cardId: string;
@@ -40,9 +44,10 @@ export interface CardProps extends AntCardProps {
   };
   drawer?: boolean;
   deleted?: boolean;
+  onRetrieve?: (cardId: string) => void;
 }
 
-const Card: FC<CardProps> = ({ content, cardId, drawer, deleted, ...rest }) => {
+const Card: FC<CardProps> = ({ content, cardId, drawer, deleted, onRetrieve, ...rest }) => {
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -75,7 +80,7 @@ const Card: FC<CardProps> = ({ content, cardId, drawer, deleted, ...rest }) => {
   );
 
   const deleteInstance = () => {
-    const loading = message.loading("Deleting...");
+    const loading = message.loading("Deleting...", 0);
     axios
       .delete(`/instance/${cardId}`)
       .then((res: AxiosResponse<{ status: string; message: string }>) => {
@@ -130,7 +135,20 @@ const Card: FC<CardProps> = ({ content, cardId, drawer, deleted, ...rest }) => {
     </Dropdown>
   );
 
-  const retrieveInstance = () => {};
+  const retrieveInstance = () => {
+    const loading = message.loading("Retrieving...", 0);
+    axios
+      .get(`/instance/retrive/${cardId}`)
+      .then((res: AxiosResponse<Instance>) => {
+        message.success("Instance Retrieved Successfully");
+        loading();
+        dispatch(addOneInstance(res.data));
+        onRetrieve && onRetrieve(cardId);
+      })
+      .catch((error) => {
+        handleError(error, history, dispatch, false);
+      });
+  };
 
   return (
     <>
@@ -145,23 +163,19 @@ const Card: FC<CardProps> = ({ content, cardId, drawer, deleted, ...rest }) => {
             description={
               deleted ? (
                 <>
+                  <p>Deleted On:</p>
                   <p>
-                    Deleted On:
-                    <p>
-                      {new Date(
-                        content.description as string
-                      ).toLocaleDateString("en-IN")}
-                    </p>
+                    {new Date(content.description as string).toLocaleDateString(
+                      "en-IN"
+                    )}
                   </p>
+                  <p>Retrieve before:</p>
                   <p>
-                    Retrieve before:
-                    <p>
-                      {new Date(
-                        new Date(content.description as string).setDate(
-                          new Date(content.description as string).getDate() + 3
-                        )
-                      ).toLocaleDateString("en-IN")}
-                    </p>
+                    {new Date(
+                      new Date(content.description as string).setDate(
+                        new Date(content.description as string).getDate() + 3
+                      )
+                    ).toLocaleDateString("en-IN")}
                   </p>
                 </>
               ) : (
