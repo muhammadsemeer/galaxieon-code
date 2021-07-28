@@ -4,4 +4,9 @@
   &.justify-content-between {
     justify-content: space-between;
   }
+
+  &.middle {
+    justify-content: center;
+    align-items: center;
+  }
 }

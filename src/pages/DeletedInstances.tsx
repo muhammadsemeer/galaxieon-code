@@ -10,6 +10,7 @@ import PageHeader from "../components/PageHeader/PageHeader";
 import axios from "../api/index";
 import handleError from "../utils/Error";
 import { AxiosError, AxiosResponse } from "axios";
+import Empty from "../components/Empty/Empty";
 
 const DeletedInstances: FC = () => {
   const collapsed = useSelector((state: RootState) => state.collapsed);
@@ -38,7 +39,7 @@ const DeletedInstances: FC = () => {
     <main className={`p-top p-left ${collapsed && "collapsed"} p-right`}>
       <PageHeader
         title="Deleted Instances"
-        subTitle="Your Can Retrieve deleted instance within 3 days"
+        subTitle="Can Retrieve deleted instance within 3 days"
       />
       <div className="container">
         <div>
@@ -78,6 +79,7 @@ const DeletedInstances: FC = () => {
               <CardLoading count={4} />
             )}
           </Row>
+          {!loading && instances.length === 0 && <Empty />}
         </div>
       </div>
     </main>

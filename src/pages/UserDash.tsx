@@ -1,4 +1,4 @@
-import { Col, Row, Typography } from "antd";
+import { Col, Row } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
@@ -8,6 +8,7 @@ import { useHistory } from "react-router-dom";
 import { Instance } from "../types/templateAndInstance";
 import CardLoading from "../components/Card/CardLoading";
 import PageHeader from "../components/PageHeader/PageHeader";
+import Empty from "../components/Empty/Empty";
 
 const UserDash = () => {
   const collapsed = useSelector((state: RootState) => state.collapsed);
@@ -35,7 +36,15 @@ const UserDash = () => {
                 )
                 .slice(0, 4)
                 .map((instance: Instance) => (
-                  <Col key={instance.id} xs={24} sm={24} md={12} lg={8} xl={6} xxl={3}>
+                  <Col
+                    key={instance.id}
+                    xs={24}
+                    sm={24}
+                    md={12}
+                    lg={8}
+                    xl={6}
+                    xxl={3}
+                  >
                     <Card
                       cardId={instance.id}
                       style={{ width: "100%" }}
@@ -57,6 +66,7 @@ const UserDash = () => {
             )}
           </Row>
         </div>
+        {!loading && instances.length === 0 && <Empty create />}
       </div>
     </main>
   );

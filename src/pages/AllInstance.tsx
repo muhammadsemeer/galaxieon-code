@@ -8,6 +8,7 @@ import { useHistory } from "react-router-dom";
 import { Instance } from "../types/templateAndInstance";
 import CardLoading from "../components/Card/CardLoading";
 import PageHeader from "../components/PageHeader/PageHeader";
+import Empty from "../components/Empty/Empty";
 
 const AllInstances = () => {
   const collapsed = useSelector((state: RootState) => state.collapsed);
@@ -28,9 +29,11 @@ const AllInstances = () => {
           <Row gutter={[25, 25]}>
             {!loading ? (
               <>
-                <Col xs={24} sm={24} md={12} lg={8} xl={6} xxl={3}>
-                <CardLoading isAdd />
-                </Col>
+                {instances.length !== 0 && (
+                  <Col xs={24} sm={24} md={12} lg={8} xl={6} xxl={3}>
+                    <CardLoading isAdd />
+                  </Col>
+                )}
                 {instances.map((instance: Instance) => (
                   <Col
                     key={instance.id}
@@ -63,6 +66,7 @@ const AllInstances = () => {
             )}
           </Row>
         </div>
+        {!loading && instances.length === 0 && <Empty create />}
       </div>
     </main>
   );
