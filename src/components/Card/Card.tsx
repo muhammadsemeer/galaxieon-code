@@ -185,7 +185,7 @@ const Card: FC<CardProps> = ({
         hoverable
         {...rest}
         extra={extra}
-        onDoubleClick={() => history.push(`/instance/${cardId}`)}
+        onDoubleClick={() => history.push(`/instance/editor/${cardId}`)}
       >
         <Space size="middle" direction="vertical" style={{ width: "100%" }}>
           <AntCard.Meta
