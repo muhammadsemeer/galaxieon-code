@@ -47,7 +47,14 @@ export interface CardProps extends AntCardProps {
   onRetrieve?: (cardId: string) => void;
 }
 
-const Card: FC<CardProps> = ({ content, cardId, drawer, deleted, onRetrieve, ...rest }) => {
+const Card: FC<CardProps> = ({
+  content,
+  cardId,
+  drawer,
+  deleted,
+  onRetrieve,
+  ...rest
+}) => {
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -89,6 +96,26 @@ const Card: FC<CardProps> = ({ content, cardId, drawer, deleted, onRetrieve, ...
         dispatch(removeOneInstance(cardId));
       })
       .catch((error: AxiosError) => {
+        loading();
+        message.error("Deleting Filed");
+        handleError(error, history, dispatch, false);
+      });
+  };
+
+  const forkInstance = () => {
+    const loading = message.loading("Forking...", 0);
+    axios
+      .get(`/instance/fork/${cardId}`)
+      .then((res: AxiosResponse<Instance>) => {
+        loading();
+        console.log(res.data);
+        message.success("Instance Successfully Forked");
+        dispatch(addOneInstance(res.data));
+        history.push(`/instance/editor/${res.data.id}`);
+      })
+      .catch((error: AxiosError) => {
+        loading();
+        message.error("Forking Failed");
         handleError(error, history, dispatch, false);
       });
   };
@@ -106,7 +133,7 @@ const Card: FC<CardProps> = ({ content, cardId, drawer, deleted, onRetrieve, ...
         </a>
       </Menu.Item>
       <Menu.Item key="3">
-        <a href="#">
+        <a onClick={forkInstance}>
           <ForkOutlined /> Fork Instance
         </a>
       </Menu.Item>
@@ -146,6 +173,8 @@ const Card: FC<CardProps> = ({ content, cardId, drawer, deleted, onRetrieve, ...
         onRetrieve && onRetrieve(cardId);
       })
       .catch((error) => {
+        loading();
+        message.error("Retrieving Failed");
         handleError(error, history, dispatch, false);
       });
   };
