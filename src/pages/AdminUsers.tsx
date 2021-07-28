@@ -46,7 +46,7 @@ const AdminUsers: FC = () => {
     status: "active" | "blocked" | "deleted",
     id: string
   ) => {
-    let loading = message.loading("Loading");
+    let loading = message.loading("Loading",0);
     axios
       .patch(`/admin/user/${id}?status=${status}`)
       .then(async (res: AxiosResponse) => {

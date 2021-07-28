@@ -36,7 +36,10 @@ const DeletedInstances: FC = () => {
 
   return (
     <main className={`p-top p-left ${collapsed && "collapsed"} p-right`}>
-      <PageHeader title="Deleted Instances" />
+      <PageHeader
+        title="Deleted Instances"
+        subTitle="Your Can Retrieve deleted instance within 3 days"
+      />
       <div className="container">
         <div>
           <Row gutter={[25, 25]}>
