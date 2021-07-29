@@ -15,6 +15,8 @@ export interface Template {
   used: number;
   language: string;
   status: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Instance {

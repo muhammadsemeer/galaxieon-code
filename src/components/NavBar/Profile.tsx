@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { Menu, Dropdown, Avatar, Typography, Space } from "antd";
 import {
   CaretDownOutlined,
@@ -16,6 +16,7 @@ import { logOut } from "../../store/auth/authSlice";
 import styles from "./header.module.scss";
 import OptionsDrop from "./OptionsDrop";
 import Notification, { NotificationData } from "../Notification/Notification";
+import CreateModal from "../CreateModal/CreateModal";
 
 export type UserProp = { isAdmin: boolean };
 
@@ -67,12 +68,14 @@ const User: FC<UserProp> = ({ isAdmin }) => {
     history.push(isAdmin ? "/admin/login" : "/login");
   };
 
+  const [isModalUp, setModalUp] = useState(false);
+
   const overlay = (
     <Menu style={{ padding: "10px 0" }}>
       {!isAdmin && (
         <>
           <Menu.Item key="create Instance">
-            <a>
+            <a onClick={() => setModalUp(true)}>
               <PlusCircleFilled /> New Instance
             </a>
           </Menu.Item>
@@ -117,6 +120,7 @@ const User: FC<UserProp> = ({ isAdmin }) => {
         </Dropdown>
       </Space>
       <OptionsDrop overlay={overlay} />
+      <CreateModal visible={isModalUp} onCancel={() => setModalUp(false)} />
     </div>
   );
 };
