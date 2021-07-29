@@ -1,8 +1,9 @@
 import { PlusCircleFilled } from "@ant-design/icons";
 import { Col, Card as AntCard, Button, Typography } from "antd";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import Card from "./Card";
-import { grey } from "@ant-design/colors"
+import { grey } from "@ant-design/colors";
+import CreateModal from "../CreateModal/CreateModal";
 
 const CardLoading: FC<{ count?: number; isAdd?: boolean }> = ({
   count,
@@ -23,6 +24,9 @@ const CardLoading: FC<{ count?: number; isAdd?: boolean }> = ({
       );
     }
   }
+
+  const [isModalUp, setModalUp] = useState(false);
+
   return (
     <>
       {!isAdd ? (
@@ -43,11 +47,15 @@ const CardLoading: FC<{ count?: number; isAdd?: boolean }> = ({
             padding: 0,
           }}
           hoverable
+          onClick={() => setModalUp(true)}
         >
           <PlusCircleFilled style={{ fontSize: 25, color: grey[4] }} />
-          <Typography.Text style={{ color: grey[4] }}>New Instance</Typography.Text>
+          <Typography.Text style={{ color: grey[4] }}>
+            New Instance
+          </Typography.Text>
         </AntCard>
       )}
+      <CreateModal visible={isModalUp} onCancel={() => setModalUp(false)} />
     </>
   );
 };
