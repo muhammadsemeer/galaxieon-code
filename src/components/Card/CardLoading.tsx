@@ -30,7 +30,7 @@ const CardLoading: FC<{ count?: number; isAdd?: boolean }> = ({
       ) : (
         <AntCard
           style={{
-            minHeight: 224,
+            minHeight: 372,
             display: "flex",
             justifyContent: "center",
             alignItems: "center",

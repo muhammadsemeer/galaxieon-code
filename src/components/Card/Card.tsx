@@ -9,6 +9,7 @@ import {
   message,
   Popconfirm,
   Button,
+  Spin,
 } from "antd";
 import {
   DeleteOutlined,
@@ -19,6 +20,7 @@ import {
   LockOutlined,
   MoreOutlined,
   ShareAltOutlined,
+  LoadingOutlined,
 } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
 import FormDrawer from "../FormDrawer/FormDrawer";
@@ -31,6 +33,7 @@ import {
   removeOneInstance,
 } from "../../store/instance/instanceSlice";
 import { Instance } from "../../types/templateAndInstance";
+import logo from "../../logo.svg";
 
 export interface CardProps extends AntCardProps {
   cardId: string;
@@ -179,13 +182,41 @@ const Card: FC<CardProps> = ({
       });
   };
 
+  const [spinning, setSpinning] = useState(true);
+
   return (
     <>
       <AntCard
         hoverable
         {...rest}
         extra={extra}
+        cover={
+          <Spin
+            indicator={<LoadingOutlined />}
+            spinning={spinning}
+            size="large"
+          >
+            {!rest.loading && (
+              <img
+                style={{
+                  width: "100%",
+                  height: 180,
+                  padding: 10,
+                  objectFit: "cover",
+                }}
+                src={`${process.env.API_ENDPOINT}/instance/screenshot/${cardId}`}
+                onError={(event) => {
+                  event.currentTarget.src = logo;
+                  event.currentTarget.style.objectFit = "contain";
+                }}
+                onLoad={(event) => setSpinning(false)}
+              />
+            )}
+          </Spin>
+        }
         onDoubleClick={() => history.push(`/instance/editor/${cardId}`)}
+        bodyStyle={{ padding: "0px 24px 10px" }}
+        style={{ minHeight: 372 }}
       >
         <Space size="middle" direction="vertical" style={{ width: "100%" }}>
           <AntCard.Meta
