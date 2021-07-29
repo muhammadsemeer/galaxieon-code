@@ -95,10 +95,17 @@ const FormDrawer: FC<FormDrawerProps> = ({ data, onClose, visible }) => {
         <Form.Item
           name="name"
           label="Name"
-          rules={[{ required: true, message: "Please enter user name" }]}
+          rules={[
+            { required: true, message: "Please enter Instance name" },
+            { min: 3, message: "Name contains at least 3 characters" },
+            {
+              pattern: /^[A-Za-z0-9 ]*$/g,
+              message: "Name can only contains letters and number",
+            },
+          ]}
           initialValue={data.name}
         >
-          <Input placeholder="Please enter user name" />
+          <Input placeholder="Please enter Instance name" />
         </Form.Item>
         <Form.Item
           name="description"
