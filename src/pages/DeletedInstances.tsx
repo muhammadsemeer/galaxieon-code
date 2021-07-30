@@ -23,7 +23,13 @@ const DeletedInstances: FC = () => {
     axios
       .get("/instance/deleted")
       .then((response: AxiosResponse<Instance[]>) => {
-        setInstances(response.data);
+        setInstances(
+          response.data.sort(
+            (a, b) =>
+              (new Date(b.deletedAt as string) as any) -
+              (new Date(a.deletedAt as string) as any)
+          )
+        );
         setLoading(false);
       })
       .catch((err: AxiosError) => {
