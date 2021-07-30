@@ -1,5 +1,6 @@
 import React, { FC, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import NavTab from "../components/Code/NavTab";
 import { collapseWithPayload } from "../store/menu/collapsedSlice";
 
 const CodeEditor: FC = () => {
@@ -7,7 +8,11 @@ const CodeEditor: FC = () => {
   useEffect(() => {
     dispatch(collapseWithPayload(true));
   }, []);
-  return <div></div>;
+  return (
+    <>
+      <NavTab />
+    </>
+  );
 };
 
 export default CodeEditor;
