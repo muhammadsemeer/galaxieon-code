@@ -1,12 +1,10 @@
-import { DatabaseFilled, FileFilled } from "@ant-design/icons";
+import { DatabaseFilled, FileFilled, ProfileFilled } from "@ant-design/icons";
 import { Menu } from "antd";
 import React, { FC } from "react";
-import styles from "../SideBar/sidebar.module.scss";
 
 const NavTab: FC = () => {
   return (
     <Menu
-      className={styles.sidebar}
       inlineCollapsed
       style={{
         height: "calc(100vh - 50px)",
@@ -16,7 +14,7 @@ const NavTab: FC = () => {
         zIndex: 99,
       }}
     >
-      <Menu.Item key="1" icon={<DatabaseFilled />}>
+      <Menu.Item key="1" icon={<ProfileFilled />}>
         Instance Info
       </Menu.Item>
       <Menu.Item key="2" icon={<FileFilled />}>
