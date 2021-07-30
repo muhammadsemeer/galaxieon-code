@@ -51,43 +51,24 @@ export interface CardProps extends AntCardProps {
 }
 
 const Card: FC<CardProps> = ({
-  content,
   cardId,
+  title,
+  content,
   drawer,
   deleted,
+  style,
   onRetrieve,
   ...rest
 }) => {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const [descLength, setDescLength] = useState(20);
 
   const [open, setOpen] = useState(false);
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
   const closeDrawer = () => setOpen(false);
 
   const length = content.description?.length;
 
-  const description = length && length !== 0 && (
-    <>
-      {content.description?.substr(0, descLength)}
-      {descLength < length && <>...</>}
-      <br />
-      {descLength < length ? (
-        <a
-          onClick={() => {
-            isInitialLoad && setIsInitialLoad(false);
-            setDescLength(length);
-          }}
-        >
-          Show More
-        </a>
-      ) : (
-        !isInitialLoad && <a onClick={() => setDescLength(20)}>Show Less</a>
-      )}
-    </>
-  );
 
   const deleteInstance = () => {
     const loading = message.loading("Deleting...", 0);
@@ -189,39 +170,43 @@ const Card: FC<CardProps> = ({
       <AntCard
         hoverable
         {...rest}
-        extra={extra}
         cover={
           <Spin
             indicator={<LoadingOutlined />}
             spinning={spinning}
             size="large"
           >
-            {!rest.loading && (
-              <img
-                style={{
-                  width: "100%",
-                  height: 180,
-                  padding: 10,
-                  objectFit: "cover",
-                }}
-                src={`${process.env.API_ENDPOINT}/instance/screenshot/${cardId}`}
-                onError={(event) => {
-                  event.currentTarget.src = logo;
-                  event.currentTarget.style.objectFit = "contain";
-                }}
-                onLoad={(event) => setSpinning(false)}
-              />
-            )}
+            <img
+              style={{
+                width: "100%",
+                height: 125,
+                padding: 10,
+                paddingBottom: 0,
+                objectFit: "cover",
+              }}
+              src={`${process.env.API_ENDPOINT}/instance/screenshot/${cardId}`}
+              onError={(event) => {
+                event.currentTarget.src = logo;
+                event.currentTarget.style.objectFit = "contain";
+              }}
+              onLoad={(event) => setSpinning(false)}
+            />
           </Spin>
         }
         onDoubleClick={() => history.push(`/instance/editor/${cardId}`)}
         bodyStyle={{ padding: "0px 24px 10px" }}
-        style={{ minHeight: 372 }}
+        style={{ height: 250, ...style }}
       >
         <Space size="middle" direction="vertical" style={{ width: "100%" }}>
           <AntCard.Meta
+            title={
+              <div className="flex justify-content-between align-center">
+                <p style={{ margin: 0, fontSize: "13px" }}>{title}</p>
+                {extra}
+              </div>
+            }
             description={
-              deleted ? (
+              deleted && (
                 <>
                   <p>Deleted On:</p>
                   <p>
@@ -238,8 +223,6 @@ const Card: FC<CardProps> = ({
                     ).toLocaleDateString("en-IN")}
                   </p>
                 </>
-              ) : (
-                description || "No Description..."
               )
             }
           />
@@ -278,7 +261,7 @@ const Card: FC<CardProps> = ({
         <FormDrawer
           data={{
             id: cardId,
-            name: rest.title as string,
+            name: title as string,
             description: content.description,
             keywords: content.keywords,
           }}

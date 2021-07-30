@@ -26,7 +26,7 @@ const UserDash = () => {
       <PageHeader title="Dashboard" subTitle=" Recently Modified Instances" />
       <div className="container">
         <div>
-          <Row gutter={[25, 25]}>
+          <Row gutter={[20, 20]}>
             {!loading ? (
               [...instances]
                 .sort(
@@ -47,7 +47,7 @@ const UserDash = () => {
                   >
                     <Card
                       cardId={instance.id}
-                      style={{ width: "100%" }}
+                      style={{ width: 250 }}
                       title={instance.name}
                       content={{
                         description: instance.description,
