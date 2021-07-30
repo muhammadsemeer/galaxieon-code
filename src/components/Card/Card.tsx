@@ -63,12 +63,10 @@ const Card: FC<CardProps> = ({
   const history = useHistory();
   const dispatch = useDispatch();
 
-
   const [open, setOpen] = useState(false);
   const closeDrawer = () => setOpen(false);
 
   const length = content.description?.length;
-
 
   const deleteInstance = () => {
     const loading = message.loading("Deleting...", 0);
@@ -103,49 +101,6 @@ const Card: FC<CardProps> = ({
         handleError(error, history, dispatch, false);
       });
   };
-
-  const overlay: JSX.Element = (
-    <Menu>
-      <Menu.Item key="1">
-        <a onClick={() => setOpen(true)}>
-          <EditOutlined /> Edit Instance
-        </a>
-      </Menu.Item>
-      <Menu.Item key="2" disabled>
-        <a href="#">
-          <LockOutlined /> Make Private
-        </a>
-      </Menu.Item>
-      <Menu.Item key="3">
-        <a onClick={forkInstance}>
-          <ForkOutlined /> Fork Instance
-        </a>
-      </Menu.Item>
-      <Menu.Item key="4">
-        <Popconfirm
-          title="Are you sure want to delete?"
-          onConfirm={deleteInstance}
-          okText="Yes"
-          cancelText="No"
-        >
-          <a>
-            <DeleteOutlined /> Delete Instance
-          </a>
-        </Popconfirm>
-      </Menu.Item>
-    </Menu>
-  );
-
-  const extra: ReactNode | undefined = !deleted && (
-    <Dropdown
-      overlayStyle={{ zIndex: 9 }}
-      overlay={overlay}
-      trigger={["click"]}
-    >
-      <MoreOutlined />
-    </Dropdown>
-  );
-
   const retrieveInstance = () => {
     const loading = message.loading("Retrieving...", 0);
     axios
@@ -162,6 +117,56 @@ const Card: FC<CardProps> = ({
         handleError(error, history, dispatch, false);
       });
   };
+
+  const overlay: JSX.Element = (
+    <Menu>
+      {deleted ? (
+        <Menu.Item key="1">
+          <a onClick={retrieveInstance}>Retrieve Instance</a>
+        </Menu.Item>
+      ) : (
+        <>
+          <Menu.Item key="1">
+            <a onClick={() => setOpen(true)}>
+              <EditOutlined /> Edit Instance
+            </a>
+          </Menu.Item>
+          <Menu.Item key="2" disabled>
+            <a href="#">
+              <LockOutlined /> Make Private
+            </a>
+          </Menu.Item>
+          <Menu.Item key="3">
+            <a onClick={forkInstance}>
+              <ForkOutlined /> Fork Instance
+            </a>
+          </Menu.Item>
+          <Menu.Item key="4">
+            <Popconfirm
+              title="Are you sure want to delete?"
+              onConfirm={deleteInstance}
+              okText="Yes"
+              cancelText="No"
+            >
+              <a>
+                <DeleteOutlined /> Delete Instance
+              </a>
+            </Popconfirm>
+          </Menu.Item>
+        </>
+      )}
+    </Menu>
+  );
+
+  const extra: ReactNode = (
+    <Dropdown
+      overlayStyle={{ zIndex: 9 }}
+      overlay={overlay}
+      trigger={["click"]}
+    >
+      <MoreOutlined />
+    </Dropdown>
+  );
 
   const [spinning, setSpinning] = useState(true);
 
@@ -194,7 +199,7 @@ const Card: FC<CardProps> = ({
           </Spin>
         }
         onDoubleClick={() => history.push(`/instance/editor/${cardId}`)}
-        bodyStyle={{ padding: "0px 24px 10px" }}
+        bodyStyle={{ padding: deleted ? "24px" : "0px 24px 10px" }}
         style={{ height: 250, ...style }}
       >
         <Space size="middle" direction="vertical" style={{ width: "100%" }}>
@@ -208,14 +213,8 @@ const Card: FC<CardProps> = ({
             description={
               deleted && (
                 <>
-                  <p>Deleted On:</p>
-                  <p>
-                    {new Date(content.description as string).toLocaleDateString(
-                      "en-IN"
-                    )}
-                  </p>
-                  <p>Retrieve before:</p>
-                  <p>
+                  <p style={{ fontSize: 12 }}>
+                    Retrieve before:{" "}
                     {new Date(
                       new Date(content.description as string).setDate(
                         new Date(content.description as string).getDate() + 3
@@ -227,17 +226,12 @@ const Card: FC<CardProps> = ({
             }
           />
           <div className="flex">
-            {!deleted ? (
+            {!deleted &&
               content?.keywords?.split(",").map((value) => (
                 <Tag key={`${cardId}-${value}`} color="blue">
                   {value}
                 </Tag>
-              ))
-            ) : (
-              <Button type="primary" onClick={retrieveInstance}>
-                Retrieve
-              </Button>
-            )}
+              ))}
           </div>
           {!deleted && (
             <div className="flex justify-content-between">
