@@ -8,10 +8,11 @@ import { collapseWithPayload } from "./store/menu/collapsedSlice";
 const App = () => {
   let admin = useRouteMatch("/admin*");
   let login = useRouteMatch("*/login");
+  let editor = useRouteMatch("/instance/editor/*");
 
   return (
     <>
-      {!login && <NavBar isAdmin={admin ? true : false} />}
+      {!login && !editor && <NavBar isAdmin={admin ? true : false} />}
       <Routes />
     </>
   );

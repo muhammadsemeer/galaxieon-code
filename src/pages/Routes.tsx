@@ -14,6 +14,7 @@ import UserDash from "./UserDash";
 import AllInstances from "./AllInstance";
 import DeletedInstances from "./DeletedInstances";
 import UserInstSearch from "./UserInstSearch";
+import CodeEditor from "./CodeEditor";
 
 const Admin: FC = () => {
   return (
@@ -53,6 +54,9 @@ const Admin: FC = () => {
       </UserRoute>
       <UserRoute path="/search">
         <UserInstSearch />
+      </UserRoute>
+      <UserRoute path="/instance/editor/:id" >
+        <CodeEditor />
       </UserRoute>
 
       {/* 404 And Error */}
