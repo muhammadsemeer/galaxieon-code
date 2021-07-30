@@ -3,6 +3,7 @@ import auth from "./auth/authSlice";
 import collapsed from "./menu/collapsedSlice";
 import responsive from "./menu/responsiveSlice";
 import instance from "./instance/instanceSlice";
+import editorInstance from "./instance/editorInstance";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     collapsed,
     instance,
     responsive,
+    editorInstance,
   },
 });
 
