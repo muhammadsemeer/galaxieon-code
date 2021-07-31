@@ -1,0 +1,24 @@
+.container {
+  width: 100%;
+  display: flex;
+
+  .resize {
+    min-height: 300px;
+    position: relative;
+
+    .panel {
+      padding: 10px;
+    }
+
+    .resizer {
+      position: absolute;
+      content: "";
+      top: 0;
+      left: 0;
+      width: 2px;
+      height: 100%;
+      background-color: #303030;
+      cursor: col-resize;
+    }
+  }
+}
