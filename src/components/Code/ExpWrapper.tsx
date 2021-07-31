@@ -7,9 +7,9 @@ const ExpWrapper: FC = () => {
   return (
     <div className={styles.wrapper}>
       <ResizablePanels
-        constrains={[272, window.innerWidth / 2, window.innerWidth / 2]}
+        constrains={[250, window.innerWidth / 2, window.innerWidth / 2]}
         height={"calc(100vh - 52px)"}
-        minConstrains={[0, 0, 0]}
+        minConstrains={[250, 150, 150]}
       >
         <InstanceDetails />
         <div></div>
