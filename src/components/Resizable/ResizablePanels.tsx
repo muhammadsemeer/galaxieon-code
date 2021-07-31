@@ -1,9 +1,4 @@
-import React, {
-  FC,
-  MouseEvent,
-  ReactNodeArray,
-  useState,
-} from "react";
+import React, { FC, MouseEvent, ReactNodeArray, useState } from "react";
 import styles from "./resize.module.scss";
 
 export interface ResizablePanelsProps {
@@ -21,10 +16,14 @@ const ResizablePanels: FC<ResizablePanelsProps> = ({
 }) => {
   const [panels, setPanels] = useState(constrains);
 
-  const [currentDragger, setDragger] = useState({
+  const [currentDragger, setDragger] = useState<{
+    isDragging: boolean;
+    dragger: number | null;
+    initialPos: number | null;
+  }>({
     isDragging: false,
-    dragger: -1,
-    initialPos: -1,
+    dragger: null,
+    initialPos: null,
   });
 
   const startResize = (e: MouseEvent<HTMLDivElement>, index: number) => {
@@ -37,15 +36,14 @@ const ResizablePanels: FC<ResizablePanelsProps> = ({
 
   const handleResize = (e: MouseEvent<HTMLDivElement>) => {
     const { isDragging, dragger, initialPos } = currentDragger;
-    if (isDragging) {
+    if (isDragging && dragger && initialPos) {
       let dargTo = e.clientX - initialPos;
       let newPanels = [...panels];
       let newWidth = (newPanels[dragger - 1] || 0) + dargTo;
       let adjacentWidth = (newPanels[dragger] || 0) - dargTo;
-      minConstrains[dragger - 1] = minConstrains[dragger - 1]
-        ? minConstrains[dragger - 1]
-        : 50;
-      if (minConstrains[dragger - 1] <= newWidth) {
+      let minWidth = minConstrains[dragger - 1] || 100;
+      let adjMinWidth = minConstrains[dragger] || 100;
+      if (minWidth <= newWidth && adjMinWidth <= adjacentWidth) {
         newPanels[dragger] = adjacentWidth;
         newPanels[dragger - 1] = newWidth;
 
@@ -58,8 +56,8 @@ const ResizablePanels: FC<ResizablePanelsProps> = ({
   const stopResize = (e: MouseEvent<HTMLDivElement>) => {
     setDragger({
       isDragging: false,
-      dragger: -1,
-      initialPos: -1,
+      dragger: null,
+      initialPos: null,
     });
   };
 
@@ -74,7 +72,7 @@ const ResizablePanels: FC<ResizablePanelsProps> = ({
         <div
           className={styles.resize}
           key={(Date.now() + Math.random() * 10).toString(16)}
-          style={{ width: panels[index], minWidth: minConstrains[index] || 50 }}
+          style={{ width: panels[index] }}
           onMouseMove={handleResize}
         >
           <div className={styles.panel}>{child}</div>
