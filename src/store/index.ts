@@ -4,6 +4,7 @@ import collapsed from "./menu/collapsedSlice";
 import responsive from "./menu/responsiveSlice";
 import instance from "./instance/instanceSlice";
 import editorInstance from "./instance/editorInstance";
+import editorSidePane from "./editor/sidePane";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     instance,
     responsive,
     editorInstance,
+    editorSidePane,
   },
 });
 
