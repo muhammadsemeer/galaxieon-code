@@ -1,8 +1,21 @@
 import { DatabaseFilled, FileFilled, ProfileFilled } from "@ant-design/icons";
 import { Menu } from "antd";
 import React, { FC } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store";
+import { setActivePane, togglePane } from "../../store/editor/sidePane";
 
 const NavTab: FC = () => {
+  const sidePane = useSelector((state: RootState) => state.editorSidePane);
+  const dispatch = useDispatch();
+
+  const changePane = (pane: "info" | "explorer") => {
+    if (sidePane.activePane === pane) {
+      return dispatch(togglePane());
+    }
+    dispatch(setActivePane(pane));
+  };
+
   return (
     <Menu
       inlineCollapsed
@@ -14,11 +27,20 @@ const NavTab: FC = () => {
         zIndex: 99,
         width: 50,
       }}
+      defaultSelectedKeys={[sidePane.activePane]}
     >
-      <Menu.Item key="1" icon={<ProfileFilled />}>
+      <Menu.Item
+        key="info"
+        icon={<ProfileFilled />}
+        onClick={() => changePane("info")}
+      >
         Instance Info
       </Menu.Item>
-      <Menu.Item key="2" icon={<FileFilled />}>
+      <Menu.Item
+        key="explorer"
+        icon={<FileFilled />}
+        onClick={() => changePane("explorer")}
+      >
         File Explorer
       </Menu.Item>
     </Menu>

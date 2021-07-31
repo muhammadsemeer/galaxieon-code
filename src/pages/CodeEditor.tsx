@@ -20,6 +20,9 @@ const CodeEditor: FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
   const instance = useSelector((state: RootState) => state.editorInstance);
+  const showPane = useSelector(
+    (state: RootState) => state.editorSidePane.showPane
+  );
 
   useEffect(() => {
     dispatch(collapseWithPayload(true));
@@ -34,18 +37,20 @@ const CodeEditor: FC = () => {
         handleError(error, history, dispatch, false)
       );
   }, []);
+  const constrains = [250, window.innerWidth / 2, window.innerWidth / 2];
+  const minConstrains = [250, 150, 150];
   return (
     <Spin indicator={<LoadingOutlined />} spinning={isLoading}>
-        <Nav />
-        <ResizablePanels
-          constrains={[250, window.innerWidth / 2, window.innerWidth / 2]}
-          height={"100vh"}
-          minConstrains={[270, 150, 150]}
-        >
-          <ExpWrapper />
-          <div></div>
-          <div></div>
-        </ResizablePanels>
+      <Nav />
+      <ResizablePanels
+        constrains={showPane ? constrains : constrains.slice(1)}
+        height={"100vh"}
+        minConstrains={showPane ? minConstrains : minConstrains.slice(1)}
+      >
+        {showPane && <ExpWrapper />}
+        <div></div>
+        <div></div>
+      </ResizablePanels>
     </Spin>
   );
 };

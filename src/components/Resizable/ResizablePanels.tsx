@@ -1,4 +1,4 @@
-import React, { FC, MouseEvent, ReactNodeArray, useState } from "react";
+import React, { FC, MouseEvent, ReactNodeArray, useEffect, useState } from "react";
 import styles from "./resize.module.scss";
 
 export interface ResizablePanelsProps {
@@ -14,7 +14,7 @@ const ResizablePanels: FC<ResizablePanelsProps> = ({
   children,
   height,
 }) => {
-  const [panels, setPanels] = useState(constrains);
+  const [panels, setPanels] = useState([300,300,300]);
 
   const [currentDragger, setDragger] = useState<{
     isDragging: boolean;
@@ -61,6 +61,10 @@ const ResizablePanels: FC<ResizablePanelsProps> = ({
     });
   };
 
+  useEffect(() => {
+    setPanels(constrains);
+  },[constrains])
+
   return (
     <div
       className={styles.container}
@@ -68,22 +72,24 @@ const ResizablePanels: FC<ResizablePanelsProps> = ({
       onMouseLeave={stopResize}
       onMouseUp={stopResize}
     >
-      {children.map((child, index) => (
-        <div
-          className={styles.resize}
-          key={(Date.now() + Math.random() * 10).toString(16)}
-          style={{ width: panels[index] }}
-          onMouseMove={handleResize}
-        >
-          <div className={styles.panel}>{child}</div>
-          {index !== 0 && (
-            <div
-              className={styles.resizer}
-              onMouseDown={(e) => startResize(e, index)}
-            ></div>
-          )}
-        </div>
-      ))}
+      {children
+        .filter((value) => value !== false)
+        .map((child, index) => (
+          <div
+            className={styles.resize}
+            key={(Date.now() + Math.random() * 10).toString(16)}
+            style={{ width: panels[index] }}
+            onMouseMove={handleResize}
+          >
+            <div className={styles.panel}>{child}</div>
+            {index !== 0 && (
+              <div
+                className={styles.resizer}
+                onMouseDown={(e) => startResize(e, index)}
+              ></div>
+            )}
+          </div>
+        ))}
     </div>
   );
 };
