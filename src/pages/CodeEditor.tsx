@@ -12,6 +12,7 @@ import handleError from "../utils/Error";
 import { RootState } from "../store";
 import { addInstance } from "../store/instance/editorInstance";
 import ExpWrapper from "../components/Code/ExpWrapper";
+import ResizablePanels from "../components/Resizable/ResizablePanels";
 
 const CodeEditor: FC = () => {
   const dispatch = useDispatch();
@@ -35,8 +36,16 @@ const CodeEditor: FC = () => {
   }, []);
   return (
     <Spin indicator={<LoadingOutlined />} spinning={isLoading}>
-      <Nav />
-      <ExpWrapper />
+        <Nav />
+        <ResizablePanels
+          constrains={[250, window.innerWidth / 2, window.innerWidth / 2]}
+          height={"100vh"}
+          minConstrains={[270, 150, 150]}
+        >
+          <ExpWrapper />
+          <div></div>
+          <div></div>
+        </ResizablePanels>
     </Spin>
   );
 };
