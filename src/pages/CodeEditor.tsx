@@ -11,6 +11,7 @@ import { Instance } from "../types/templateAndInstance";
 import handleError from "../utils/Error";
 import { RootState } from "../store";
 import { addInstance } from "../store/instance/editorInstance";
+import ExpWrapper from "../components/Code/ExpWrapper";
 
 const CodeEditor: FC = () => {
   const dispatch = useDispatch();
@@ -35,6 +36,7 @@ const CodeEditor: FC = () => {
   return (
     <Spin indicator={<LoadingOutlined />} spinning={isLoading}>
       <Nav />
+      <ExpWrapper />
     </Spin>
   );
 };

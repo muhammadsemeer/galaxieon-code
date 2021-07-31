@@ -12,6 +12,7 @@ const NavTab: FC = () => {
         position: "fixed",
         marginTop: "50px",
         zIndex: 99,
+        width: 50,
       }}
     >
       <Menu.Item key="1" icon={<ProfileFilled />}>
