@@ -63,7 +63,9 @@ const InstanceDetails: FC = () => {
       </div>
       <div className="flex" style={{ marginTop: 10 }}>
         {instance?.keywords?.split(",").map((keyword, index) => (
-          <Tag color="blue">{keyword}</Tag>
+          <Tag key={keyword} color="blue">
+            {keyword}
+          </Tag>
         ))}
       </div>
       {user?.id === instance.User?.id && (

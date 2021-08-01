@@ -28,6 +28,7 @@ const NavTab: FC = () => {
         width: 50,
       }}
       defaultSelectedKeys={[sidePane.activePane]}
+      mode="inline"
     >
       <Menu.Item
         key="info"
