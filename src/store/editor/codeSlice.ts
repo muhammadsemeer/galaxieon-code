@@ -1,20 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface CodeState {
-  code: string;
+  [index: string]: string;
 }
-
-const initialState: CodeState = {
-  code: "",
-};
 
 const codeSlice = createSlice({
   name: "code",
-  initialState,
+  initialState: {} as CodeState,
   reducers: {
-    setCode: (state, { payload }: PayloadAction<string>) => ({
+    setCode: (
+      state,
+      { payload }: PayloadAction<{ code: string; name: string }>
+    ) => ({
       ...state,
-      code: payload,
+      [payload.name]: payload.code,
     }),
   },
 });

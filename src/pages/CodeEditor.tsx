@@ -23,6 +23,7 @@ const CodeEditor: FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
   const instance = useSelector((state: RootState) => state.editorInstance);
+  const code = useSelector((state: RootState) => state.code);
   const showPane = useSelector(
     (state: RootState) => state.editorSidePane.showPane
   );
@@ -45,7 +46,9 @@ const CodeEditor: FC = () => {
     axios
       .get(`/instance/code/${instance.id}/${query.get("file")}`)
       .then((res: AxiosResponse<string>) => {
-        dispatch(setCode(res.data));
+        dispatch(
+          setCode({ code: res.data, name: query.get("file") as string })
+        );
       })
       .catch((error: AxiosError) =>
         handleError(error, history, dispatch, false)
@@ -53,7 +56,7 @@ const CodeEditor: FC = () => {
   };
 
   useEffect(() => {
-    instance.id && query.get("file") && getCode();
+    if (instance.id && query.get("file") && !code[query.get("file") as string]) getCode();
   }, [query.get("file"), instance.id]);
 
   const constrains = [250, window.innerWidth / 2, window.innerWidth / 2];
