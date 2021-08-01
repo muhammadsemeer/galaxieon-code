@@ -1,7 +1,7 @@
 import { blue } from "@ant-design/colors";
 import { FileFilled, FolderFilled, FolderOpenFilled } from "@ant-design/icons";
 import { Space, Typography } from "antd";
-import React, { FC, useState } from "react";
+import React, { FC, memo, useState } from "react";
 import File from "./File";
 import styles from "./explorer.module.scss";
 import { BaseType } from "antd/lib/typography/Base";
@@ -101,4 +101,4 @@ const Folder: FC<FolderProps> = ({
   );
 };
 
-export default Folder;
+export default memo(Folder);

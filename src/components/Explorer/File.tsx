@@ -2,7 +2,7 @@ import { blue } from "@ant-design/colors";
 import { FileFilled } from "@ant-design/icons";
 import { Input, Space, Typography } from "antd";
 import { BaseType } from "antd/lib/typography/Base";
-import React, { FC, useState } from "react";
+import React, { FC, useState, memo } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { RootState } from "../../store";
@@ -66,4 +66,4 @@ const File: FC<FileProps> = ({ name, edit, className, path }) => {
   );
 };
 
-export default File;
+export default memo(File);

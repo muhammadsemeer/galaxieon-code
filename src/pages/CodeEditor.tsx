@@ -13,6 +13,7 @@ import { RootState } from "../store";
 import { addInstance } from "../store/instance/editorInstance";
 import ExpWrapper from "../components/Code/ExpWrapper";
 import ResizablePanels from "../components/Resizable/ResizablePanels";
+import EditorWrapper from "../components/Code/EditorWrapper";
 
 const CodeEditor: FC = () => {
   const dispatch = useDispatch();
@@ -26,7 +27,6 @@ const CodeEditor: FC = () => {
 
   useEffect(() => {
     dispatch(collapseWithPayload(true));
-    console.log(id);
     axios
       .get(`/instance/${id}`)
       .then((response: AxiosResponse<Instance>) => {
@@ -48,7 +48,7 @@ const CodeEditor: FC = () => {
         minConstrains={showPane ? minConstrains : minConstrains.slice(1)}
       >
         {showPane && <ExpWrapper />}
-        <div></div>
+        <EditorWrapper />
         <div></div>
       </ResizablePanels>
     </Spin>

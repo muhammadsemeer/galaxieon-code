@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, memo } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { Files } from "../../types/templateAndInstance";
@@ -43,4 +43,4 @@ const FileExplorer: FC = () => {
   );
 };
 
-export default FileExplorer;
+export default memo(FileExplorer);

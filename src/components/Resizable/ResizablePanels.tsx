@@ -1,5 +1,6 @@
 import React, {
   FC,
+  memo,
   MouseEvent,
   ReactNodeArray,
   useEffect,
@@ -100,4 +101,4 @@ const ResizablePanels: FC<ResizablePanelsProps> = ({
   );
 };
 
-export default ResizablePanels;
+export default memo(ResizablePanels);
