@@ -8,7 +8,6 @@ import { iconsURL } from "../../utils/constants";
 import extensions from "./ext";
 
 export interface FileProps {
-  key: string;
   name: string;
   edit?: boolean;
   className?: string;

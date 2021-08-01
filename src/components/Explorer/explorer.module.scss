@@ -4,7 +4,8 @@
   .head {
     border-bottom: 1px solid #303030;
     padding: 5px 10px;
-
+  }
+  .hoverable {
     .icons {
       display: none;
     }
@@ -18,9 +19,12 @@
 
   .files {
     padding: 5px 10px;
-    &:hover, &.active {
-        background-color: #222222;
-        color: #fff;
+    cursor: pointer;
+    user-select: none;
+    &:hover,
+    &.active {
+      background-color: #222222;
+      color: #fff;
     }
   }
 }
