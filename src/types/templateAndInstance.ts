@@ -1,6 +1,10 @@
 import { User } from "./auth";
 
-export type File = { name: string; files: string[] };
+export type File = {
+  name: string;
+  files: string[];
+  folder?: Files[];
+};
 
 export interface Files {
   name: string;

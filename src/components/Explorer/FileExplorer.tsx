@@ -9,19 +9,15 @@ import { FileFilled, FolderFilled } from "@ant-design/icons";
 import Folder from "./Folder";
 
 const FileExplorer: FC = () => {
-  // const files = useSelector((state: RootState) => state.editorInstance.files);
+  const allFiles = useSelector(
+    (state: RootState) => state.editorInstance.files
+  );
 
-  const allFiles: Files = {
-    name: "Static",
-    files: ["index.html"],
-    folder: [
-      { name: "styles", files: ["index.html"] },
-      { name: "scripts", files: ["script.js"] },
-    ],
-  };
   return (
     <div className={styles.wrapper}>
-      <div className={`${styles.head} ${styles.hoverable} flex justify-content-between`}>
+      <div
+        className={`${styles.head} ${styles.hoverable} flex justify-content-between`}
+      >
         <Typography.Text strong>{allFiles.name}</Typography.Text>
         <Space className={styles.icons}>
           <FileFilled />
@@ -29,11 +25,18 @@ const FileExplorer: FC = () => {
         </Space>
       </div>
       <div>
-        {allFiles.folder?.map(({ name, files }) => (
-          <Folder key={`${allFiles.name}-${name}`} className={styles.files} name={name} files={files} />
+        {allFiles.folder?.map(({ name, files, folder }) => (
+          <Folder
+            key={`${allFiles.name}-${name}`}
+            className={styles.files}
+            name={name}
+            files={files}
+            folder={folder}
+            parent={name}
+          />
         ))}
         {allFiles.files.map((file) => (
-          <File className={styles.files} key={file} name={file} />
+          <File className={styles.files} key={file} name={file} path={file} />
         ))}
       </div>
     </div>

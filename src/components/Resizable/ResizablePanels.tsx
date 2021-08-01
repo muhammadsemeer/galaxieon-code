@@ -75,7 +75,7 @@ const ResizablePanels: FC<ResizablePanelsProps> = ({
     <div
       className={styles.container}
       style={{ height }}
-      onMouseLeave={stopResize}
+      onMouseLeave={(e) => currentDragger.dragger && stopResize(e)}
       onMouseUp={(e) => currentDragger.dragger && stopResize(e)}
     >
       {children
