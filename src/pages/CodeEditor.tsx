@@ -14,6 +14,8 @@ import { addInstance } from "../store/instance/editorInstance";
 import ExpWrapper from "../components/Code/ExpWrapper";
 import ResizablePanels from "../components/Resizable/ResizablePanels";
 import EditorWrapper from "../components/Code/EditorWrapper";
+import useQuery from "../utils/useQuery";
+import { setCode } from "../store/editor/codeSlice";
 
 const CodeEditor: FC = () => {
   const dispatch = useDispatch();
@@ -24,6 +26,7 @@ const CodeEditor: FC = () => {
   const showPane = useSelector(
     (state: RootState) => state.editorSidePane.showPane
   );
+  const query = useQuery();
 
   useEffect(() => {
     dispatch(collapseWithPayload(true));
@@ -37,6 +40,22 @@ const CodeEditor: FC = () => {
         handleError(error, history, dispatch, false)
       );
   }, []);
+
+  const getCode = () => {
+    axios
+      .get(`/instance/code/${instance.id}/${query.get("file")}`)
+      .then((res: AxiosResponse<string>) => {
+        dispatch(setCode(res.data));
+      })
+      .catch((error: AxiosError) =>
+        handleError(error, history, dispatch, false)
+      );
+  };
+
+  useEffect(() => {
+    instance.id && query.get("file") && getCode();
+  }, [query.get("file"), instance.id]);
+
   const constrains = [250, window.innerWidth / 2, window.innerWidth / 2];
   const minConstrains = [250, 150, 150];
   return (
