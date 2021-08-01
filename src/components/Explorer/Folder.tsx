@@ -25,7 +25,7 @@ const Folder: FC<FolderProps> = ({
 }) => {
   const query = useQuery();
   const filesInQuery = query.get("file")?.split("/").slice(0, -1).join("/");
-  console.log(filesInQuery?.match(parent as string));
+  
   const [isOpen, setIsOpen] = useState(
     filesInQuery === parent ||
       (filesInQuery?.match(parent as string) &&
