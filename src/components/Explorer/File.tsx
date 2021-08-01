@@ -41,16 +41,15 @@ const File: FC<FileProps> = ({ name, edit, className, path }) => {
       className={`${className} ${isActive && styles.active}`}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      onClick={() => {
+        history.push({
+          pathname: `/instance/editor/${instanceId}`,
+          search: `file=${path ? path : name}`,
+        });
+      }}
     >
       {edit ? null : (
-        <Space
-          onClick={() => {
-            history.push({
-              pathname: `/instance/editor/${instanceId}`,
-              search: `file=${path ? path : name}`,
-            });
-          }}
-        >
+        <Space>
           {extensions[ext] ? (
             <img
               style={{ width: 15 }}
@@ -59,7 +58,9 @@ const File: FC<FileProps> = ({ name, edit, className, path }) => {
           ) : (
             <FileFilled style={{ color: blue.primary }} />
           )}
-          <Typography.Text type={isActive ? undefined : nameType}>{name}</Typography.Text>
+          <Typography.Text type={isActive ? undefined : nameType}>
+            {name}
+          </Typography.Text>
         </Space>
       )}
     </div>
