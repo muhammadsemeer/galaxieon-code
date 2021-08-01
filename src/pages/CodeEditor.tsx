@@ -16,6 +16,7 @@ import ResizablePanels from "../components/Resizable/ResizablePanels";
 import EditorWrapper from "../components/Code/EditorWrapper";
 import useQuery from "../utils/useQuery";
 import { setCode } from "../store/editor/codeSlice";
+import { setActiveTabs } from "../store/editor/editor";
 
 const CodeEditor: FC = () => {
   const dispatch = useDispatch();
@@ -56,7 +57,13 @@ const CodeEditor: FC = () => {
   };
 
   useEffect(() => {
-    if (instance.id && query.get("file") && !code[query.get("file") as string]) getCode();
+    if (instance.id && query.get("file") && !code[query.get("file") as string])
+      getCode();
+    if (query.get("file")) {
+      let fileArrays = query.get("file")?.split("/");
+      let file = fileArrays?.[fileArrays.length - 1];
+      dispatch(setActiveTabs({ name: file as string, key: query.get("file") as string }));
+    }
   }, [query.get("file"), instance.id]);
 
   const constrains = [250, window.innerWidth / 2, window.innerWidth / 2];
