@@ -1,6 +1,6 @@
 import { blue } from "@ant-design/colors";
 import { FileFilled } from "@ant-design/icons";
-import { Input, Space, Typography } from "antd";
+import { Space, Typography } from "antd";
 import { BaseType } from "antd/lib/typography/Base";
 import React, { FC, useState, memo } from "react";
 import { useSelector } from "react-redux";

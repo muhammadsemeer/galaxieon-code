@@ -1,0 +1,12 @@
+.tab {
+  height: 100%;
+  width: 150px;
+  background-color: #222;
+  border-right: 1px solid #303030;
+  user-select: none;
+  cursor: pointer;
+
+  &.active {
+    border-bottom: 2px solid rgb(35, 105, 190);
+  }
+}
