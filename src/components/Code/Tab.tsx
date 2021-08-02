@@ -35,6 +35,10 @@ const Tab: FC<TabProps> = ({ name, path }) => {
   const close: MouseEventHandler<HTMLDivElement> = (event) => {
     event.stopPropagation();
     dispatch(removeActiveTab(path));
+    query.delete("file");
+    history.replace({
+      search: query.toString(),
+    });
   };
 
   return (
