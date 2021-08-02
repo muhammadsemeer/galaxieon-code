@@ -2,10 +2,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface EditorState {
   activeTabs: { name: string; key: string }[];
+  removed: string;
 }
 
 const initialState: EditorState = {
   activeTabs: [],
+  removed: "",
 };
 
 export const editorSlice = createSlice({
@@ -23,9 +25,16 @@ export const editorSlice = createSlice({
         return { ...state, activeTabs: [...state.activeTabs, payload] };
       }
     },
+    removeActiveTab: (state, { payload }: PayloadAction<string>) => {
+      return {
+        ...state,
+        activeTabs: state.activeTabs.filter((tab) => tab.key !== payload),
+        removed: payload,
+      };
+    },
   },
 });
 
-export const { setActiveTabs } = editorSlice.actions;
+export const { setActiveTabs, removeActiveTab } = editorSlice.actions;
 
 export default editorSlice.reducer;
