@@ -16,7 +16,7 @@ const FileExplorer: FC = () => {
   return (
     <div className={styles.wrapper}>
       <div
-        className={`${styles.head} ${styles.hoverable} flex justify-content-between`}
+        className={`${styles.head} ${styles.hoverable} flex justify-content-between align-center`}
       >
         <Typography.Text strong>{allFiles.name}</Typography.Text>
         <Space className={styles.icons}>
