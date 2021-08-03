@@ -37,6 +37,7 @@
     "fuse.js": "^6.4.6",
     "less": "^4.1.1",
     "monaco-editor": "^0.26.1",
+    "monaco-themes": "^0.3.3",
     "node-sass": "^6.0.1",
     "random-words": "^1.1.1",
     "react": "^17.0.2",
