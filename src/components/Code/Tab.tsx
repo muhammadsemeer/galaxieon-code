@@ -7,8 +7,7 @@ import { blue } from "@ant-design/colors";
 import { iconsURL } from "../../utils/constants";
 import useQuery from "../../utils/useQuery";
 import { useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../store";
+import { useDispatch } from "react-redux";
 import { removeActiveTab } from "../../store/editor/editor";
 
 export interface TabProps {
@@ -19,15 +18,13 @@ export interface TabProps {
 const Tab: FC<TabProps> = ({ name, path }) => {
   const splitedName = name.split(".");
   const ext = splitedName[splitedName.length - 1];
-  const instance = useSelector((state: RootState) => state.editorInstance);
 
   const query = useQuery();
   const history = useHistory();
   const dispatch = useDispatch();
 
   const active: MouseEventHandler<HTMLDivElement> = (event) => {
-    history.push({
-      pathname: `/instance/editor/${instance.id}`,
+    history.replace({
       search: `file=${path}`,
     });
   };

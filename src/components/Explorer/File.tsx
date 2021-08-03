@@ -3,9 +3,7 @@ import { FileFilled } from "@ant-design/icons";
 import { Space, Typography } from "antd";
 import { BaseType } from "antd/lib/typography/Base";
 import React, { FC, useState, memo } from "react";
-import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { RootState } from "../../store";
 import { iconsURL } from "../../utils/constants";
 import extensions from "./ext";
 import styles from "./explorer.module.scss";
@@ -19,7 +17,6 @@ export interface FileProps {
 }
 
 const File: FC<FileProps> = ({ name, edit, className, path }) => {
-  const instanceId = useSelector((state: RootState) => state.editorInstance.id);
   const namesArray = name.split(".");
   const ext = namesArray[namesArray.length - 1];
   const [nameType, setNameType] = useState<BaseType | undefined>("secondary");
@@ -42,8 +39,7 @@ const File: FC<FileProps> = ({ name, edit, className, path }) => {
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       onClick={() => {
-        history.push({
-          pathname: `/instance/editor/${instanceId}`,
+        history.replace({
           search: `file=${path ? path : name}`,
         });
       }}
