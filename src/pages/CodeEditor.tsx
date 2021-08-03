@@ -62,11 +62,20 @@ const CodeEditor: FC = () => {
     if (query.get("file")) {
       let fileArrays = query.get("file")?.split("/");
       let file = fileArrays?.[fileArrays.length - 1];
-      dispatch(setActiveTabs({ name: file as string, key: query.get("file") as string }));
+      dispatch(
+        setActiveTabs({
+          name: file as string,
+          key: query.get("file") as string,
+        })
+      );
     }
   }, [query.get("file"), instance.id]);
 
-  const constrains = [250, window.innerWidth / 2, window.innerWidth / 2];
+  const constrains = [
+    250,
+    (window.innerWidth - 250) / 2,
+    (window.innerWidth - 250) / 2,
+  ];
   const minConstrains = [250, 150, 150];
   return (
     <Spin indicator={<LoadingOutlined />} spinning={isLoading}>
