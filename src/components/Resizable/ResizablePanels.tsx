@@ -1,9 +1,12 @@
 import React, {
+  createRef,
   FC,
   memo,
   MouseEvent,
   ReactNodeArray,
+  RefObject,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import styles from "./resize.module.scss";
@@ -21,9 +24,7 @@ const ResizablePanels: FC<ResizablePanelsProps> = ({
   children,
   height,
 }) => {
-  const [panels, setPanels] = useState([300, 300, 300]);
-
-  const [currentDragger, setDragger] = useState<{
+  const currentDragger = useRef<{
     isDragging: boolean;
     dragger: number | null;
     initialPos: number | null;
@@ -33,60 +34,62 @@ const ResizablePanels: FC<ResizablePanelsProps> = ({
     initialPos: null,
   });
 
+  let resizablePanels = useRef<RefObject<HTMLDivElement>[]>([]);
+
+  resizablePanels.current = children.map((child, index) => createRef());
+
   const startResize = (e: MouseEvent<HTMLDivElement>, index: number) => {
-    setDragger({
+    currentDragger.current = {
       isDragging: true,
       dragger: index,
       initialPos: e.clientX,
-    });
+    };
   };
 
   const handleResize = (e: MouseEvent<HTMLDivElement>) => {
-    const { isDragging, dragger, initialPos } = currentDragger;
+    const { isDragging, dragger, initialPos } = currentDragger.current;
     if (isDragging && dragger && initialPos) {
-      let dargTo = e.clientX - initialPos;
-      let newPanels = [...panels];
-      let newWidth = (newPanels[dragger - 1] || 0) + dargTo;
-      let adjacentWidth = (newPanels[dragger] || 0) - dargTo;
-      let minWidth = minConstrains[dragger - 1] || 100;
-      let adjMinWidth = minConstrains[dragger] || 100;
-      if (minWidth <= newWidth && adjMinWidth <= adjacentWidth) {
-        newPanels[dragger] = adjacentWidth;
-        newPanels[dragger - 1] = newWidth;
+      let dargTo = initialPos - e.clientX;
+      const currentElem = resizablePanels.current[dragger - 1].current;
+      const adjElem = resizablePanels.current[dragger].current;
 
-        setDragger({ ...currentDragger, initialPos: e.clientX });
-        setPanels((current) => newPanels);
+      if (currentElem?.style && adjElem?.style) {
+        let newWidth = currentElem?.getBoundingClientRect().width - dargTo;
+        let adjacentWidth = adjElem?.getBoundingClientRect().width + dargTo;
+        currentElem.style.width = `${newWidth}px`;
+        adjElem.style.width = `${adjacentWidth}px`;
+
+        currentDragger.current.initialPos = e.clientX;
       }
     }
   };
 
   const stopResize = (e: MouseEvent<HTMLDivElement>) => {
-    setDragger({
+    currentDragger.current = {
       isDragging: false,
       dragger: null,
       initialPos: null,
-    });
+    };
   };
-
-  useEffect(() => {
-    setPanels(constrains);
-  }, [constrains]);
 
   return (
     <div
       className={styles.container}
       style={{ height }}
-      onMouseLeave={(e) => currentDragger.dragger && stopResize(e)}
-      onMouseUp={(e) => currentDragger.dragger && stopResize(e)}
+      onMouseLeave={(e) => currentDragger.current.dragger && stopResize(e)}
+      onMouseUp={(e) => currentDragger.current.dragger && stopResize(e)}
     >
       {children
         .filter((value) => value !== false)
         .map((child, index) => (
           <div
+            ref={resizablePanels.current[index]}
             className={styles.resize}
             key={(Date.now() + Math.random() * 10).toString(16)}
-            style={{ width: panels[index] }}
-            onMouseMove={(e) => currentDragger.dragger && handleResize(e)}
+            style={{ width: constrains[index], minWidth: minConstrains[index] }}
+            onMouseMove={(e) =>
+              currentDragger.current.dragger && handleResize(e)
+            }
           >
             <div className={styles.panel}>{child}</div>
             {index !== 0 && (
