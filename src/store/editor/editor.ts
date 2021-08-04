@@ -2,12 +2,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface EditorState {
   activeTabs: { name: string; key: string }[];
-  removed: string;
 }
 
 const initialState: EditorState = {
   activeTabs: [],
-  removed: "",
 };
 
 export const editorSlice = createSlice({
@@ -29,7 +27,6 @@ export const editorSlice = createSlice({
       return {
         ...state,
         activeTabs: state.activeTabs.filter((tab) => tab.key !== payload),
-        removed: payload,
       };
     },
   },
