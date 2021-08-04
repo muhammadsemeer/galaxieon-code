@@ -11,6 +11,8 @@ const exts: any = {
   yarn: "yarn",
   jsx: "react",
   ts: "typescript",
+  c: "c",
+  cpp: "cpp",
 };
 
-export default exts
+export default exts;
