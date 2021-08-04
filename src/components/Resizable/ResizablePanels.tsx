@@ -34,6 +34,8 @@ const ResizablePanels: FC<ResizablePanelsProps> = ({
     initialPos: null,
   });
 
+  const width = useRef<number[]>(constrains);
+
   let resizablePanels = useRef<RefObject<HTMLDivElement>[]>([]);
 
   resizablePanels.current = children.map((child, index) => createRef());
@@ -56,6 +58,8 @@ const ResizablePanels: FC<ResizablePanelsProps> = ({
       if (currentElem?.style && adjElem?.style) {
         let newWidth = currentElem?.getBoundingClientRect().width - dargTo;
         let adjacentWidth = adjElem?.getBoundingClientRect().width + dargTo;
+        width.current[dragger - 1] = newWidth;
+        width.current[dragger] = adjacentWidth;
         currentElem.style.width = `${newWidth}px`;
         adjElem.style.width = `${adjacentWidth}px`;
 
@@ -86,7 +90,7 @@ const ResizablePanels: FC<ResizablePanelsProps> = ({
             ref={resizablePanels.current[index]}
             className={styles.resize}
             key={(Date.now() + Math.random() * 10).toString(16)}
-            style={{ width: constrains[index], minWidth: minConstrains[index] }}
+            style={{ width: width.current[index], minWidth: minConstrains[index] }}
             onMouseMove={(e) =>
               currentDragger.current.dragger && handleResize(e)
             }
