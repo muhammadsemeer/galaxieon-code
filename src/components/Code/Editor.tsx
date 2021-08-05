@@ -18,7 +18,6 @@ const Editor: FC = () => {
   const fileArray = activeFile?.split("/");
   const fileName = fileArray?.[fileArray.length - 1];
   const fileExtension = fileName?.split(".")[fileName.split(".").length - 1];
-  const code = useSelector((state: RootState) => state.code);
   const monacoRef = useRef<editor.IStandaloneCodeEditor>();
 
   const handleEditorWillMount: BeforeMount = (monaco) => {
@@ -46,7 +45,7 @@ const Editor: FC = () => {
       height="calc(100vh - 92px)"
       theme="vs-dark"
       defaultLanguage={fileExtension ? extension[fileExtension] : ""}
-      defaultValue={code[activeFile ? activeFile : ""]}
+      // defaultValue={}
       path={activeFile ? activeFile : ""}
       beforeMount={handleEditorWillMount}
       onMount={handleEditorDidMount}

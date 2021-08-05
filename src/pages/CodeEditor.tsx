@@ -15,7 +15,6 @@ import ExpWrapper from "../components/Code/ExpWrapper";
 import ResizablePanels from "../components/Resizable/ResizablePanels";
 import EditorWrapper from "../components/Code/EditorWrapper";
 import useQuery from "../utils/useQuery";
-import { setCode } from "../store/editor/codeSlice";
 import { setActiveTabs } from "../store/editor/editor";
 import Database from "../Database";
 
@@ -26,7 +25,6 @@ const CodeEditor: FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
   const instance = useSelector((state: RootState) => state.editorInstance);
-  const code = useSelector((state: RootState) => state.code);
   const showPane = useSelector(
     (state: RootState) => state.editorSidePane.showPane
   );
