@@ -2,7 +2,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { Spin } from "antd";
 import axios from "../api/index";
 import { AxiosError, AxiosResponse } from "axios";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import Nav from "../components/Code/Nav";
@@ -17,6 +17,7 @@ import EditorWrapper from "../components/Code/EditorWrapper";
 import useQuery from "../utils/useQuery";
 import { setCode } from "../store/editor/codeSlice";
 import { setActiveTabs } from "../store/editor/editor";
+import Database from "../Database";
 
 const CodeEditor: FC = () => {
   const dispatch = useDispatch();
@@ -29,6 +30,31 @@ const CodeEditor: FC = () => {
     (state: RootState) => state.editorSidePane.showPane
   );
   const query = useQuery();
+  let { current: database } = useRef<Database>(new Database("", 0));
+
+  const createDB = (instance: Instance) => {
+    database = new Database(
+      instance.subdomain ? instance.subdomain : instance.id,
+      1
+    );
+    database
+      .init([
+        {
+          name: "f_cache",
+          options: { keyPath: "key" },
+        },
+      ])
+      .then(() => {
+        setIsLoading(false);
+      })
+      .catch(() => {
+        history.push("/error", {
+          status: "error",
+          title: "Incompatible Browser",
+          message: "Update Browser",
+        });
+      });
+  };
 
   useEffect(() => {
     dispatch(collapseWithPayload(true));
@@ -36,11 +62,14 @@ const CodeEditor: FC = () => {
       .get(`/instance/${id}`)
       .then((response: AxiosResponse<Instance>) => {
         dispatch(addInstance(response.data));
-        setIsLoading(false);
+        createDB(response.data);
       })
       .catch((error: AxiosError) =>
         handleError(error, history, dispatch, false)
       );
+    return () => {
+      database.delete();
+    };
   }, []);
 
   const getCode = () => {
