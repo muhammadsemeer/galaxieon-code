@@ -28,6 +28,7 @@ export interface Instance {
   name: string;
   description?: string;
   keywords?: string;
+  subdomain?:string;
   isPriavte?: boolean;
   fork?: boolean;
   files: Files;
