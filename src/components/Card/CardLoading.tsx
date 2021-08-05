@@ -32,30 +32,32 @@ const CardLoading: FC<{ count?: number; isAdd?: boolean }> = ({
       {!isAdd ? (
         arr
       ) : (
-        <AntCard
-          style={{
-            height: 250,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          bodyStyle={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-evenly",
-            height: 100,
-            padding: 0,
-          }}
-          hoverable
-          onClick={() => setModalUp(true)}
-        >
-          <PlusCircleFilled style={{ fontSize: 25, color: grey[4] }} />
-          <Typography.Text style={{ color: grey[4] }}>
-            New Instance
-          </Typography.Text>
-        </AntCard>
+        <>
+          <AntCard
+            style={{
+              height: 250,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            bodyStyle={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-evenly",
+              height: 100,
+              padding: 0,
+            }}
+            hoverable
+            onClick={() => setModalUp(true)}
+          >
+            <PlusCircleFilled style={{ fontSize: 25, color: grey[4] }} />
+            <Typography.Text style={{ color: grey[4] }}>
+              New Instance
+            </Typography.Text>
+          </AntCard>
+          <CreateModal visible={isModalUp} onCancel={() => setModalUp(false)} />
+        </>
       )}
-      <CreateModal visible={isModalUp} onCancel={() => setModalUp(false)} />
     </>
   );
 };
