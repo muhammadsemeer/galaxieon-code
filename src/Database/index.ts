@@ -1,5 +1,5 @@
 class Database {
-  db: IDBDatabase = {} as IDBDatabase;
+  db: IDBDatabase | null = null;
   constructor(readonly dbName: string, readonly version: number) {}
 
   init(
@@ -29,13 +29,30 @@ class Database {
   }
   add(objectStoreName: string, key: string, value: any): Promise<Event> {
     return new Promise((resolve, reject) => {
-      console.log({ objectStoreName, key, value });
-      let request = this.db
-        .transaction(objectStoreName, "readwrite")
-        .objectStore(objectStoreName)
-        .add({value, key});
-      request.addEventListener("success", resolve);
-      request.addEventListener("error", reject);
+      if (this.db) {
+        let request = this.db
+          .transaction(objectStoreName, "readwrite")
+          .objectStore(objectStoreName)
+          .add({ value, key });
+        request.addEventListener("success", resolve);
+        request.addEventListener("error", reject);
+      } else {
+        reject(new Error("Database not initialized"));
+      }
+    });
+  }
+  get(objectStoreName: string, key: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (this.db) {
+        let request = this.db
+          .transaction(objectStoreName, "readonly")
+          .objectStore(objectStoreName)
+          .get(key);
+        request.addEventListener("success", resolve);
+        request.addEventListener("error", reject);
+      } else {
+        reject(new Error("Database not initialized"));
+      }
     });
   }
 }

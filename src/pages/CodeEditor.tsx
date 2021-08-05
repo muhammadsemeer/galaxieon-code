@@ -19,6 +19,7 @@ import { setCode } from "../store/editor/codeSlice";
 import { setActiveTabs } from "../store/editor/editor";
 import Database from "../Database";
 
+const database = new Database("g_code", 1);
 const CodeEditor: FC = () => {
   const dispatch = useDispatch();
   const { id } = useParams<{ id: string }>();
@@ -30,17 +31,12 @@ const CodeEditor: FC = () => {
     (state: RootState) => state.editorSidePane.showPane
   );
   const query = useQuery();
-  let { current: database } = useRef<Database>(new Database("", 0));
 
   const createDB = (instance: Instance) => {
-    database = new Database(
-      instance.subdomain ? instance.subdomain : instance.id,
-      1
-    );
     database
       .init([
         {
-          name: "f_cache",
+          name: instance.id,
           options: { keyPath: "key" },
         },
       ])
@@ -67,27 +63,34 @@ const CodeEditor: FC = () => {
       .catch((error: AxiosError) =>
         handleError(error, history, dispatch, false)
       );
-    return () => {
-      database.delete();
-    };
+    // return () => {
+    //   database.delete();
+    // };
   }, []);
 
   const getCode = () => {
-    axios
-      .get(`/instance/code/${instance.id}/${query.get("file")}`)
-      .then((res: AxiosResponse<string>) => {
-        dispatch(
-          setCode({ code: res.data, name: query.get("file") as string })
-        );
+    database
+      .get(instance.id, query.get("file") as string)
+      .then(({ target }) => {
+        if (!target.result) {
+          axios
+            .get(`/instance/code/${instance.id}/${query.get("file")}`)
+            .then((res: AxiosResponse<string>) =>
+              database.add(instance.id, query.get("file") as string, res.data)
+            )
+            .catch((error: AxiosError) =>
+              handleError(error, history, dispatch, false)
+            );
+        }
       })
-      .catch((error: AxiosError) =>
-        handleError(error, history, dispatch, false)
-      );
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   useEffect(() => {
-    if (instance.id && query.get("file") && !code[query.get("file") as string])
-      getCode();
+    console.log(!isLoading && instance.id && query.get("file"));
+    if (!isLoading && instance.id && query.get("file")) getCode();
     if (query.get("file")) {
       let fileArrays = query.get("file")?.split("/");
       let file = fileArrays?.[fileArrays.length - 1];
@@ -98,7 +101,7 @@ const CodeEditor: FC = () => {
         })
       );
     }
-  }, [query.get("file"), instance.id]);
+  }, [query.get("file"), instance.id, isLoading]);
 
   const constrains = [
     250,
