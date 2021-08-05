@@ -63,9 +63,6 @@ const CodeEditor: FC = () => {
       .catch((error: AxiosError) =>
         handleError(error, history, dispatch, false)
       );
-    // return () => {
-    //   database.delete();
-    // };
   }, []);
 
   const getCode = () => {
