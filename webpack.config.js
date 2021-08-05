@@ -2,9 +2,10 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const Dotenv = require("dotenv-webpack");
 const webpack = require("webpack");
 const ErrorOverlayPlugin = require("error-overlay-webpack-plugin");
+
+require("dotenv").config();
 
 const devMode = process.env.NODE_ENV !== "production";
 module.exports = {
@@ -89,8 +90,10 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: "vendor.[contenthash].css",
     }),
-    new Dotenv(),
     new webpack.HotModuleReplacementPlugin(),
+    new webpack.DefinePlugin({
+      "process.env": JSON.stringify(process.env),
+    })
   ],
   devServer: {
     contentBase: path.join(__dirname, `src`),
