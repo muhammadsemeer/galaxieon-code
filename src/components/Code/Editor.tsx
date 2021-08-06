@@ -46,7 +46,13 @@ const Editor: FC<EditorProps> = ({ code }) => {
 
   const onChange: OnChange = (value, ev) => {
     if (activeFile && value) {
-      dispatch(setCode({ key: activeFile, code: value, isSaved: false }));
+      dispatch(
+        setCode({
+          key: activeFile,
+          code: value,
+          isSaved: value === code,
+        })
+      );
     }
   };
 
