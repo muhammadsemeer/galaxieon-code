@@ -1,4 +1,4 @@
-import { CloseOutlined, FileFilled } from "@ant-design/icons";
+import { CloseOutlined, DotChartOutlined, FileFilled } from "@ant-design/icons";
 import { Button, Typography } from "antd";
 import React, { FC, MouseEventHandler } from "react";
 import styles from "./tab.module.scss";
@@ -13,11 +13,12 @@ import { removeActiveTab } from "../../store/editor/editor";
 export interface TabProps {
   name: string;
   path: string;
+  isSaved: boolean;
 }
 
-const Tab: FC<TabProps> = ({ name, path }) => {
-  const splitedName = name.split(".");
-  const ext = splitedName[splitedName.length - 1];
+const Tab: FC<TabProps> = ({ name, path, isSaved }) => {
+  const splittedName = name.split(".");
+  const ext = splittedName[splittedName.length - 1];
 
   const query = useQuery();
   const history = useHistory();
@@ -54,7 +55,16 @@ const Tab: FC<TabProps> = ({ name, path }) => {
       <Button
         type="text"
         size="small"
-        icon={<CloseOutlined style={{ fontSize: 12 }} />}
+        className={`flex middle ${styles.saved}`}
+        icon={
+          isSaved ? (
+            <CloseOutlined style={{ fontSize: 12 }} />
+          ) : (
+            <span
+              className={styles.notSaved}
+            ></span>
+          )
+        }
         onClick={close}
       />
     </div>

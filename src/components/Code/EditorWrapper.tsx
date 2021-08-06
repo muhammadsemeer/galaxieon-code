@@ -10,6 +10,7 @@ import styles from "./wrapper.module.scss";
 import axios from "../../api/index";
 import { AxiosError, AxiosResponse } from "axios";
 import { useHistory } from "react-router-dom";
+import { setCode as setGlobalCode } from "../../store/editor/editor";
 
 const EditorWrapper: FC<{ database: Database }> = ({ database }) => {
   const instance = useSelector((state: RootState) => state.editorInstance);
@@ -37,6 +38,13 @@ const EditorWrapper: FC<{ database: Database }> = ({ database }) => {
             })
             .then((response) => {
               setCode(code);
+              dispatch(
+                setGlobalCode({
+                  code,
+                  key: query.get("file") as string,
+                  isSaved: true,
+                })
+              );
             })
             .catch((error: AxiosError) =>
               handleError(error, history, dispatch, false)
@@ -60,14 +68,17 @@ const EditorWrapper: FC<{ database: Database }> = ({ database }) => {
         <>
           <div className={`${styles.tab} flex`}>
             {editor.activeTabs.map(({ name, key }) => (
-              <Tab name={name} key={key} path={key} />
+              <Tab
+                name={name}
+                key={key}
+                path={key}
+                isSaved={editor.code[key]?.isSaved}
+              />
             ))}
           </div>
         </>
       )}
-      {code !== undefined && (
-        <Editor code={code} />
-      )}
+      {code !== undefined && <Editor code={code} />}
     </>
   );
 };

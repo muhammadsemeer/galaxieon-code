@@ -8,5 +8,24 @@
 
   &.active {
     border-bottom: 2px solid rgb(35, 105, 190);
+    .saved {
+      visibility: visible;
+    }
+  }
+  &:hover .saved {
+    visibility: visible;
+  }
+
+  .saved {
+    visibility: hidden;
+  }
+
+  .notSaved {
+    width: 8px;
+    height: 8px;
+    border: 5px solid;
+    background: #fff;
+    opacity: 0.5;
+    border-radius: 50%;
   }
 }
