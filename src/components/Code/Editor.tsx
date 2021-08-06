@@ -1,4 +1,4 @@
-import React, { FC, memo, useRef } from "react";
+import React, { FC, memo, useEffect, useRef } from "react";
 import Monaco, {
   OnMount,
   BeforeMount,
@@ -12,10 +12,14 @@ import { RootState } from "../../store";
 import { emmetHTML, emmetCSS, emmetJSX } from "emmet-monaco-es";
 import { editor } from "monaco-editor/esm/vs/editor/editor.api";
 
-const Editor: FC = () => {
-  const query = useQuery();
-  const activeFile = query.get("file");
-  const fileArray = activeFile?.split("/");
+export interface EditorProps {
+  name: string;
+  path: string;
+  code: string;
+}
+
+const Editor: FC<EditorProps> = ({ name, path, code }) => {
+  const fileArray = name.split("/");
   const fileName = fileArray?.[fileArray.length - 1];
   const fileExtension = fileName?.split(".")[fileName.split(".").length - 1];
   const monacoRef = useRef<editor.IStandaloneCodeEditor>();
@@ -45,8 +49,8 @@ const Editor: FC = () => {
       height="calc(100vh - 92px)"
       theme="vs-dark"
       defaultLanguage={fileExtension ? extension[fileExtension] : ""}
-      // defaultValue={}
-      path={activeFile ? activeFile : ""}
+      defaultValue={code}
+      path={path}
       beforeMount={handleEditorWillMount}
       onMount={handleEditorDidMount}
       onValidate={onValidate}

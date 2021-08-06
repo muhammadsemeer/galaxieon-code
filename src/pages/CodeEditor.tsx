@@ -63,29 +63,8 @@ const CodeEditor: FC = () => {
       );
   }, []);
 
-  const getCode = () => {
-    database
-      .get(instance.id, query.get("file") as string)
-      .then(({ target }) => {
-        if (!target.result) {
-          axios
-            .get(`/instance/code/${instance.id}/${query.get("file")}`)
-            .then((res: AxiosResponse<string>) =>
-              database.add(instance.id, query.get("file") as string, res.data)
-            )
-            .catch((error: AxiosError) =>
-              handleError(error, history, dispatch, false)
-            );
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
 
   useEffect(() => {
-    console.log(!isLoading && instance.id && query.get("file"));
-    if (!isLoading && instance.id && query.get("file")) getCode();
     if (query.get("file")) {
       let fileArrays = query.get("file")?.split("/");
       let file = fileArrays?.[fileArrays.length - 1];
@@ -96,7 +75,7 @@ const CodeEditor: FC = () => {
         })
       );
     }
-  }, [query.get("file"), instance.id, isLoading]);
+  }, [query.get("file")]);
 
   const constrains = [
     250,
@@ -113,7 +92,7 @@ const CodeEditor: FC = () => {
         minConstrains={showPane ? minConstrains : minConstrains.slice(1)}
       >
         {showPane && <ExpWrapper />}
-        <EditorWrapper />
+        {!isLoading && <EditorWrapper database={database} />}
         <div></div>
       </ResizablePanels>
     </Spin>
