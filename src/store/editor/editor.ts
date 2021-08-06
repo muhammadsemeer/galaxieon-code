@@ -1,11 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+type Code = {
+  code: string;
+  isSaved: boolean;
+};
 export interface EditorState {
   activeTabs: { name: string; key: string }[];
+  code: {
+    [index: string]: Code;
+  };
 }
 
 const initialState: EditorState = {
   activeTabs: [],
+  code: {},
 };
 
 export const editorSlice = createSlice({
@@ -29,9 +37,23 @@ export const editorSlice = createSlice({
         activeTabs: state.activeTabs.filter((tab) => tab.key !== payload),
       };
     },
+    setCode: (
+      state,
+      {
+        payload,
+      }: PayloadAction<{ key: string; code: string; isSaved: boolean }>
+    ) => {
+      return {
+        ...state,
+        code: {
+          ...state.code,
+          [payload.key]: { code: payload.code, isSaved: payload.isSaved },
+        },
+      };
+    },
   },
 });
 
-export const { setActiveTabs, removeActiveTab } = editorSlice.actions;
+export const { setActiveTabs, removeActiveTab, setCode } = editorSlice.actions;
 
 export default editorSlice.reducer;
