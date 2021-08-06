@@ -63,10 +63,10 @@ const EditorWrapper: FC<{ database: Database }> = ({ database }) => {
               <Tab name={name} key={key} path={key} />
             ))}
           </div>
-          {code !== undefined && editor.activeTabs.map(({ name, key }) => (
-            <Editor name={name} key={key} path={key} code={code} />
-          ))}
         </>
+      )}
+      {code !== undefined && (
+        <Editor code={code} />
       )}
     </>
   );

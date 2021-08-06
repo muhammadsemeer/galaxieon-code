@@ -7,22 +7,26 @@ import Monaco, {
 } from "@monaco-editor/react";
 import useQuery from "../../utils/useQuery";
 import extension from "../Explorer/ext";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { emmetHTML, emmetCSS, emmetJSX } from "emmet-monaco-es";
 import { editor } from "monaco-editor/esm/vs/editor/editor.api";
+import { setCode } from "../../store/editor/editor";
 
 export interface EditorProps {
-  name: string;
-  path: string;
   code: string;
 }
 
-const Editor: FC<EditorProps> = ({ name, path, code }) => {
-  const fileArray = name.split("/");
+const Editor: FC<EditorProps> = ({ code }) => {
+  const activeFile = useQuery().get("file");
+  const fileArray = activeFile?.split("/");
   const fileName = fileArray?.[fileArray.length - 1];
   const fileExtension = fileName?.split(".")[fileName.split(".").length - 1];
   const monacoRef = useRef<editor.IStandaloneCodeEditor>();
+  const value = useSelector(
+    (state: RootState) => state.editor.code[activeFile || ""]
+  );
+  const dispatch = useDispatch();
 
   const handleEditorWillMount: BeforeMount = (monaco) => {
     fileExtension === "html"
@@ -41,7 +45,9 @@ const Editor: FC<EditorProps> = ({ name, path, code }) => {
   };
 
   const onChange: OnChange = (value, ev) => {
-    console.log(value);
+    if (activeFile && value) {
+      dispatch(setCode({ key: activeFile, code: value, isSaved: false }));
+    }
   };
 
   return (
@@ -50,7 +56,8 @@ const Editor: FC<EditorProps> = ({ name, path, code }) => {
       theme="vs-dark"
       defaultLanguage={fileExtension ? extension[fileExtension] : ""}
       defaultValue={code}
-      path={path}
+      path={activeFile || ""}
+      value={value?.code}
       beforeMount={handleEditorWillMount}
       onMount={handleEditorDidMount}
       onValidate={onValidate}
