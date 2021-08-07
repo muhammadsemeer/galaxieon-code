@@ -11,8 +11,12 @@ import axios from "../../api/index";
 import { AxiosError, AxiosResponse } from "axios";
 import { useHistory } from "react-router-dom";
 import { setCode as setGlobalCode } from "../../store/editor/editor";
+import { Socket } from "socket.io-client";
 
-const EditorWrapper: FC<{ database: Database }> = ({ database }) => {
+const EditorWrapper: FC<{ database: Database; socket: Socket }> = ({
+  database,
+  socket,
+}) => {
   const instance = useSelector((state: RootState) => state.editorInstance);
   const query = useQuery();
   const editor = useSelector((state: RootState) => state.editor);
@@ -78,7 +82,7 @@ const EditorWrapper: FC<{ database: Database }> = ({ database }) => {
           </div>
         </>
       )}
-      {code !== undefined && <Editor code={code} />}
+      {code !== undefined && <Editor code={code} socket={socket} />}
     </>
   );
 };

@@ -12,12 +12,14 @@ import { RootState } from "../../store";
 import { emmetHTML, emmetCSS, emmetJSX } from "emmet-monaco-es";
 import { editor } from "monaco-editor/esm/vs/editor/editor.api";
 import { setCode } from "../../store/editor/editor";
+import { Socket } from "socket.io-client";
 
 export interface EditorProps {
   code: string;
+  socket: Socket;
 }
 
-const Editor: FC<EditorProps> = ({ code }) => {
+const Editor: FC<EditorProps> = ({ code, socket }) => {
   const activeFile = useQuery().get("file");
   const fileArray = activeFile?.split("/");
   const fileName = fileArray?.[fileArray.length - 1];
@@ -27,6 +29,7 @@ const Editor: FC<EditorProps> = ({ code }) => {
     (state: RootState) => state.editor.code[activeFile || ""]
   );
   const dispatch = useDispatch();
+  const instance = useSelector((state: RootState) => state.editorInstance);
 
   const handleEditorWillMount: BeforeMount = (monaco) => {
     fileExtension === "html"

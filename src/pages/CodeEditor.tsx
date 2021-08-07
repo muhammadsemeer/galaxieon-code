@@ -1,5 +1,5 @@
 import { LoadingOutlined } from "@ant-design/icons";
-import { Spin } from "antd";
+import { Spin, notification } from "antd";
 import axios from "../api/index";
 import { AxiosError, AxiosResponse } from "axios";
 import React, { FC, useEffect, useRef, useState } from "react";
@@ -17,6 +17,7 @@ import EditorWrapper from "../components/Code/EditorWrapper";
 import useQuery from "../utils/useQuery";
 import { setActiveTabs } from "../store/editor/editor";
 import Database from "../Database";
+import { io } from "socket.io-client";
 
 const database = new Database("g_code", 1);
 const CodeEditor: FC = () => {
@@ -63,7 +64,6 @@ const CodeEditor: FC = () => {
       );
   }, []);
 
-
   useEffect(() => {
     if (query.get("file")) {
       let fileArrays = query.get("file")?.split("/");
@@ -76,6 +76,39 @@ const CodeEditor: FC = () => {
       );
     }
   }, [query.get("file")]);
+
+  const { current: socket } = useRef(
+    io(`${process.env.SOCKET_ENDPOINT}/editor`, {
+      withCredentials: true,
+    })
+  );
+
+  useEffect(() => {
+    socket.on("connect", () => {
+      notification.success({
+        message: "Editor Online",
+        placement: "bottomRight",
+        duration: 3,
+      });
+      socket.emit("join", id);
+    });
+    socket.on("connect_err", (err) => {
+      console.log(new Error(err));
+      notification.error({
+        message: "Editor Offline",
+      });
+    });
+    socket.on("disconnect", () => {
+      notification.error({
+        message: "Disconnected",
+        duration: 3,
+        placement: "bottomRight",
+      });
+    });
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   const constrains = [
     250,
@@ -92,7 +125,7 @@ const CodeEditor: FC = () => {
         minConstrains={showPane ? minConstrains : minConstrains.slice(1)}
       >
         {showPane && <ExpWrapper />}
-        {!isLoading && <EditorWrapper database={database} />}
+        {!isLoading && <EditorWrapper database={database} socket={socket} />}
         <div></div>
       </ResizablePanels>
     </Spin>
