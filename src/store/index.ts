@@ -17,6 +17,9 @@ const store = configureStore({
     editorSidePane,
     editor,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: false
+}),
 });
 
 export default store;

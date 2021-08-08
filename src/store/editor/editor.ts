@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Socket } from "socket.io-client";
 
 type Code = {
   code: string;
@@ -9,11 +10,13 @@ export interface EditorState {
   code: {
     [index: string]: Code;
   };
+  socket: Socket | null;
 }
 
 const initialState: EditorState = {
   activeTabs: [],
   code: {},
+  socket: null,
 };
 
 export const editorSlice = createSlice({
@@ -51,9 +54,13 @@ export const editorSlice = createSlice({
         },
       };
     },
+    setSocket: (state, { payload }: PayloadAction<Socket>) => ({
+      ...state,
+      socket: payload,
+    }),
   },
 });
 
-export const { setActiveTabs, removeActiveTab, setCode } = editorSlice.actions;
+export const { setActiveTabs, removeActiveTab, setCode, setSocket } = editorSlice.actions;
 
 export default editorSlice.reducer;
