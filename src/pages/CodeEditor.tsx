@@ -15,7 +15,7 @@ import ExpWrapper from "../components/Code/ExpWrapper";
 import ResizablePanels from "../components/Resizable/ResizablePanels";
 import EditorWrapper from "../components/Code/EditorWrapper";
 import useQuery from "../utils/useQuery";
-import { setActiveTabs } from "../store/editor/editor";
+import { setActiveTabs, setSocket } from "../store/editor/editor";
 import Database from "../Database";
 import { io } from "socket.io-client";
 
@@ -91,6 +91,7 @@ const CodeEditor: FC = () => {
         duration: 3,
       });
       socket.emit("join", id);
+      dispatch(setSocket(socket));
     });
     socket.on("connect_err", (err) => {
       console.log(new Error(err));
@@ -125,7 +126,7 @@ const CodeEditor: FC = () => {
         minConstrains={showPane ? minConstrains : minConstrains.slice(1)}
       >
         {showPane && <ExpWrapper />}
-        {!isLoading && <EditorWrapper database={database} socket={socket} />}
+        {!isLoading && <EditorWrapper database={database} />}
         <div></div>
       </ResizablePanels>
     </Spin>

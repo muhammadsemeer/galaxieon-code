@@ -16,10 +16,9 @@ import { Socket } from "socket.io-client";
 
 export interface EditorProps {
   code: string;
-  socket: Socket;
 }
 
-const Editor: FC<EditorProps> = ({ code, socket }) => {
+const Editor: FC<EditorProps> = ({ code }) => {
   const activeFile = useQuery().get("file");
   const fileArray = activeFile?.split("/");
   const fileName = fileArray?.[fileArray.length - 1];

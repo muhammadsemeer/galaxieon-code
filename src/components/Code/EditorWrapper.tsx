@@ -13,10 +13,7 @@ import { useHistory } from "react-router-dom";
 import { setCode as setGlobalCode } from "../../store/editor/editor";
 import { Socket } from "socket.io-client";
 
-const EditorWrapper: FC<{ database: Database; socket: Socket }> = ({
-  database,
-  socket,
-}) => {
+const EditorWrapper: FC<{ database: Database }> = ({ database }) => {
   const instance = useSelector((state: RootState) => state.editorInstance);
   const query = useQuery();
   const editor = useSelector((state: RootState) => state.editor);
@@ -82,7 +79,7 @@ const EditorWrapper: FC<{ database: Database; socket: Socket }> = ({
           </div>
         </>
       )}
-      {code !== undefined && <Editor code={code} socket={socket} />}
+      {code !== undefined && <Editor code={code} />}
     </>
   );
 };
