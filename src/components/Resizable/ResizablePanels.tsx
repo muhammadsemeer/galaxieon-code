@@ -58,10 +58,12 @@ const ResizablePanels: FC<ResizablePanelsProps> = ({
       if (currentElem?.style && adjElem?.style) {
         let newWidth = currentElem?.getBoundingClientRect().width - dargTo;
         let adjacentWidth = adjElem?.getBoundingClientRect().width + dargTo;
-        width.current[dragger - 1] = newWidth;
-        width.current[dragger] = adjacentWidth;
-        currentElem.style.width = `${newWidth}px`;
-        adjElem.style.width = `${adjacentWidth}px`;
+        if (minConstrains[dragger - 1] <= newWidth) {
+          width.current[dragger - 1] = newWidth;
+          width.current[dragger] = adjacentWidth;
+          currentElem.style.width = `${newWidth}px`;
+          adjElem.style.width = `${adjacentWidth}px`;
+        }
 
         currentDragger.current.initialPos = e.clientX;
       }
@@ -75,6 +77,16 @@ const ResizablePanels: FC<ResizablePanelsProps> = ({
       initialPos: null,
     };
   };
+
+  useEffect(() => {
+    width.current = constrains;
+    constrains.forEach((constrain, index) => {
+      let elem = resizablePanels.current[index].current;
+      if (elem?.style) {
+        elem.style.width = `${constrain}px`;
+      }
+    });
+  }, [constrains]);
 
   return (
     <div
@@ -90,7 +102,9 @@ const ResizablePanels: FC<ResizablePanelsProps> = ({
             ref={resizablePanels.current[index]}
             className={styles.resize}
             key={(Date.now() + Math.random() * 10).toString(16)}
-            style={{ width: width.current[index], minWidth: minConstrains[index] }}
+            style={{
+              minWidth: minConstrains[index],
+            }}
             onMouseMove={(e) =>
               currentDragger.current.dragger && handleResize(e)
             }

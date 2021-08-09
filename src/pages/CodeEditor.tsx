@@ -122,7 +122,9 @@ const CodeEditor: FC = () => {
     <Spin indicator={<LoadingOutlined />} spinning={isLoading}>
       <Nav />
       <ResizablePanels
-        constrains={showPane ? constrains : constrains.slice(1)}
+        constrains={
+          showPane ? constrains : [window.innerWidth / 2, window.innerWidth / 2]
+        }
         height={"100vh"}
         minConstrains={showPane ? minConstrains : minConstrains.slice(1)}
       >
