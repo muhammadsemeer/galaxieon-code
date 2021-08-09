@@ -29,6 +29,8 @@ const Editor: FC<EditorProps> = ({ code }) => {
   );
   const dispatch = useDispatch();
   const instance = useSelector((state: RootState) => state.editorInstance);
+  const socket = useSelector((state: RootState) => state.editor.socket);
+  const database = useSelector((state: RootState) => state.editor.database);
 
   const handleEditorWillMount: BeforeMount = (monaco) => {
     fileExtension === "html"
@@ -40,6 +42,14 @@ const Editor: FC<EditorProps> = ({ code }) => {
 
   const handleEditorDidMount: OnMount = (editor, monaco) => {
     monacoRef.current = editor;
+    editor.addAction({
+      id: "code.save",
+      label: "Save",
+      keybindings: [monaco.KeyMod.CtrlCmd | monaco.KeyCode.KEY_S],
+      contextMenuGroupId: "modification",
+      contextMenuOrder: 1,
+      run: (editor) => saveCode(editor),
+    });
   };
 
   const onValidate: OnValidate = (markers) => {
@@ -47,7 +57,7 @@ const Editor: FC<EditorProps> = ({ code }) => {
   };
 
   const onChange: OnChange = (value, ev) => {
-    if (activeFile && value) {
+    if (activeFile && value !== undefined) {
       dispatch(
         setCode({
           key: activeFile,
@@ -57,6 +67,42 @@ const Editor: FC<EditorProps> = ({ code }) => {
       );
     }
   };
+
+  const saveCode = (editor?: editor.ICodeEditor) => {
+    let code = editor?.getValue() ?? value.code;
+    socket?.emit(
+      "change",
+      fileName,
+      code,
+      instance.id,
+      (err: Error, status: "OK" | "FAIL") => {
+        if (err) {
+          return console.log(err);
+        }
+        if (activeFile) {
+          database.put(instance.id, activeFile, code).then(() => {
+            dispatch(
+              setCode({
+                key: activeFile,
+                code,
+                isSaved: true,
+              })
+            );
+          }).catch((err) => console.error(err));
+        }
+      }
+    );
+  };
+
+  useEffect(() => {
+    let timeOut: number;
+    if (value?.code !== code && instance.autosave) {
+      timeOut = setTimeout(saveCode, 500);
+    }
+    return () => {
+      clearTimeout(timeOut);
+    };
+  }, [value?.code]);
 
   return (
     <Monaco
