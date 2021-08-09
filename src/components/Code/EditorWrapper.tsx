@@ -13,13 +13,17 @@ import { useHistory } from "react-router-dom";
 import { setCode as setGlobalCode } from "../../store/editor/editor";
 import { Socket } from "socket.io-client";
 
-const EditorWrapper: FC<{ database: Database }> = ({ database }) => {
+const EditorWrapper: FC = () => {
   const instance = useSelector((state: RootState) => state.editorInstance);
   const query = useQuery();
   const editor = useSelector((state: RootState) => state.editor);
   const dispatch = useDispatch();
   const history = useHistory();
   const [code, setCode] = useState<string>();
+  const globalCode = useSelector(
+    (state: RootState) => state.editor.code[query.get("file") || ""]
+  );
+  const database = useSelector((state: RootState) => state.editor.database);
 
   const getCode = () => {
     database
@@ -79,7 +83,7 @@ const EditorWrapper: FC<{ database: Database }> = ({ database }) => {
           </div>
         </>
       )}
-      {code !== undefined && <Editor code={code} />}
+      {code !== undefined && globalCode !== undefined && <Editor code={code} />}
     </>
   );
 };

@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Socket } from "socket.io-client";
+import Database from "../../Database";
 
 type Code = {
   code: string;
@@ -11,12 +12,14 @@ export interface EditorState {
     [index: string]: Code;
   };
   socket: Socket | null;
+  database: Database;
 }
 
 const initialState: EditorState = {
   activeTabs: [],
   code: {},
   socket: null,
+  database: {} as Database,
 };
 
 export const editorSlice = createSlice({
@@ -58,9 +61,14 @@ export const editorSlice = createSlice({
       ...state,
       socket: payload,
     }),
+    setDatabase: (state, { payload }: PayloadAction<Database>) => ({
+      ...state,
+      database: payload,
+    }),
   },
 });
 
-export const { setActiveTabs, removeActiveTab, setCode, setSocket } = editorSlice.actions;
+export const { setActiveTabs, removeActiveTab, setCode, setSocket, setDatabase } =
+  editorSlice.actions;
 
 export default editorSlice.reducer;
