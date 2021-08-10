@@ -80,27 +80,39 @@ const Editor: FC<EditorProps> = ({ code }) => {
           return console.log(err);
         }
         if (activeFile) {
-          database.put(instance.id, activeFile, code).then(() => {
-            dispatch(
-              setCode({
-                key: activeFile,
-                code,
-                isSaved: true,
-              })
-            );
-          }).catch((err) => console.error(err));
+          database
+            .put(instance.id, activeFile, code)
+            .then(() => {
+              dispatch(
+                setCode({
+                  key: activeFile,
+                  code,
+                  isSaved: true,
+                })
+              );
+            })
+            .catch((err) => console.error(err));
         }
       }
     );
   };
 
+  const beforeUnload = (event: BeforeUnloadEvent) => {
+    if (!value.isSaved) {
+      event.returnValue = true;
+      event.preventDefault();
+    }
+  };
+
   useEffect(() => {
+    window.addEventListener("beforeunload", beforeUnload);
     let timeOut: number;
     if (value?.code !== code && instance.autosave) {
       timeOut = setTimeout(saveCode, 500);
     }
     return () => {
       clearTimeout(timeOut);
+      window.removeEventListener("beforeunload", beforeUnload);
     };
   }, [value?.code]);
 
