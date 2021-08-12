@@ -21,10 +21,16 @@ type EventType =
 export interface FormDrawerProps {
   data: InstanceMetaData;
   onClose: (e: EventType) => void;
+  onUpdate?: (data: Instance) => void;
   visible: boolean;
 }
 
-const FormDrawer: FC<FormDrawerProps> = ({ data, onClose, visible }) => {
+const FormDrawer: FC<FormDrawerProps> = ({
+  data,
+  onClose,
+  visible,
+  onUpdate,
+}) => {
   const [width, setWidth] = useState(window.innerWidth);
   const [keywords, setKeywords] = useState(data.keywords?.split(",") ?? []);
   const [tag, setTag] = useState("");
@@ -76,6 +82,7 @@ const FormDrawer: FC<FormDrawerProps> = ({ data, onClose, visible }) => {
         keywords: keywords.length !== 0 ? keywords.toString() : null,
       })
       .then((res: AxiosResponse<Instance>) => {
+        onUpdate && onUpdate(res.data);
         dispatch(updateOneInstance(res.data));
         message.success("Update instance success!");
         onClose({} as EventType);
