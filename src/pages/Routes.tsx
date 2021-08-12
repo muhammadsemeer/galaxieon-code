@@ -55,9 +55,9 @@ const Admin: FC = () => {
       <UserRoute path="/search">
         <UserInstSearch />
       </UserRoute>
-      <UserRoute path="/instance/editor/:id" >
+      <Route path="/instance/editor/:id" >
         <CodeEditor />
-      </UserRoute>
+      </Route>
 
       {/* 404 And Error */}
       <Route path="*">
