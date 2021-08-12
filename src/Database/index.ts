@@ -13,6 +13,9 @@ class Database {
         let request = indexedDB.open(this.dbName, this.version);
         request.addEventListener("success", (event) => {
           this.db = request.result;
+          this.db.onversionchange = () => {
+            this.db?.close();
+          };
           resolve(true);
         });
         request.addEventListener("error", (event) => {
