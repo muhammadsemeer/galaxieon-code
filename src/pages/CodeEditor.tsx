@@ -15,7 +15,12 @@ import ExpWrapper from "../components/Code/ExpWrapper";
 import ResizablePanels from "../components/Resizable/ResizablePanels";
 import EditorWrapper from "../components/Code/EditorWrapper";
 import useQuery from "../utils/useQuery";
-import { setActiveTabs, setDatabase, setSocket } from "../store/editor/editor";
+import {
+  setActiveTabs,
+  setDatabase,
+  setReadOnly,
+  setSocket,
+} from "../store/editor/editor";
 import Database from "../Database";
 import { io } from "socket.io-client";
 
@@ -93,19 +98,30 @@ const CodeEditor: FC = () => {
       });
       socket.emit("join", id);
       dispatch(setSocket(socket));
+      dispatch(setReadOnly(false));
     });
-    socket.on("connect_err", (err) => {
-      console.log(new Error(err));
+    socket.on("connect_error", (err) => {
+      if (err.message === "User not Authentictaed") {
+        return dispatch(setReadOnly(true));
+      }
       notification.error({
         message: "Editor Offline",
+        placement: "bottomRight",
       });
-    });
-    socket.on("disconnect", () => {
+      setTimeout(() => {});
       notification.error({
         message: "Disconnected",
         duration: 3,
         placement: "bottomRight",
       });
+      notification.info({
+        message: "Reconnecting",
+        duration: 3,
+        placement: "bottomRight",
+      });
+      setTimeout(() => {
+        socket.connect();
+      }, 3000);
     });
     return () => {
       socket.disconnect();

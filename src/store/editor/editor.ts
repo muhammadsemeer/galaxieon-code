@@ -13,6 +13,7 @@ export interface EditorState {
   };
   socket: Socket | null;
   database: Database;
+  isReadOnly: boolean;
 }
 
 const initialState: EditorState = {
@@ -20,6 +21,7 @@ const initialState: EditorState = {
   code: {},
   socket: null,
   database: {} as Database,
+  isReadOnly: true,
 };
 
 export const editorSlice = createSlice({
@@ -65,10 +67,20 @@ export const editorSlice = createSlice({
       ...state,
       database: payload,
     }),
+    setReadOnly: (state, { payload }: PayloadAction<boolean>) => ({
+      ...state,
+      isReadOnly: payload,
+    }),
   },
 });
 
-export const { setActiveTabs, removeActiveTab, setCode, setSocket, setDatabase } =
-  editorSlice.actions;
+export const {
+  setActiveTabs,
+  removeActiveTab,
+  setCode,
+  setSocket,
+  setDatabase,
+  setReadOnly,
+} = editorSlice.actions;
 
 export default editorSlice.reducer;

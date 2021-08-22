@@ -31,6 +31,7 @@ const Editor: FC<EditorProps> = ({ code }) => {
   const instance = useSelector((state: RootState) => state.editorInstance);
   const socket = useSelector((state: RootState) => state.editor.socket);
   const database = useSelector((state: RootState) => state.editor.database);
+  const isReadOnly = useSelector((state: RootState) => state.editor.isReadOnly);
 
   const handleEditorWillMount: BeforeMount = (monaco) => {
     fileExtension === "html"
@@ -134,6 +135,7 @@ const Editor: FC<EditorProps> = ({ code }) => {
         },
         fontFamily: "Fira Code",
         fontLigatures: true,
+        readOnly: isReadOnly,
       }}
       loading={<></>}
     />
