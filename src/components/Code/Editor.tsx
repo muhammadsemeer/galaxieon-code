@@ -5,7 +5,6 @@ import Monaco, {
   OnValidate,
   OnChange,
 } from "@monaco-editor/react";
-import useQuery from "../../utils/useQuery";
 import extension from "../Explorer/ext";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
@@ -19,7 +18,7 @@ export interface EditorProps {
 }
 
 const Editor: FC<EditorProps> = ({ code }) => {
-  const activeFile = useQuery().get("file");
+  const activeFile = useSelector((state: RootState) => state.editor.currentTab);
   const fileArray = activeFile?.split("/");
   const fileName = fileArray?.[fileArray.length - 1];
   const fileExtension = fileName?.split(".")[fileName.split(".").length - 1];

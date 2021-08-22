@@ -5,10 +5,13 @@ import styles from "./tab.module.scss";
 import extensions from "../Explorer/ext";
 import { blue } from "@ant-design/colors";
 import { iconsURL } from "../../utils/constants";
-import useQuery from "../../utils/useQuery";
-import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { removeActiveTab } from "../../store/editor/editor";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  removeActiveTab,
+  setActiveTab,
+  setActiveTabs,
+} from "../../store/editor/editor";
+import { RootState } from "../../store";
 
 export interface TabProps {
   name: string;
@@ -19,30 +22,31 @@ export interface TabProps {
 const Tab: FC<TabProps> = ({ name, path, isSaved }) => {
   const splittedName = name.split(".");
   const ext = splittedName[splittedName.length - 1];
-
-  const query = useQuery();
-  const history = useHistory();
+  const currentTab = useSelector((state: RootState) => state.editor.currentTab);
   const dispatch = useDispatch();
 
   const active: MouseEventHandler<HTMLDivElement> = (event) => {
-    history.replace({
-      search: `file=${path}`,
-    });
+    dispatch(setActiveTab(path));
+    let fileArrays = path?.split("/");
+    let file = fileArrays?.[fileArrays.length - 1];
+    dispatch(
+      setActiveTabs({
+        name: file as string,
+        key: path as string,
+      })
+    );
   };
 
   const close: MouseEventHandler<HTMLDivElement> = (event) => {
     event.stopPropagation();
     dispatch(removeActiveTab(path));
-    query.delete("file");
-    history.replace({
-      search: query.toString(),
-    });
+    dispatch(setActiveTab(null));
   };
 
   return (
     <div
       className={`${styles.tab} flex justify-content-evenly align-center ${
-        query.get("file") === path && styles.active
+        currentTab === path && styles.active
       }`}
       onClick={active}
     >
@@ -60,9 +64,7 @@ const Tab: FC<TabProps> = ({ name, path, isSaved }) => {
           isSaved ? (
             <CloseOutlined style={{ fontSize: 12 }} />
           ) : (
-            <span
-              className={styles.notSaved}
-            ></span>
+            <span className={styles.notSaved}></span>
           )
         }
         onClick={close}

@@ -6,7 +6,8 @@ import File from "./File";
 import styles from "./explorer.module.scss";
 import { BaseType } from "antd/lib/typography/Base";
 import { Files } from "../../types/templateAndInstance";
-import useQuery from "../../utils/useQuery";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 export interface FolderProps {
   name: string;
@@ -23,8 +24,8 @@ const Folder: FC<FolderProps> = ({
   folder,
   parent,
 }) => {
-  const query = useQuery();
-  const filesInQuery = query.get("file")?.split("/").slice(0, -1).join("/");
+  const currentTab = useSelector((state: RootState) => state.editor.currentTab);
+  const filesInQuery = currentTab?.split("/").slice(0, -1).join("/");
   
   const [isOpen, setIsOpen] = useState(
     filesInQuery === parent ||

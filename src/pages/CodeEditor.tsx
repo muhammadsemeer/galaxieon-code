@@ -14,7 +14,6 @@ import { addInstance } from "../store/instance/editorInstance";
 import ExpWrapper from "../components/Code/ExpWrapper";
 import ResizablePanels from "../components/Resizable/ResizablePanels";
 import EditorWrapper from "../components/Code/EditorWrapper";
-import useQuery from "../utils/useQuery";
 import {
   setActiveTabs,
   setDatabase,
@@ -23,6 +22,7 @@ import {
 } from "../store/editor/editor";
 import Database from "../Database";
 import { io } from "socket.io-client";
+import BrowserWrapper from "../components/out/BrowserWrapper";
 
 const database = new Database("g_code", 1);
 const CodeEditor: FC = () => {
@@ -34,7 +34,6 @@ const CodeEditor: FC = () => {
   const showPane = useSelector(
     (state: RootState) => state.editorSidePane.showPane
   );
-  const query = useQuery();
 
   const createDB = (instance: Instance) => {
     database
@@ -69,19 +68,6 @@ const CodeEditor: FC = () => {
         handleError(error, history, dispatch, false)
       );
   }, []);
-
-  useEffect(() => {
-    if (query.get("file")) {
-      let fileArrays = query.get("file")?.split("/");
-      let file = fileArrays?.[fileArrays.length - 1];
-      dispatch(
-        setActiveTabs({
-          name: file as string,
-          key: query.get("file") as string,
-        })
-      );
-    }
-  }, [query.get("file")]);
 
   const { current: socket } = useRef(
     io(`${process.env.SOCKET_ENDPOINT}/editor`, {

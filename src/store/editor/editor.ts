@@ -8,6 +8,7 @@ type Code = {
 };
 export interface EditorState {
   activeTabs: { name: string; key: string }[];
+  currentTab: string | null;
   code: {
     [index: string]: Code;
   };
@@ -19,6 +20,7 @@ export interface EditorState {
 const initialState: EditorState = {
   activeTabs: [],
   code: {},
+  currentTab: null,
   socket: null,
   database: {} as Database,
   isReadOnly: true,
@@ -71,6 +73,10 @@ export const editorSlice = createSlice({
       ...state,
       isReadOnly: payload,
     }),
+    setActiveTab: (state, { payload }: PayloadAction<string | null>) => ({
+      ...state,
+      currentTab: payload,
+    }),
   },
 });
 
@@ -81,6 +87,7 @@ export const {
   setSocket,
   setDatabase,
   setReadOnly,
+  setActiveTab,
 } = editorSlice.actions;
 
 export default editorSlice.reducer;
