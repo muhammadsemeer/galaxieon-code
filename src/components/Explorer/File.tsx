@@ -34,18 +34,18 @@ const File: FC<FileProps> = ({ name, edit, className, path }) => {
   const fileNameArray = currentTab && currentTab?.split("/");
   const isActive =
     fileNameArray && fileNameArray[fileNameArray.length - 1] === name;
-    const dispatch = useDispatch();
-    const active: MouseEventHandler<HTMLDivElement> = (event) => {
-      dispatch(setActiveTab(path as string));
-      let fileArrays = path?.split("/");
-      let file = fileArrays?.[fileArrays.length - 1];
-      dispatch(
-        setActiveTabs({
-          name: file as string,
-          key: path as string,
-        })
-      );
-    };
+  const dispatch = useDispatch();
+  const active: MouseEventHandler<HTMLDivElement> = (event) => {
+    let fileArrays = path?.split("/");
+    let file = fileArrays?.[fileArrays.length - 1];
+    dispatch(setActiveTab(path as string));
+    dispatch(
+      setActiveTabs({
+        name: file as string,
+        key: path as string,
+      })
+    );
+  };
 
   return (
     <div

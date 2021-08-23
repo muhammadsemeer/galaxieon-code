@@ -82,7 +82,7 @@ const EditorWrapper: FC = () => {
           </div>
         </>
       )}
-      {code !== undefined && globalCode !== undefined && <Editor code={code} />}
+      {code !== undefined && globalCode[currentTab || ""] !== undefined && <Editor code={code} />}
     </>
   );
 };
