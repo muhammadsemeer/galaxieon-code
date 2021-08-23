@@ -132,7 +132,7 @@ const CodeEditor: FC = () => {
       >
         {showPane && <ExpWrapper />}
         {!isLoading && <EditorWrapper />}
-        <div></div>
+        {!isLoading && <BrowserWrapper />}
       </ResizablePanels>
     </Spin>
   );
