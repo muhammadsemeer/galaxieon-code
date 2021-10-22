@@ -13,6 +13,9 @@ class Database {
         let request = indexedDB.open(this.dbName, this.version);
         request.addEventListener("success", (event) => {
           this.db = request.result;
+          this.db.onversionchange = () => {
+            this.db?.close();
+          };
           resolve(true);
         });
         request.addEventListener("error", (event) => {
@@ -33,7 +36,9 @@ class Database {
           .transaction(objectStoreName, "readwrite")
           .objectStore(objectStoreName)
           .add({ value, key });
-        request.addEventListener("success", (e: any) => resolve(e.target.result));
+        request.addEventListener("success", (e: any) =>
+          resolve(e.target.result)
+        );
         request.addEventListener("error", reject);
       } else {
         reject(new Error("Database not initialized"));
@@ -47,7 +52,25 @@ class Database {
           .transaction(objectStoreName, "readonly")
           .objectStore(objectStoreName)
           .get(key);
-        request.addEventListener("success", (e: any) => resolve(e.target.result));
+        request.addEventListener("success", (e: any) =>
+          resolve(e.target.result)
+        );
+        request.addEventListener("error", reject);
+      } else {
+        reject(new Error("Database not initialized"));
+      }
+    });
+  }
+  put(objectStoreName: string, key: string, value: string) {
+    return new Promise((resolve, reject) => {
+      if (this.db) {
+        let request = this.db
+          .transaction(objectStoreName, "readwrite")
+          .objectStore(objectStoreName)
+          .put({ value, key });
+        request.addEventListener("success", (e: any) =>
+          resolve(e.target.result)
+        );
         request.addEventListener("error", reject);
       } else {
         reject(new Error("Database not initialized"));

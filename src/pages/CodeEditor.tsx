@@ -1,5 +1,5 @@
 import { LoadingOutlined } from "@ant-design/icons";
-import { Spin } from "antd";
+import { Spin, notification } from "antd";
 import axios from "../api/index";
 import { AxiosError, AxiosResponse } from "axios";
 import React, { FC, useEffect, useRef, useState } from "react";
@@ -14,9 +14,15 @@ import { addInstance } from "../store/instance/editorInstance";
 import ExpWrapper from "../components/Code/ExpWrapper";
 import ResizablePanels from "../components/Resizable/ResizablePanels";
 import EditorWrapper from "../components/Code/EditorWrapper";
-import useQuery from "../utils/useQuery";
-import { setActiveTabs } from "../store/editor/editor";
+import {
+  setActiveTabs,
+  setDatabase,
+  setReadOnly,
+  setSocket,
+} from "../store/editor/editor";
 import Database from "../Database";
+import { io } from "socket.io-client";
+import BrowserWrapper from "../components/out/BrowserWrapper";
 
 const database = new Database("g_code", 1);
 const CodeEditor: FC = () => {
@@ -28,7 +34,6 @@ const CodeEditor: FC = () => {
   const showPane = useSelector(
     (state: RootState) => state.editorSidePane.showPane
   );
-  const query = useQuery();
 
   const createDB = (instance: Instance) => {
     database
@@ -39,6 +44,7 @@ const CodeEditor: FC = () => {
         },
       ])
       .then(() => {
+        dispatch(setDatabase(database));
         setIsLoading(false);
       })
       .catch(() => {
@@ -63,19 +69,50 @@ const CodeEditor: FC = () => {
       );
   }, []);
 
+  const { current: socket } = useRef(
+    io(`${process.env.SOCKET_ENDPOINT}/editor`, {
+      withCredentials: true,
+    })
+  );
 
   useEffect(() => {
-    if (query.get("file")) {
-      let fileArrays = query.get("file")?.split("/");
-      let file = fileArrays?.[fileArrays.length - 1];
-      dispatch(
-        setActiveTabs({
-          name: file as string,
-          key: query.get("file") as string,
-        })
-      );
-    }
-  }, [query.get("file")]);
+    socket.on("connect", () => {
+      notification.success({
+        message: "Editor Online",
+        placement: "bottomRight",
+        duration: 3,
+      });
+      socket.emit("join", id);
+      dispatch(setSocket(socket));
+      dispatch(setReadOnly(false));
+    });
+    socket.on("connect_error", (err) => {
+      if (err.message === "User not Authentictaed") {
+        return dispatch(setReadOnly(true));
+      }
+      notification.error({
+        message: "Editor Offline",
+        placement: "bottomRight",
+      });
+      setTimeout(() => {});
+      notification.error({
+        message: "Disconnected",
+        duration: 3,
+        placement: "bottomRight",
+      });
+      notification.info({
+        message: "Reconnecting",
+        duration: 3,
+        placement: "bottomRight",
+      });
+      setTimeout(() => {
+        socket.connect();
+      }, 3000);
+    });
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   const constrains = [
     250,
@@ -87,13 +124,15 @@ const CodeEditor: FC = () => {
     <Spin indicator={<LoadingOutlined />} spinning={isLoading}>
       <Nav />
       <ResizablePanels
-        constrains={showPane ? constrains : constrains.slice(1)}
+        constrains={
+          showPane ? constrains : [window.innerWidth / 2, window.innerWidth / 2]
+        }
         height={"100vh"}
         minConstrains={showPane ? minConstrains : minConstrains.slice(1)}
       >
         {showPane && <ExpWrapper />}
-        {!isLoading && <EditorWrapper database={database} />}
-        <div></div>
+        {!isLoading && <EditorWrapper />}
+        {!isLoading && <BrowserWrapper />}
       </ResizablePanels>
     </Spin>
   );

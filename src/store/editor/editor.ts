@@ -1,4 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Socket } from "socket.io-client";
+import Database from "../../Database";
 
 type Code = {
   code: string;
@@ -6,14 +8,22 @@ type Code = {
 };
 export interface EditorState {
   activeTabs: { name: string; key: string }[];
+  currentTab: string | null;
   code: {
     [index: string]: Code;
   };
+  socket: Socket | null;
+  database: Database;
+  isReadOnly: boolean;
 }
 
 const initialState: EditorState = {
   activeTabs: [],
   code: {},
+  currentTab: null,
+  socket: null,
+  database: {} as Database,
+  isReadOnly: true,
 };
 
 export const editorSlice = createSlice({
@@ -51,9 +61,33 @@ export const editorSlice = createSlice({
         },
       };
     },
+    setSocket: (state, { payload }: PayloadAction<Socket>) => ({
+      ...state,
+      socket: payload,
+    }),
+    setDatabase: (state, { payload }: PayloadAction<Database>) => ({
+      ...state,
+      database: payload,
+    }),
+    setReadOnly: (state, { payload }: PayloadAction<boolean>) => ({
+      ...state,
+      isReadOnly: payload,
+    }),
+    setActiveTab: (state, { payload }: PayloadAction<string | null>) => ({
+      ...state,
+      currentTab: payload,
+    }),
   },
 });
 
-export const { setActiveTabs, removeActiveTab, setCode } = editorSlice.actions;
+export const {
+  setActiveTabs,
+  removeActiveTab,
+  setCode,
+  setSocket,
+  setDatabase,
+  setReadOnly,
+  setActiveTab,
+} = editorSlice.actions;
 
 export default editorSlice.reducer;

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import Database from "../../Database";
 import { RootState } from "../../store";
 import handleError from "../../utils/Error";
-import useQuery from "../../utils/useQuery";
 import Editor from "./Editor";
 import Tab from "./Tab";
 import styles from "./wrapper.module.scss";
@@ -11,28 +10,33 @@ import axios from "../../api/index";
 import { AxiosError, AxiosResponse } from "axios";
 import { useHistory } from "react-router-dom";
 import { setCode as setGlobalCode } from "../../store/editor/editor";
+import { Socket } from "socket.io-client";
 
-const EditorWrapper: FC<{ database: Database }> = ({ database }) => {
+const EditorWrapper: FC = () => {
   const instance = useSelector((state: RootState) => state.editorInstance);
-  const query = useQuery();
   const editor = useSelector((state: RootState) => state.editor);
   const dispatch = useDispatch();
   const history = useHistory();
   const [code, setCode] = useState<string>();
+  const globalCode = useSelector(
+    (state: RootState) => state.editor.code
+  );
+  const database = useSelector((state: RootState) => state.editor.database);
+  const currentTab = useSelector((state: RootState) => state.editor.currentTab);
 
   const getCode = () => {
     database
-      .get(instance.id, query.get("file") as string)
+      .get(instance.id, currentTab as string)
       .then((result) => {
         if (!result) {
           let code = "";
           axios
-            .get(`/instance/code/${instance.id}/${query.get("file")}`)
+            .get(`/instance/code/${instance.id}/${currentTab}`)
             .then((res: AxiosResponse<string>) => {
               code = res.data;
               return database.add(
                 instance.id,
-                query.get("file") as string,
+                currentTab as string,
                 res.data
               );
             })
@@ -41,7 +45,7 @@ const EditorWrapper: FC<{ database: Database }> = ({ database }) => {
               dispatch(
                 setGlobalCode({
                   code,
-                  key: query.get("file") as string,
+                  key: currentTab as string,
                   isSaved: true,
                 })
               );
@@ -59,8 +63,8 @@ const EditorWrapper: FC<{ database: Database }> = ({ database }) => {
   };
 
   useEffect(() => {
-    if (instance.id && query.get("file")) getCode();
-  }, [query.get("file")]);
+    if (instance.id && currentTab !== null) getCode();
+  }, [currentTab]);
 
   return (
     <>
@@ -78,7 +82,7 @@ const EditorWrapper: FC<{ database: Database }> = ({ database }) => {
           </div>
         </>
       )}
-      {code !== undefined && <Editor code={code} />}
+      {code !== undefined && globalCode[currentTab || ""] !== undefined && <Editor code={code} />}
     </>
   );
 };

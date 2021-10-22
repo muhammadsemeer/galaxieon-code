@@ -19,6 +19,11 @@
       height: 100%;
       background-color: #303030;
       cursor: col-resize;
+      transition: all .3s ease;
+      &:hover, &:active {
+        width: 5px;
+        box-shadow: 0 0 15px #151515;
+      }
     }
   }
 }

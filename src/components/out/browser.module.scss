@@ -1,0 +1,14 @@
+.wrapper {
+  .menu {
+    height: 40px;
+    border-bottom: 1px solid #303030;
+    overflow-x: hidden;
+  }
+
+  .frame {
+    width: 100%;
+    height: calc(100vh - 90px);
+    border: none;
+    outline: none;
+  }
+}
