@@ -31,6 +31,7 @@ const Editor: FC<EditorProps> = ({ code }) => {
   const socket = useSelector((state: RootState) => state.editor.socket);
   const database = useSelector((state: RootState) => state.editor.database);
   const isReadOnly = useSelector((state: RootState) => state.editor.isReadOnly);
+  const userId = useSelector((state: RootState) => state.auth.user?.id);
 
   const handleEditorWillMount: BeforeMount = (monaco) => {
     fileExtension === "html"
@@ -75,6 +76,7 @@ const Editor: FC<EditorProps> = ({ code }) => {
       fileName,
       code,
       instance.id,
+      userId,
       (err: Error, status: "OK" | "FAIL") => {
         if (err) {
           return console.log(err);
