@@ -30,8 +30,6 @@ const CodeEditor: FC = () => {
   const { id } = useParams<{ id: string }>();
   const [isLoading, setIsLoading] = useState(true);
   const history = useHistory();
-  const instance = useSelector((state: RootState) => state.editorInstance);
-  const user = useSelector((state: RootState) => state.auth.user);
   const showPane = useSelector(
     (state: RootState) => state.editorSidePane.showPane
   );
@@ -85,9 +83,6 @@ const CodeEditor: FC = () => {
       });
       socket.emit("join", id);
       dispatch(setSocket(socket));
-      if (instance.UserId === user?.id) {
-        dispatch(setReadOnly(false));
-      }
     });
     let count = 0;
     socket.on("connect_error", (err) => {

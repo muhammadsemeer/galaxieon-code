@@ -136,7 +136,7 @@ const Editor: FC<EditorProps> = ({ code }) => {
         },
         fontFamily: "Fira Code",
         fontLigatures: true,
-        readOnly: isReadOnly,
+        readOnly: instance.UserId !== userId,
       }}
       loading={<></>}
     />
