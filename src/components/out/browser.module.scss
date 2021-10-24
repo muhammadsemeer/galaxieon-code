@@ -2,7 +2,15 @@
   .menu {
     height: 40px;
     border-bottom: 1px solid #303030;
-    overflow-x: hidden;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+    .search {
+      width: 90%;
+    }
   }
 
   .frame {

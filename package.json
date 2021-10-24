@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Code Editor Super Powered by Galaxieon",
   "main": "src/index.js",
+  "proxy": "http://localhost:3000",
   "scripts": {
     "start": "NODE_ENV=development webpack serve --mode development",
     "build": "NODE_ENV=production webpack --mode production"

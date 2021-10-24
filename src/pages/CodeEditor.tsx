@@ -86,27 +86,26 @@ const CodeEditor: FC = () => {
       dispatch(setSocket(socket));
       dispatch(setReadOnly(false));
     });
+    let count = 0;
     socket.on("connect_error", (err) => {
       if (err.message === "User not Authentictaed") {
         return dispatch(setReadOnly(true));
       }
-      notification.error({
-        message: "Editor Offline",
-        placement: "bottomRight",
-      });
-      setTimeout(() => {});
-      notification.error({
-        message: "Disconnected",
-        duration: 3,
-        placement: "bottomRight",
-      });
-      notification.info({
-        message: "Reconnecting",
-        duration: 3,
-        placement: "bottomRight",
-      });
       setTimeout(() => {
-        socket.connect();
+        count += 1;
+        if (count <= 3) {
+          notification.error({
+            message: "Disconnected",
+            duration: 3,
+            placement: "bottomRight",
+          });
+          notification.info({
+            message: "Reconnecting",
+            duration: 3,
+            placement: "bottomRight",
+          });
+          socket.connect();
+        }
       }, 3000);
     });
     return () => {
