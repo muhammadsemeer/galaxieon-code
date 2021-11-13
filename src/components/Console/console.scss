@@ -1,45 +1,36 @@
-.tabs_container {
-    width: 100%;
-    height: 100vh;
-    position: relative;
-    background: #151515;
+.console_tabs {
+  position: fixed;
+  bottom: 0;
+  font-family: monospace !important;
+  right: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 700px !important;
+  height: 300px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 10px 20px;
+  overflow-y: auto;
+  scrollbar-width: thin; /* "auto" or "thin" */
+  scrollbar-color: rgb(32, 32, 32) rgba(0, 0, 0, 0); /* scroll thumb and track */
+  transform: translateY(250px);
+  transition: transform 0.4s ease-in-out;
+  &.show {
+    transform: translateY(0px);
   }
-   
-  .tabs {
-    position: fixed;
-    bottom: 0;
-    font-family: monospace !important;
-    right: 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    width: 700px !important;
-    height: 300px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    padding: 10px 20px;
-    overflow-y: auto;
-    scrollbar-width: thin; /* "auto" or "thin" */
-    scrollbar-color: rgb(32, 32, 32) rgba(0, 0, 0, 0); /* scroll thumb and track */
-    transform: translateY(250px);
-    transition: transform 0.4s ease-in-out;
-    &.show {
-      transform: translateY(0px);
-    }
-    /* Scrollbar styling */
-    &::-webkit-scrollbar {
-      width: 4px; /* width of the entire scrollbar */
-    }
-  
-    &::-webkit-scrollbar-track {
-      background: rgba(0, 0, 0, 0); /* color of the tracking area */
-    }
-  
-    &::-webkit-scrollbar-thumb {
-      background-color: rgb(32, 32, 32); /* color of the scroll thumb */
-      border: 0px solid rgba(65, 65, 65, 0.12);
-    }
+  /* Scrollbar styling */
+  &::-webkit-scrollbar {
+    width: 4px; /* width of the entire scrollbar */
   }
-  
+
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0); /* color of the tracking area */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(32, 32, 32); /* color of the scroll thumb */
+    border: 0px solid rgba(65, 65, 65, 0.12);
+  }
   .collapse_handler {
     position: absolute;
     top: 10px;
@@ -48,7 +39,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-  
+
     .clear_icon {
       font-size: 13px;
       margin-right: 10px;
@@ -56,13 +47,13 @@
       cursor: pointer;
     }
   }
-  
+
   .collapse_icon {
     font-size: 10px !important;
     color: rgb(129, 129, 129) !important;
     cursor: pointer;
   }
-  
+
   .clear_text.ant-typography.ant-typography-secondary {
     display: block !important;
     width: 100% !important;
@@ -72,13 +63,13 @@
     font-style: italic !important;
     margin: 0px !important;
   }
-  
+
   .problems {
     .problems_panel {
       font-size: 13px !important;
     }
   }
-  
+
   // Overriding ant d
   .ant-tabs-top > .ant-tabs-nav::before,
   .ant-tabs-bottom > .ant-tabs-nav::before,
@@ -93,7 +84,7 @@
     padding: 0px !important;
     font-size: 13px !important;
   }
-  
+
   .ant-tabs-ink-bar {
     background: #5f40e8 !important;
   }
@@ -106,17 +97,17 @@
   .ant-tabs-tab-remove:active {
     color: rgba(255, 255, 255, 0.85) !important;
   }
-  
+
   .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
     color: rgba(255, 255, 255, 0.85) !important;
   }
-  
+
   .ant-tabs {
     width: 100% !important;
   }
-  
-  .tabs .ant-collapse > .ant-collapse-item > .ant-collapse-header,
-  .tabs .ant-collapse-content > .ant-collapse-content-box {
+
+  .ant-collapse > .ant-collapse-item > .ant-collapse-header,
+  .ant-collapse-content > .ant-collapse-content-box {
     padding: 5px 0px !important;
   }
-  
+}

@@ -14,7 +14,7 @@ interface Props {
   location: string;
   section?: string;
 }
-const { Text, Link } = Typography;
+const { Text } = Typography;
 
 export default function Message({
   txt,
@@ -23,7 +23,7 @@ export default function Message({
   section,
 }: Props): ReactElement {
   return (
-    <>
+    <div className="console_message">
       {type === "log" ? (
         <Text code className="message txt_log">
           <Text>{txt}</Text>
@@ -55,6 +55,6 @@ export default function Message({
           </Text>
         </Tag>
       )}
-    </>
+    </div>
   );
 }
