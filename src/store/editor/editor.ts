@@ -6,6 +6,15 @@ type Code = {
   code: string;
   isSaved: boolean;
 };
+
+export interface Problem {
+  file: string;
+  problems: {
+    start: number;
+    end: number;
+    message: string;
+  }[];
+}
 export interface EditorState {
   activeTabs: { name: string; key: string }[];
   currentTab: string | null;
@@ -15,6 +24,7 @@ export interface EditorState {
   socket: Socket | null;
   database: Database;
   isReadOnly: boolean;
+  problems: Problem[] | [];
 }
 
 const initialState: EditorState = {
@@ -24,6 +34,7 @@ const initialState: EditorState = {
   socket: null,
   database: {} as Database,
   isReadOnly: true,
+  problems: [],
 };
 
 export const editorSlice = createSlice({
@@ -77,6 +88,25 @@ export const editorSlice = createSlice({
       ...state,
       currentTab: payload,
     }),
+    setProblem: (state, { payload }: PayloadAction<Problem>) => {
+      const index = state.problems.findIndex(
+        (problem) => problem.file === payload.file
+      );
+
+      if (index !== -1) {
+        const newState = [...state.problems];
+        newState[index] = payload;
+        return { ...state, problems: newState };
+      }
+
+      return { ...state, problems: [...state.problems, payload] };
+    },
+    removeProblem: (state, { payload }: PayloadAction<string>) => {
+      return {
+        ...state,
+        problems: state.problems.filter((problem) => problem.file !== payload),
+      };
+    },
   },
 });
 
@@ -88,6 +118,8 @@ export const {
   setDatabase,
   setReadOnly,
   setActiveTab,
+  setProblem,
+  removeProblem,
 } = editorSlice.actions;
 
 export default editorSlice.reducer;

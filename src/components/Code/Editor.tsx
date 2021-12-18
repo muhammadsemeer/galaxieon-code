@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { emmetHTML, emmetCSS, emmetJSX } from "emmet-monaco-es";
 import { editor } from "monaco-editor/esm/vs/editor/editor.api";
-import { setCode } from "../../store/editor/editor";
+import { removeProblem, setCode, setProblem } from "../../store/editor/editor";
 import { Socket } from "socket.io-client";
 
 export interface EditorProps {
@@ -54,7 +54,22 @@ const Editor: FC<EditorProps> = ({ code }) => {
   };
 
   const onValidate: OnValidate = (markers) => {
-    console.log(markers);
+    if (markers.length === 0) {
+      return dispatch(removeProblem(activeFile || ""));
+    }
+    const problems = markers.map(
+      ({ message, startLineNumber, startColumn }) => ({
+        message,
+        start: startLineNumber,
+        end: startColumn,
+      })
+    );
+    dispatch(
+      setProblem({
+        file: activeFile || "",
+        problems,
+      })
+    );
   };
 
   const onChange: OnChange = (value, ev) => {

@@ -23,6 +23,7 @@ import {
 import Database from "../Database";
 import { io } from "socket.io-client";
 import BrowserWrapper from "../components/out/BrowserWrapper";
+import Console from "../components/Console/Console";
 
 const database = new Database("g_code", 1);
 const CodeEditor: FC = () => {
@@ -131,6 +132,7 @@ const CodeEditor: FC = () => {
         {!isLoading && <EditorWrapper />}
         {!isLoading && <BrowserWrapper />}
       </ResizablePanels>
+      <Console />
     </Spin>
   );
 };
