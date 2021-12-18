@@ -1,0 +1,68 @@
+.console_message {
+  .message {
+    margin: 10px 0px 0px 0px !important;
+    width: 100% !important;
+    display: flex !important;
+    line-height: 25px !important;
+    align-items: start !important;
+
+    .location {
+      cursor: pointer !important;
+    }
+  }
+
+  .message.error_log.problems_message {
+    border: none !important;
+    background: #191919 !important;
+    cursor: pointer !important;
+    transition: background 0.5s ease-in-out !important;
+
+    &:hover {
+      background: #212121 !important;
+    }
+    span:nth-child(2) {
+      span:nth-child(1) {
+        color: rgba(255, 255, 255, 0.85) !important;
+      }
+    }
+  }
+
+  .message .anticon {
+    padding-top: 6px !important;
+  }
+
+  .message.txt_log code,
+  .message.error_log span:nth-child(2) {
+    font-size: 13px !important;
+    width: 100% !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: space-between !important;
+  }
+
+  .message.txt_log code {
+    margin: 0 !important;
+  }
+  .message.error_log {
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: space-between !important;
+    font-family: monospace;
+  }
+
+  .message.txt_log code span:nth-child(1),
+  .message.error_log span:nth-child(2) span:nth-child(1) {
+    white-space: normal !important;
+    width: 75% !important;
+    text-align: left !important;
+  }
+  .message.txt_log code span:nth-child(2),
+  .message.error_log span:nth-child(2) span:nth-child(2) {
+    white-space: normal !important;
+    width: 25% !important;
+    text-align: right !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    justify-content: flex-end !important;
+  }
+}
