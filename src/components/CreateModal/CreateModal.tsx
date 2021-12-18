@@ -1,4 +1,10 @@
-import React, { FC, MouseEvent, MouseEventHandler, useEffect, useState } from "react";
+import React, {
+  FC,
+  MouseEvent,
+  MouseEventHandler,
+  useEffect,
+  useState,
+} from "react";
 import { Modal, List, Avatar, message } from "antd";
 import { Instance, Template } from "../../types/templateAndInstance";
 import axios from "../../api/index";
@@ -37,19 +43,21 @@ const CreateModal: FC<CreateModalProps> = ({ visible, onCancel }) => {
   };
 
   useEffect(() => {
-    axios
-      .get("/template")
-      .then((res: AxiosResponse<Template[]>) => {
-        setTemplates(
-          res.data.sort(
-            (a: Template, b: Template) =>
-              (new Date(a.createdAt as string) as any) -
-              (new Date(b.createdAt as string) as any)
-          )
-        );
-      })
-      .catch((err: AxiosError) => handleError(err, history, dispatch, false));
-  }, []);
+    if (visible) {
+      axios
+        .get("/template")
+        .then((res: AxiosResponse<Template[]>) => {
+          setTemplates(
+            res.data.sort(
+              (a: Template, b: Template) =>
+                (new Date(a.createdAt as string) as any) -
+                (new Date(b.createdAt as string) as any)
+            )
+          );
+        })
+        .catch((err: AxiosError) => handleError(err, history, dispatch, false));
+    }
+  }, [visible]);
 
   return (
     <Modal
