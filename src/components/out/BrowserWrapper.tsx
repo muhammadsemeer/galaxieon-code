@@ -8,7 +8,7 @@ import BrowserMenu from "./BrowserMenu";
 const BrowserWrapper: FC = () => {
   const instance = useSelector((state: RootState) => state.editorInstance);
   const [url, setUrl] = useState(
-    `https://${instance.subdomain}.${process.env.PREVIEW}`
+    `${process.env.PREVIEW_PROTOCOL}${instance.subdomain}.${process.env.PREVIEW}`
   );
   return (
     <div className={styles.wrapper}>
