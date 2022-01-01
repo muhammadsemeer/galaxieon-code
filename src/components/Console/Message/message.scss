@@ -52,7 +52,7 @@
 
   .message.txt_log code span:nth-child(1),
   .message.error_log span:nth-child(2) span:nth-child(1) {
-    white-space: normal !important;
+    white-space: break-spaces !important;
     width: 75% !important;
     text-align: left !important;
   }

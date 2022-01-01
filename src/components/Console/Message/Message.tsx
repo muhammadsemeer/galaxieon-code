@@ -11,7 +11,7 @@ import {
 interface Props {
   type: string;
   txt: string;
-  location: string;
+  location?: string;
   section?: string;
 }
 const { Text } = Typography;
@@ -25,21 +25,21 @@ export default function Message({
   return (
     <div className="console_message">
       {type === "log" ? (
-        <Text code className="message txt_log">
-          <Text>{txt}</Text>
+        <Text className="message txt_log">
+          <Text code style={{ whiteSpace: "break-spaces" }}>
+            {txt}
+          </Text>
           <Text type="secondary" className="location" underline>
-            {location}
+            {location ? `${location}` : ""}
           </Text>
         </Text>
       ) : (
         <Tag
-          color={
-            type === "error" ? "red" : type === "warning" ? "yellow" : "blue"
-          }
+          color={type === "error" ? "red" : type === "warn" ? "yellow" : "blue"}
           icon={
             type === "error" ? (
               <CloseCircleOutlined />
-            ) : type === "warning" ? (
+            ) : type === "warn" ? (
               <WarningFilled />
             ) : (
               <InfoCircleFilled />
@@ -49,9 +49,11 @@ export default function Message({
             section === "problems" && "problems_message"
           }`}
         >
-          <span>{txt}</span>
+          <Text>
+            <code style={{ background: "none", border: "none" }}>{txt}</code>
+          </Text>
           <Text type="secondary" className="location" underline>
-            {location}
+            {location ? `${location}` : ""}
           </Text>
         </Tag>
       )}
