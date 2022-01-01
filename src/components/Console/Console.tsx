@@ -31,9 +31,17 @@ function Console() {
     })
   );
 
+  const clearConsole = () => {
+    setIsConsoleCleared(true);
+    setConsoles([]);
+  };
+
   useEffect(() => {
     socket.on("connect", () => {
       socket.emit("join", `editor_${id}`);
+      socket.on("console.clear", () => {
+        clearConsole();
+      });
       ["log", "error", "warn", "info"].forEach((type) => {
         socket.on(`console.${type}`, (data) => {
           setConsoles((consoles) => [
@@ -94,7 +102,9 @@ function Console() {
         </TabPane>
       </Tabs>
       <div className="collapse_handler">
-        {activeKey === "console" && <StopOutlined className="clear_icon" />}
+        {activeKey === "console" && (
+          <StopOutlined onClick={clearConsole} className="clear_icon" />
+        )}
         {show ? (
           <DownOutlined
             className="collapse_icon"
