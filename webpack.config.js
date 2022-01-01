@@ -5,7 +5,11 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const webpack = require("webpack");
 const ErrorOverlayPlugin = require("error-overlay-webpack-plugin");
 
-require("dotenv").config();
+const loaded = require("dotenv").config({
+  path: path.resolve(__dirname, ".env.production")
+});
+
+console.log(loaded);
 
 const devMode = process.env.NODE_ENV !== "production";
 module.exports = {
