@@ -16,6 +16,7 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import handleError from "../utils/Error";
 import { RootState } from "../store";
+import moment from "moment";
 
 const AdminUsers: FC = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -31,10 +32,9 @@ const AdminUsers: FC = () => {
       .then((res: AxiosResponse) => {
         setLoading(false);
         setUsers(
-          res.data.map(({ id, createdAt, ...rest }: User) => ({
+          res.data.map(({ id, ...rest }: User) => ({
             key: id,
             id,
-            createdAt: new Date(createdAt as Date).toLocaleDateString("en-IN"),
             ...rest,
           }))
         );
@@ -46,7 +46,7 @@ const AdminUsers: FC = () => {
     status: "active" | "blocked" | "deleted",
     id: string
   ) => {
-    let loading = message.loading("Loading",0);
+    let loading = message.loading("Loading", 0);
     axios
       .patch(`/admin/user/${id}?status=${status}`)
       .then(async (res: AxiosResponse) => {
@@ -145,6 +145,11 @@ const AdminUsers: FC = () => {
       dataIndex: "createdAt",
       key: "createdAt",
       width: "5%",
+      render: (createdAt) =>
+        new Date(createdAt as Date).toLocaleDateString("en-IN"),
+      sorter: (a, b) =>
+        moment(new Date(a.createdAt)).unix() -
+        moment(new Date(b.createdAt)).unix(),
     },
     {
       title: "Action",
@@ -196,7 +201,7 @@ const AdminUsers: FC = () => {
       <Space
         direction="vertical"
         size="large"
-        style={{ marginTop: "10px", textAlign: "right" }}
+        style={{ marginTop: "10px", textAlign: "right", width: "100%" }}
       >
         <Button
           type="primary"
