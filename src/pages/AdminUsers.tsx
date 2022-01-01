@@ -103,6 +103,13 @@ const AdminUsers: FC = () => {
       sorter: (a, b) => a.following - b.following,
     },
     {
+      title: "Instances",
+      dataIndex: "instances",
+      key: "instances",
+      width: "5%",
+      sorter: (a, b) => a.instances - b.instances,
+    },
+    {
       title: "Auth",
       dataIndex: "authType",
       key: "authType",
