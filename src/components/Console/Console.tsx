@@ -33,7 +33,6 @@ function Console() {
 
   useEffect(() => {
     socket.on("connect", () => {
-      console.log("connected");
       socket.emit("join", `editor_${id}`);
       ["log", "error", "warn", "info"].forEach((type) => {
         socket.on(`console.${type}`, (data) => {

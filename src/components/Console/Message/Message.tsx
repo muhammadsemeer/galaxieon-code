@@ -49,7 +49,9 @@ export default function Message({
             section === "problems" && "problems_message"
           }`}
         >
-          <span>{txt}</span>
+          <Text>
+            <code style={{ background: "none", border: "none" }}>{txt}</code>
+          </Text>
           <Text type="secondary" className="location" underline>
             {location ? `${location}` : ""}
           </Text>
