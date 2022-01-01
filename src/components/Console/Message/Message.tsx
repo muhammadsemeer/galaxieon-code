@@ -25,17 +25,17 @@ export default function Message({
   return (
     <div className="console_message">
       {type === "log" ? (
-        <Text code className="message txt_log">
-          <Text>{txt}</Text>
+        <Text className="message txt_log">
+          <Text code style={{ whiteSpace: "break-spaces" }}>
+            {txt}
+          </Text>
           <Text type="secondary" className="location" underline>
             {location ? `${location}` : ""}
           </Text>
         </Text>
       ) : (
         <Tag
-          color={
-            type === "error" ? "red" : type === "warn" ? "yellow" : "blue"
-          }
+          color={type === "error" ? "red" : type === "warn" ? "yellow" : "blue"}
           icon={
             type === "error" ? (
               <CloseCircleOutlined />
