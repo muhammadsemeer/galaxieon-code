@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./console.scss";
 import { Tabs } from "antd";
 import { DownOutlined, StopOutlined, UpOutlined } from "@ant-design/icons";
@@ -7,7 +7,9 @@ import Message from "./Message/Message";
 import { Collapse } from "antd";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { Problem } from "../../store/editor/editor";
+import { io } from "socket.io-client";
+import { useParams } from "react-router-dom";
+import { nanoid } from "nanoid";
 
 const { Panel } = Collapse;
 const { TabPane } = Tabs;
@@ -16,8 +18,33 @@ const { Text } = Typography;
 function Console() {
   const [isConsoleCleared, setIsConsoleCleared] = useState(false);
   const [show, setShow] = useState(false);
-  const [activeKey, setActiveKey] = useState("problems");
+  const [activeKey, setActiveKey] = useState("console");
   const problems = useSelector((state: RootState) => state.editor.problems);
+  const { id } = useParams<{ id: string }>();
+  const [consoles, setConsoles] = useState<{ type: string; message: any }[]>(
+    []
+  );
+
+  const { current: socket } = useRef(
+    io(`${process.env.SOCKET_ENDPOINT}/console`, {
+      withCredentials: true,
+    })
+  );
+
+  useEffect(() => {
+    socket.on("connect", () => {
+      console.log("connected");
+      socket.emit("join", `editor_${id}`);
+      ["log", "error", "warn", "info"].forEach((type) => {
+        socket.on(`console.${type}`, (data) => {
+          setConsoles((consoles) => [
+            ...consoles,
+            { type, message: JSON.stringify(data, null, 4) },
+          ]);
+        });
+      });
+    });
+  }, []);
 
   return (
     <div className={`console_tabs ${show && "show"} `}>
@@ -28,50 +55,20 @@ function Console() {
           setShow(true);
         }}
       >
-        {/* <TabPane tab="Console" key="console">
+        <TabPane tab="Console" key="console">
           {isConsoleCleared && (
             <Text type="secondary" code className="clear_text">
               Console was cleared
             </Text>
           )}
-          <Message
-            type="log"
-            location="App.js 13:90"
-            txt={`function foo() { return 'bar' }`}
-          />
-          <Message
-            type="error"
-            location="App.js 13:90"
-            txt="ReferenceError : Hello is not defined"
-          />{" "}
-          <Message
-            type="error"
-            location="App.js 13:90"
-            txt="ReferenceError : Hello is not defined"
-          />
-          <Message
-            type="warning"
-            location="App.js 13:90"
-            txt="ReferenceError : Hello is not defined"
-          />{" "}
-          <Message
-            type="warning"
-            location="App.js 13:90"
-            txt="ReferenceError : Hello is not defined"
-          />
-          <Message
-            type="info"
-            location="App.js 13:90"
-            txt="ReferenceError : Hello is not defined"
-          />{" "}
-          <Message
-            type="info"
-            location="App.js 13:90"
-            txt="ReferenceError : Hello is not defined"
-          />
-        </TabPane> */}
+          {consoles.map(({ type, message }) => (
+            <Message key={nanoid()} type={type} txt={message} />
+          ))}
+        </TabPane>
         <TabPane
-          tab={`Problems ${problems.length > 0 ? "(" + problems.length + ")" : ""}`}
+          tab={`Problems ${
+            problems.length > 0 ? "(" + problems.length + ")" : ""
+          }`}
           key="problems"
           className="problems"
         >

@@ -11,7 +11,7 @@ import {
 interface Props {
   type: string;
   txt: string;
-  location: string;
+  location?: string;
   section?: string;
 }
 const { Text } = Typography;
@@ -28,18 +28,18 @@ export default function Message({
         <Text code className="message txt_log">
           <Text>{txt}</Text>
           <Text type="secondary" className="location" underline>
-            {location}
+            {location ? `${location}` : ""}
           </Text>
         </Text>
       ) : (
         <Tag
           color={
-            type === "error" ? "red" : type === "warning" ? "yellow" : "blue"
+            type === "error" ? "red" : type === "warn" ? "yellow" : "blue"
           }
           icon={
             type === "error" ? (
               <CloseCircleOutlined />
-            ) : type === "warning" ? (
+            ) : type === "warn" ? (
               <WarningFilled />
             ) : (
               <InfoCircleFilled />
@@ -51,7 +51,7 @@ export default function Message({
         >
           <span>{txt}</span>
           <Text type="secondary" className="location" underline>
-            {location}
+            {location ? `${location}` : ""}
           </Text>
         </Tag>
       )}
