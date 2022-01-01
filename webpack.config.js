@@ -6,7 +6,7 @@ const webpack = require("webpack");
 const ErrorOverlayPlugin = require("error-overlay-webpack-plugin");
 
 const loaded = require("dotenv").config({
-  path: path.resolve(__dirname, ".env.production")
+  path: path.resolve(__dirname, ".env.production.local")
 });
 
 console.log(loaded);
