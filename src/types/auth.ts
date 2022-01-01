@@ -5,6 +5,7 @@ export interface User {
   profileImage?: string | null;
   followers?: number;
   following?: number;
+  instances?: number;
   authType?: "google" | "github";
   status?: "active" | "blocked" | "deleted";
   createdAt?: Date;
