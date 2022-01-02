@@ -17,6 +17,7 @@ import styles from "./header.module.scss";
 import OptionsDrop from "./OptionsDrop";
 import Notification, { NotificationData } from "../Notification/Notification";
 import CreateModal from "../CreateModal/CreateModal";
+import { removeAllInstances } from "../../store/instance/instanceSlice";
 
 export type UserProp = { isAdmin: boolean };
 
@@ -64,6 +65,7 @@ const User: FC<UserProp> = ({ isAdmin }) => {
   const dispatch = useDispatch();
   const handleLogout = async () => {
     await axios.get("/auth/logout/admin");
+    dispatch(removeAllInstances());
     dispatch(logOut(isAdmin ? "admin" : "user"));
     history.push(isAdmin ? "/admin/login" : "/login");
   };
