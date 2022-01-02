@@ -102,10 +102,13 @@ const Editor: FC<EditorProps> = ({ code }) => {
   };
 
   const saveCode = (editor?: editor.ICodeEditor) => {
-    let code = editor?.getValue() ?? value.code;
+    const code = editor?.getValue() ?? value.code;
+    const activeFile = editor?.getModel()?.uri.path;
+    const fileArray = activeFile?.split("/");
+    const fileNameFromPath = fileArray?.[fileArray.length - 1];
     socket?.emit(
       "change",
-      fileName,
+      editor ? fileNameFromPath : fileName,
       code,
       instance.id,
       userId,
