@@ -119,14 +119,14 @@ const InstanceDetails: FC = () => {
       </div>
       {user?.id === instance.User?.id && (
         <Space direction="vertical" style={{ marginTop: 15 }}>
-          <Typography.Text>
+          {/* <Typography.Text>
             AutoSave:{" "}
             <Switch
               size="small"
               checked={instance.autosave}
               onChange={(checked) => updatePreviewAndSave(checked, "autosave")}
             />
-          </Typography.Text>
+          </Typography.Text> */}
           <Typography.Text>
             AutoPreview:{" "}
             <Switch
