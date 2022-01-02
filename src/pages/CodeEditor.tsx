@@ -25,10 +25,10 @@ import {
   setSocket,
 } from "../store/editor/editor";
 import Database from "../Database";
-import { io } from "socket.io-client";
 import BrowserWrapper from "../components/out/BrowserWrapper";
 import Console from "../components/Console/Console";
 import { clearSidePane } from "../store/editor/sidePane";
+import { editor as socket } from "../socket";
 
 const database = new Database("g_code", 1);
 const CodeEditor: FC = () => {
@@ -74,11 +74,6 @@ const CodeEditor: FC = () => {
       );
   }, []);
 
-  const { current: socket } = useRef(
-    io(`${process.env.SOCKET_ENDPOINT}/editor`, {
-      withCredentials: true,
-    })
-  );
 
   useEffect(() => {
     socket.on("connect", () => {
