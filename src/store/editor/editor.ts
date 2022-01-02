@@ -107,6 +107,7 @@ export const editorSlice = createSlice({
         problems: state.problems.filter((problem) => problem.file !== payload),
       };
     },
+    clearAll: (state) => initialState,
   },
 });
 
@@ -120,6 +121,7 @@ export const {
   setActiveTab,
   setProblem,
   removeProblem,
+  clearAll,
 } = editorSlice.actions;
 
 export default editorSlice.reducer;

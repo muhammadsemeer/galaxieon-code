@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Instance } from "../../types/templateAndInstance";
 
-let initialState: Instance= {} as Instance;
+let initialState: Instance = {} as Instance;
 
 const editorInstance = createSlice({
   name: "instance",
@@ -16,10 +16,15 @@ const editorInstance = createSlice({
     updateInstance: (state, { payload }: PayloadAction<Instance>) => {
       return { ...state, ...payload };
     },
+    clearAllInstances: (state) => initialState,
   },
 });
 
-export const { addInstance, removeInstance, updateInstance } =
-  editorInstance.actions;
+export const {
+  addInstance,
+  removeInstance,
+  updateInstance,
+  clearAllInstances,
+} = editorInstance.actions;
 
 export default editorInstance.reducer;
