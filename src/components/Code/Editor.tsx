@@ -84,6 +84,23 @@ const Editor: FC<EditorProps> = ({ code }) => {
     }
   };
 
+  const putToDB = (code: string) => {
+    if (activeFile) {
+      database
+        .put(instance.id, activeFile, code)
+        .then(() => {
+          dispatch(
+            setCode({
+              key: activeFile,
+              code,
+              isSaved: true,
+            })
+          );
+        })
+        .catch((err) => console.error(err));
+    }
+  };
+
   const saveCode = (editor?: editor.ICodeEditor) => {
     let code = editor?.getValue() ?? value.code;
     socket?.emit(
@@ -96,20 +113,7 @@ const Editor: FC<EditorProps> = ({ code }) => {
         if (err) {
           return console.log(err);
         }
-        if (activeFile) {
-          database
-            .put(instance.id, activeFile, code)
-            .then(() => {
-              dispatch(
-                setCode({
-                  key: activeFile,
-                  code,
-                  isSaved: true,
-                })
-              );
-            })
-            .catch((err) => console.error(err));
-        }
+        putToDB(code);
       }
     );
   };
@@ -122,6 +126,7 @@ const Editor: FC<EditorProps> = ({ code }) => {
   };
 
   useEffect(() => {
+    socket?.on("change_by_other", putToDB);
     window.addEventListener("beforeunload", beforeUnload);
     let timeOut: number;
     if (value?.code !== code && instance.autosave) {
