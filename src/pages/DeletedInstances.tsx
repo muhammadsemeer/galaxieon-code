@@ -60,7 +60,7 @@ const DeletedInstances: FC = () => {
                     md={12}
                     lg={8}
                     xl={6}
-                    xxl={3}
+                    xxl={4}
                   >
                     <Card
                       cardId={instance.id}
