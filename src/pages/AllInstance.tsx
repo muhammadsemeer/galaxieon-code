@@ -30,7 +30,7 @@ const AllInstances = () => {
             {!loading ? (
               <>
                 {instances.length !== 0 && (
-                  <Col xs={24} sm={24} md={12} lg={8} xl={6} xxl={3}>
+                  <Col xs={24} sm={24} md={12} lg={8} xl={6} xxl={4}>
                     <CardLoading isAdd />
                   </Col>
                 )}
@@ -42,7 +42,7 @@ const AllInstances = () => {
                     md={12}
                     lg={8}
                     xl={6}
-                    xxl={3}
+                    xxl={4}
                   >
                     <Card
                       cardId={instance.id}
