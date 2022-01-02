@@ -77,6 +77,16 @@ class Database {
       }
     });
   }
+  close(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      indexedDB.deleteDatabase(this.dbName).onsuccess = () => {
+        resolve();
+      };
+      indexedDB.deleteDatabase(this.dbName).onerror = () => {
+        reject();
+      };
+    });
+  }
 }
 
 export default Database;
