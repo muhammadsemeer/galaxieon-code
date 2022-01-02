@@ -10,11 +10,15 @@ import { collapseWithPayload } from "../store/menu/collapsedSlice";
 import { Instance } from "../types/templateAndInstance";
 import handleError from "../utils/Error";
 import { RootState } from "../store";
-import { addInstance } from "../store/instance/editorInstance";
+import {
+  addInstance,
+  clearAllInstances,
+} from "../store/instance/editorInstance";
 import ExpWrapper from "../components/Code/ExpWrapper";
 import ResizablePanels from "../components/Resizable/ResizablePanels";
 import EditorWrapper from "../components/Code/EditorWrapper";
 import {
+  clearAll,
   setActiveTabs,
   setDatabase,
   setReadOnly,
@@ -24,6 +28,7 @@ import Database from "../Database";
 import { io } from "socket.io-client";
 import BrowserWrapper from "../components/out/BrowserWrapper";
 import Console from "../components/Console/Console";
+import { clearSidePane } from "../store/editor/sidePane";
 
 const database = new Database("g_code", 1);
 const CodeEditor: FC = () => {
@@ -109,6 +114,9 @@ const CodeEditor: FC = () => {
     });
     return () => {
       socket.disconnect();
+      dispatch(clearAll());
+      dispatch(clearAllInstances());
+      dispatch(clearSidePane());
     };
   }, []);
 

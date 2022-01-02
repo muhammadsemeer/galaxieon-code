@@ -22,8 +22,10 @@ const sidePaneSlice = createSlice({
       showPane: true,
       activePane: payload,
     }),
+    clearSidePane: (state) => initialState,
   },
 });
 
-export const { togglePane, setActivePane } = sidePaneSlice.actions;
+export const { togglePane, setActivePane, clearSidePane } =
+  sidePaneSlice.actions;
 export default sidePaneSlice.reducer;
