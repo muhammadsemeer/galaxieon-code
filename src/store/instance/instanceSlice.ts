@@ -24,6 +24,9 @@ const instanceSlice = createSlice({
         return newState;
       }
     },
+    removeAllInstances: (state) => {
+      return [];
+    },
   },
 });
 
@@ -32,6 +35,7 @@ export const {
   addOneInstance,
   removeOneInstance,
   updateOneInstance,
+  removeAllInstances,
 } = instanceSlice.actions;
 
 export default instanceSlice.reducer;
