@@ -205,11 +205,12 @@ const Card: FC<CardProps> = ({
         <Space size="middle" direction="vertical" style={{ width: "100%" }}>
           <AntCard.Meta
             title={
-              <div className="flex justify-content-between align-center">
-                <p style={{ margin: 0, fontSize: "13px" }}>{title}</p>
+              <div className="flex justify-content-between align-center white-spaces break-all">
+                <p style={{ margin: 0, fontSize: "13px", marginRight: 10 }}>{title}</p>
                 {extra}
               </div>
             }
+
             description={
               deleted && (
                 <>
