@@ -29,8 +29,8 @@ import BrowserWrapper from "../components/out/BrowserWrapper";
 import Console from "../components/Console/Console";
 import { clearSidePane } from "../store/editor/sidePane";
 import { editor as socket } from "../socket";
+import { nanoid } from "nanoid";
 
-const database = new Database("g_code", 1);
 const CodeEditor: FC = () => {
   const dispatch = useDispatch();
   const { id } = useParams<{ id: string }>();
@@ -39,6 +39,8 @@ const CodeEditor: FC = () => {
   const showPane = useSelector(
     (state: RootState) => state.editorSidePane.showPane
   );
+
+  let { current: database } = useRef(new Database("g_code", 1));
 
   const createDB = (instance: Instance) => {
     database
@@ -67,6 +69,7 @@ const CodeEditor: FC = () => {
       .get(`/instance/${id}`)
       .then((response: AxiosResponse<Instance>) => {
         dispatch(addInstance(response.data));
+        database = new Database(`${response.data.id}___${nanoid()}`, 1);
         createDB(response.data);
       })
       .catch((error: AxiosError) =>
@@ -112,6 +115,7 @@ const CodeEditor: FC = () => {
       dispatch(clearAll());
       dispatch(clearAllInstances());
       dispatch(clearSidePane());
+      database.close();
     };
   }, []);
 
